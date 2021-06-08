@@ -1,17 +1,14 @@
-package ru.alexmaryin.firstgame;
+package ru.alexmaryin.firstgame
 
-import android.os.Bundle;
+import android.os.Bundle
+import com.badlogic.gdx.backends.android.AndroidApplication
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import ru.alexmaryin.firstgame.StartWindow;
-
-/** Launches the Android application. */
-public class AndroidLauncher extends AndroidApplication {
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
-		initialize(new StartWindow(), configuration);
-	}
+/** Launches the Android application.  */
+class AndroidLauncher : AndroidApplication() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val configuration = AndroidApplicationConfiguration()
+        initialize(StartWindow(), configuration)
+    }
 }
