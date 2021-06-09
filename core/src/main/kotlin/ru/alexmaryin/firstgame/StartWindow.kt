@@ -1,5 +1,6 @@
 package ru.alexmaryin.firstgame
 
+import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -15,7 +16,8 @@ private val log = logger<StartWindow>()
 /** implementation shared by all platforms.  */
 class StartWindow : KtxGame<GameScreen>() {
 
-    val batch by lazy { SpriteBatch() }
+    val batch by lazy { SpriteBatch(50) }
+    val engine by lazy { PooledEngine() }
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
@@ -26,6 +28,7 @@ class StartWindow : KtxGame<GameScreen>() {
     }
 
     override fun dispose() {
+        log.debug { "Disposed ${batch.maxSpritesInBatch} sprites" }
         batch.dispose()
     }
 }
