@@ -28,6 +28,7 @@ class StartWindow : KtxGame<GameScreen>() {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(viewport))
             addSystem(MoveSystem())
+            addSystem(DamageSystem())
             addSystem(
                 PlayerAnimationSystem(
                     graphicsAtlas.findRegion("police_up"),
@@ -38,6 +39,7 @@ class StartWindow : KtxGame<GameScreen>() {
             )
             addSystem(RenderSystem(batch, viewport))
             addSystem(RemoveSystem())
+            addSystem(DebugSystem())
         }
     }
 

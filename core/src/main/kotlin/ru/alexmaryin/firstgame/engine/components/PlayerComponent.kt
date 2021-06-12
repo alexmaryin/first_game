@@ -6,18 +6,17 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
 
-const val MAX_FULLNESS = 10
-const val MAX_AVAILABLE_COPS = 5
+const val MAX_AVAILABLE_COPS = 10
 
 class PlayerComponent : Component, Pool.Poolable {
 
-    var fullness = 0
-    var prisonersCount = 0
+    var enemiesCaught = 0
+    var missedEnemies = 0
     var availableCops = MAX_AVAILABLE_COPS
 
     override fun reset() {
-        fullness = 0
-        prisonersCount = 0
+        enemiesCaught = 0
+        missedEnemies = 0
         availableCops = MAX_AVAILABLE_COPS
     }
 

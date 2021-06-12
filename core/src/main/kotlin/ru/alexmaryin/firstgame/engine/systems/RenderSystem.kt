@@ -22,7 +22,7 @@ class RenderSystem(
     compareBy { entity -> entity[TransformComponent.mapper] }
 ) {
 
-    private val LOG = logger<RenderSystem>()
+    private val log = logger<RenderSystem>()
 
     override fun update(deltaTime: Float) {
         forceSort()
@@ -37,13 +37,13 @@ class RenderSystem(
         val graphic = entity.graphic
 
         require(graphic.sprite.texture != null) {
-            LOG.error { "Has no texture to rendering $entity" }
+            log.error { "Has no texture to rendering $entity" }
             return
         }
 
         graphic.sprite.run {
             rotation = transform.rotation
-            setBounds(transform.position.x, transform.position.y, transform.size.x, transform.size.y)
+            with(transform.interpolatedPosition) { setBounds(x, y, transform.size.x, transform.size.y) }
             draw(batch)
         }
     }

@@ -23,7 +23,19 @@ class MoveSystem : IteratingSystem(
         accumulator += deltaTime
         while (accumulator >= Gameplay.UPDATE_RATE) {
             accumulator -= Gameplay.UPDATE_RATE
+            entities.forEach { entity ->
+                entity.transform.oldPosition.set(entity.transform.position)
+            }
             super.update(Gameplay.UPDATE_RATE)
+        }
+
+        val alpha = accumulator / Gameplay.UPDATE_RATE
+        entities.forEach { entity ->
+            entity.transform.interpolatedPosition.set(
+                MathUtils.lerp(entity.transform.oldPosition.x, entity.transform.position.x, alpha),
+                MathUtils.lerp(entity.transform.oldPosition.y, entity.transform.position.y, alpha),
+                entity.transform.position.z
+            )
         }
     }
 
