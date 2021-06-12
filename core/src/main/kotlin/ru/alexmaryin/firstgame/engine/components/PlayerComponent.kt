@@ -26,4 +26,4 @@ class PlayerComponent : Component, Pool.Poolable {
     }
 }
 
-val Entity.player get() = this[PlayerComponent.mapper] ?: throw NullPointerException("Entity $this has no Player component")
+val Entity.player get() = this[PlayerComponent.mapper]

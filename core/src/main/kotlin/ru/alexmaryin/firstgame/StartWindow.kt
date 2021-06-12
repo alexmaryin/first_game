@@ -9,9 +9,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
 import ktx.log.debug
 import ktx.log.logger
-import ru.alexmaryin.firstgame.engine.systems.PlayerAnimationSystem
-import ru.alexmaryin.firstgame.engine.systems.PlayerInputSystem
-import ru.alexmaryin.firstgame.engine.systems.RenderSystem
+import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
 import ru.alexmaryin.firstgame.screens.MenuScreen
 import ru.alexmaryin.firstgame.screens.SplashScreen
@@ -26,14 +24,21 @@ class StartWindow : KtxGame<GameScreen>() {
     private val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal(GameAssets.GRAPHICS_ATLAS)) }
 
     val batch by lazy { SpriteBatch(50) }
-    val engine by lazy { PooledEngine().apply {
-        addSystem(PlayerInputSystem(viewport))
-        addSystem(PlayerAnimationSystem(
-            graphicsAtlas.findRegion("police_left"),
-            graphicsAtlas.findRegion("police_up"),
-            graphicsAtlas.findRegion("police_down"),
-        ))
-        addSystem(RenderSystem(batch, viewport)) }
+    val engine by lazy {
+        PooledEngine().apply {
+            addSystem(PlayerInputSystem(viewport))
+            addSystem(MoveSystem())
+            addSystem(
+                PlayerAnimationSystem(
+                    graphicsAtlas.findRegion("police_up"),
+                    graphicsAtlas.findRegion("police_down"),
+                    graphicsAtlas.findRegion("police_left"),
+                    graphicsAtlas.findRegion("police_right"),
+                )
+            )
+            addSystem(RenderSystem(batch, viewport))
+            addSystem(RemoveSystem())
+        }
     }
 
     override fun create() {

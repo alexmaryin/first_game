@@ -9,9 +9,10 @@ import ktx.ashley.allOf
 import ru.alexmaryin.firstgame.engine.components.*
 
 class PlayerAnimationSystem(
-    private val defaultRegion: TextureRegion,
     private val upRegion: TextureRegion,
-    private val downRegion: TextureRegion
+    private val downRegion: TextureRegion,
+    private val leftRegion: TextureRegion,
+    private val rightRegion: TextureRegion,
 ) : IteratingSystem(allOf(
     PlayerComponent::class,
     FacingComponent::class,
@@ -41,13 +42,15 @@ class PlayerAnimationSystem(
             graphic.setSpriteRegion(when(direction) {
                 FacingDirection.UP -> upRegion
                 FacingDirection.DOWN -> downRegion
-                else -> defaultRegion
+                FacingDirection.RIGHT -> rightRegion
+                FacingDirection.LEFT -> leftRegion
+                else -> leftRegion
             })
         }
     }
 
     override fun entityAdded(entity: Entity) {
-        entity.graphic.setSpriteRegion(defaultRegion)
+        entity.graphic.setSpriteRegion(leftRegion)
     }
 
     override fun entityRemoved(entity: Entity) {}

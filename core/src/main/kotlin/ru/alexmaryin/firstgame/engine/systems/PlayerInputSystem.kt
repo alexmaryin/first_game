@@ -18,21 +18,23 @@ class PlayerInputSystem(
     FacingComponent::class
 ).get()) {
 
-    private val yVector = Vector2(0f, 0f)
+    private val posVector = Vector2(0f, 0f)
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
 
-        val player = entity.player
         val facing = entity.facing
         val transform = entity.transform
-
-        yVector.y = Gdx.input.y.toFloat()
-        viewport.unproject(yVector)
-        val diffY = yVector.y - transform.position.y - transform.size.y * 0.5f
+        posVector.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
+        viewport.unproject(posVector)
+        val diffX = posVector.x - transform.position.x - transform.size.x * 0.5f
+        val diffY = posVector.y - transform.position.y - transform.size.y * 0.5f
         facing.direction = when {
             diffY > TOUCH_TOLERANCE_DISTANCE -> FacingDirection.UP
             diffY < -TOUCH_TOLERANCE_DISTANCE -> FacingDirection.DOWN
+            diffX < -TOUCH_TOLERANCE_DISTANCE -> FacingDirection.LEFT
+            diffX > TOUCH_TOLERANCE_DISTANCE -> FacingDirection.RIGHT
             else -> FacingDirection.DEFAULT
         }
+
     }
 }
