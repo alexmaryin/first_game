@@ -1,4 +1,4 @@
-package ru.alexmaryin.firstgame
+package ru.alexmaryin.firstgame.values
 
 object WorldDimens {
     const val CELL_SIZE = 80

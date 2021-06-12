@@ -13,6 +13,8 @@ import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
 import ru.alexmaryin.firstgame.screens.MenuScreen
 import ru.alexmaryin.firstgame.screens.SplashScreen
+import ru.alexmaryin.firstgame.values.GameAssets
+import ru.alexmaryin.firstgame.values.WorldDimens
 
 private val log = logger<StartWindow>()
 
@@ -29,14 +31,7 @@ class StartWindow : KtxGame<GameScreen>() {
             addSystem(PlayerInputSystem(viewport))
             addSystem(MoveSystem())
             addSystem(DamageSystem())
-            addSystem(
-                PlayerAnimationSystem(
-                    graphicsAtlas.findRegion("police_up"),
-                    graphicsAtlas.findRegion("police_down"),
-                    graphicsAtlas.findRegion("police_left"),
-                    graphicsAtlas.findRegion("police_right"),
-                )
-            )
+            addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport))
             addSystem(RemoveSystem())
             addSystem(DebugSystem())

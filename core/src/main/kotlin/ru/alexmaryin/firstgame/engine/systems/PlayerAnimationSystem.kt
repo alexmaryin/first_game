@@ -4,16 +4,14 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import ktx.ashley.allOf
+import ru.alexmaryin.firstgame.values.PoliceSprite
 import ru.alexmaryin.firstgame.engine.components.*
 
 class PlayerAnimationSystem(
-    private val upRegion: TextureRegion,
-    private val downRegion: TextureRegion,
-    private val leftRegion: TextureRegion,
-    private val rightRegion: TextureRegion,
-) : IteratingSystem(allOf(
+    private val atlas: TextureAtlas
+    ) : IteratingSystem(allOf(
     PlayerComponent::class,
     FacingComponent::class,
     GraphicComponent::class
@@ -39,18 +37,18 @@ class PlayerAnimationSystem(
         }
 
         lastDirection = facing.direction.also { direction ->
-            graphic.setSpriteRegion(when(direction) {
-                FacingDirection.UP -> upRegion
-                FacingDirection.DOWN -> downRegion
-                FacingDirection.RIGHT -> rightRegion
-                FacingDirection.LEFT -> leftRegion
-                else -> leftRegion
-            })
+            graphic.setSpriteRegion(atlas.findRegion(when(direction) {
+                FacingDirection.UP -> PoliceSprite.upRegion
+                FacingDirection.DOWN -> PoliceSprite.downRegion
+                FacingDirection.RIGHT -> PoliceSprite.rightRegion
+                FacingDirection.LEFT -> PoliceSprite.leftRegion
+                else -> PoliceSprite.leftRegion
+            }))
         }
     }
 
     override fun entityAdded(entity: Entity) {
-        entity.graphic.setSpriteRegion(leftRegion)
+        entity.graphic.setSpriteRegion(atlas.findRegion(PoliceSprite.leftRegion))
     }
 
     override fun entityRemoved(entity: Entity) {}

@@ -5,8 +5,8 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import ktx.ashley.allOf
 import ktx.ashley.exclude
-import ru.alexmaryin.firstgame.Gameplay
-import ru.alexmaryin.firstgame.WorldDimens
+import ru.alexmaryin.firstgame.values.Gameplay
+import ru.alexmaryin.firstgame.values.WorldDimens
 import ru.alexmaryin.firstgame.engine.components.*
 import kotlin.math.max
 import kotlin.math.min

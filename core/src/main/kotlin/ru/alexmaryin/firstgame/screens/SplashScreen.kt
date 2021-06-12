@@ -7,7 +7,7 @@ import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
-import ru.alexmaryin.firstgame.Gameplay
+import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.StartWindow
 import ru.alexmaryin.firstgame.engine.components.*
 import kotlin.math.min

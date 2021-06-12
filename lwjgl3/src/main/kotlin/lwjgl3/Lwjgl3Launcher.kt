@@ -3,7 +3,7 @@ package lwjgl3
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import ru.alexmaryin.firstgame.StartWindow
-import ru.alexmaryin.firstgame.WorldDimens
+import ru.alexmaryin.firstgame.values.WorldDimens
 
 /** Launches the desktop (LWJGL3) application.  */
 

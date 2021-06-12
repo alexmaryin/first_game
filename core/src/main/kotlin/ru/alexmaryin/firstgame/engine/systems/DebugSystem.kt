@@ -7,7 +7,7 @@ import com.badlogic.gdx.Input
 import ktx.ashley.allOf
 import ktx.log.debug
 import ktx.log.logger
-import ru.alexmaryin.firstgame.Gameplay
+import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.engine.components.PlayerComponent
 import ru.alexmaryin.firstgame.engine.components.player
 import ru.alexmaryin.firstgame.engine.components.transform

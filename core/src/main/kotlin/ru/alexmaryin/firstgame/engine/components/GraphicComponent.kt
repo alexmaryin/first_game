@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
-import ru.alexmaryin.firstgame.WorldDimens
+import ru.alexmaryin.firstgame.values.WorldDimens
 
 class GraphicComponent : Component, Pool.Poolable {
 

@@ -1,4 +1,4 @@
-package ru.alexmaryin.firstgame
+package ru.alexmaryin.firstgame.values
 
 object Gameplay {
     const val DEFAULT_TITLE = "Deter revolution"

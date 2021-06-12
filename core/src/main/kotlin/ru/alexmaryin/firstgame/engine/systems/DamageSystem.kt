@@ -6,7 +6,7 @@ import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.getSystem
-import ru.alexmaryin.firstgame.Gameplay
+import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.engine.components.*
 
 class DamageSystem : IteratingSystem(
