@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ru.alexmaryin.firstgame.engine.components.*
 
-const val TOUCH_TOLERANCE_DISTANCE = 0.2f
+const val TOUCH_TOLERANCE_DISTANCE = 0.5f
 
 class PlayerInputSystem(
     private val viewport: Viewport

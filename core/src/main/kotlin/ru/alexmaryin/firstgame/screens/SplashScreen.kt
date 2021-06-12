@@ -2,6 +2,7 @@ package ru.alexmaryin.firstgame.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils.random
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -38,5 +39,7 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             game.setScreen<MenuScreen>()
         }
+
+        log.debug { "Render calls ${game.batch.renderCalls}" }
     }
 }

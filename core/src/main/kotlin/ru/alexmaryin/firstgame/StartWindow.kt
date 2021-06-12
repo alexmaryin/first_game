@@ -3,9 +3,8 @@ package ru.alexmaryin.firstgame
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
 import ktx.log.debug
@@ -24,14 +23,16 @@ class StartWindow : KtxGame<GameScreen>() {
 
     val viewport = FitViewport(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
 
-    private val defaultRegion by lazy { TextureRegion(Texture(Gdx.files.internal(GameAssets.POLICE_LEFT))) }
-    private val upRegion by lazy { TextureRegion(Texture(Gdx.files.internal(GameAssets.POLICE_UP))) }
-    private val downRegion by lazy { TextureRegion(Texture(Gdx.files.internal(GameAssets.POLICE_DOWN))) }
+    private val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal(GameAssets.GRAPHICS_ATLAS)) }
 
     val batch by lazy { SpriteBatch(50) }
     val engine by lazy { PooledEngine().apply {
         addSystem(PlayerInputSystem(viewport))
-        addSystem(PlayerAnimationSystem(defaultRegion, upRegion, downRegion))
+        addSystem(PlayerAnimationSystem(
+            graphicsAtlas.findRegion("police_left"),
+            graphicsAtlas.findRegion("police_up"),
+            graphicsAtlas.findRegion("police_down"),
+        ))
         addSystem(RenderSystem(batch, viewport)) }
     }
 
@@ -46,8 +47,6 @@ class StartWindow : KtxGame<GameScreen>() {
     override fun dispose() {
         log.debug { "Disposed ${batch.maxSpritesInBatch} sprites" }
         batch.dispose()
-        defaultRegion.texture.dispose()
-        upRegion.texture.dispose()
-        downRegion.texture.dispose()
+        graphicsAtlas.dispose()
     }
 }
