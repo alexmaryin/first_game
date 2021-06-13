@@ -28,8 +28,8 @@ class StartWindow : KtxGame<GameScreen>() {
     val batch by lazy { SpriteBatch(50) }
     val engine by lazy {
         PooledEngine().apply {
-            addSystem(DebugSystem())
-            addSystem(PlayerInputSystem(viewport))
+            addSystem(DebugSystem(batch))
+            addSystem(PlayerInputSystem())
             addSystem(EnemySystem())
             addSystem(SnapMoveSystem())
             addSystem(DamageSystem())

@@ -11,6 +11,7 @@ object WorldDimens {
     const val HEIGHT = 9
     const val F_HEIGHT = 9f
     private const val F_MAX_DEPTH = 99f
+    const val ROADS_OFFSET_Y = -1f
 
     val MIN_BORDER_VECTOR = Vector3(0f, 0f, 0f)
     fun maxBorderVector(size: Vector2) = Vector3(F_WIDTH - size.x, F_HEIGHT - size.y, F_MAX_DEPTH)

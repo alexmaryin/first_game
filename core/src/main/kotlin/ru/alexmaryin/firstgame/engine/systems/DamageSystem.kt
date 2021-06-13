@@ -12,15 +12,28 @@ import ru.alexmaryin.firstgame.engine.components.*
 class DamageSystem : IteratingSystem(
     allOf(PlayerComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get()
 ) {
+
+    private var getMissedEnemy = 0
+
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val player = entity.player
         require(player != null)
 
+        if (getMissedEnemy > 0) {
+            player.missedEnemies += getMissedEnemy
+            getMissedEnemy = 0
+        }
+
         if (player.missedEnemies >= Gameplay.MAX_MISSED_ENEMIES) {
             engine.getSystem<SnapMoveSystem>().setProcessing(false)
+            engine.getSystem<AnimationSystem>().setProcessing(false)
             entity.addComponent<RemoveComponent>(engine) {
                 delay = Gameplay.GAME_OVER_DELAY
             }
         }
+    }
+
+    fun addMissedEnemy() {
+        getMissedEnemy += 1
     }
 }

@@ -5,6 +5,8 @@ import com.badlogic.ashley.systems.IntervalIteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -16,7 +18,7 @@ import ru.alexmaryin.firstgame.values.GameAssets
 import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.values.WorldDimens
 
-class DebugSystem : IntervalIteratingSystem(
+class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
     allOf(PlayerComponent::class).get(), Gameplay.DEBUG_UPDATE_RATE
 ) {
 
@@ -59,7 +61,7 @@ class DebugSystem : IntervalIteratingSystem(
             } else {
                 log.debug { "Hide debug grid" }
                 debugGrid.addComponent<RemoveComponent>(engine) { delay = 0f }
-                debugGrid.getComponent(GraphicComponent::class.java).sprite.texture.dispose()
+                debugGrid.graphic.sprite.texture.dispose()
             }
         }
 
@@ -67,7 +69,7 @@ class DebugSystem : IntervalIteratingSystem(
             val transform = entity.transform
             val player = entity.player
             require(player != null)
-            Gdx.graphics.setTitle("pos:${transform.position} caught:${player.enemiesCaught} missed:${player.missedEnemies}")
+            Gdx.graphics.setTitle("pos:${transform.position} caught:${player.enemiesCaught} missed:${player.missedEnemies} render calls:${batch.renderCalls}")
         } else {
             Gdx.graphics.setTitle(Gameplay.DEFAULT_TITLE)
         }

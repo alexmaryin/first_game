@@ -10,9 +10,7 @@ import ktx.ashley.allOf
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.values.Move
 
-class PlayerInputSystem(
-    private val viewport: Viewport
-) : IteratingSystem(allOf(
+class PlayerInputSystem : IteratingSystem(allOf(
     PlayerComponent::class,
     TransformComponent::class,
     FacingComponent::class
