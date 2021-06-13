@@ -17,7 +17,7 @@ class DamageSystem : IteratingSystem(
         require(player != null)
 
         if (player.missedEnemies >= Gameplay.MAX_MISSED_ENEMIES) {
-            engine.getSystem<MoveSystem>().setProcessing(false)
+            engine.getSystem<SnapMoveSystem>().setProcessing(false)
             entity.addComponent<RemoveComponent>(engine) {
                 delay = Gameplay.GAME_OVER_DELAY
             }

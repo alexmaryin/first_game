@@ -17,8 +17,8 @@ private val log = logger<SplashScreen>()
 class SplashScreen(game: StartWindow) : GameScreen(game) {
 
     private val policeCar = engine.entity {
-        with<TransformComponent> { setInitialPosition(random(1f, 15f), random(1f, 8f)) }
-        with<GraphicComponent>()
+        with<TransformComponent> { setInitialPosition(14f,2f) }
+        with<GraphicComponent> { sprite.setSize(1f, 1f) }
         with<PlayerComponent>()
         with<FacingComponent>()
         with<MoveComponent>()

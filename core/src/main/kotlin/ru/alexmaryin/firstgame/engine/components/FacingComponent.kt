@@ -22,5 +22,5 @@ class FacingComponent : Component, Pool.Poolable {
 val Entity.facing get() = this[FacingComponent.mapper] ?: throw NullPointerException("Entity $this has no Facing component")
 
 enum class FacingDirection {
-    LEFT, UP, DEFAULT, RIGHT, DOWN
+    LEFT, UP, DEFAULT, RIGHT, DOWN, STOP
 }

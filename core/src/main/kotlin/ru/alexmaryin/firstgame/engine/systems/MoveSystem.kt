@@ -21,15 +21,15 @@ class MoveSystem : IteratingSystem(
 
     override fun update(deltaTime: Float) {
         accumulator += deltaTime
-        while (accumulator >= Gameplay.UPDATE_RATE) {
-            accumulator -= Gameplay.UPDATE_RATE
+        while (accumulator >= Gameplay.MOVE_RATE) {
+            accumulator -= Gameplay.MOVE_RATE
             entities.forEach { entity ->
                 entity.transform.oldPosition.set(entity.transform.position)
             }
-            super.update(Gameplay.UPDATE_RATE)
+            super.update(Gameplay.MOVE_RATE)
         }
 
-        val alpha = accumulator / Gameplay.UPDATE_RATE
+        val alpha = accumulator / Gameplay.MOVE_RATE
         entities.forEach { entity ->
             entity.transform.interpolatedPosition.set(
                 MathUtils.lerp(entity.transform.oldPosition.x, entity.transform.position.x, alpha),
