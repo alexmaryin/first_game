@@ -30,9 +30,11 @@ class StartWindow : KtxGame<GameScreen>() {
         PooledEngine().apply {
             addSystem(DebugSystem())
             addSystem(PlayerInputSystem(viewport))
+            addSystem(EnemySystem())
             addSystem(SnapMoveSystem())
             addSystem(DamageSystem())
             addSystem(PlayerAnimationSystem(graphicsAtlas))
+            addSystem(AnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport))
             addSystem(RemoveSystem())
         }

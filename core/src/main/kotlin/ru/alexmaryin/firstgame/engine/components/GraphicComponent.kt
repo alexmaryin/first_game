@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
-import ru.alexmaryin.firstgame.values.WorldDimens
 
 class GraphicComponent : Component, Pool.Poolable {
 
@@ -18,11 +17,11 @@ class GraphicComponent : Component, Pool.Poolable {
         sprite.setColor(1f, 1f, 1f, 1f)
     }
 
-    fun setSpriteRegion(region: TextureRegion) {
-        sprite.run {
-            setRegion(region)
-            setSize(region.regionWidth / WorldDimens.F_CELL_SIZE, region.regionHeight / WorldDimens.F_CELL_SIZE)
+    fun setSpriteRegion(region: TextureRegion, rotation: Float = 0f) {
+        sprite.apply {
             setOriginCenter()
+            setRotation(rotation)
+            setRegion(region)
         }
     }
 

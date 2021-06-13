@@ -12,7 +12,9 @@ class RemoveSystem : IteratingSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         entity.remove.apply {
             delay -= deltaTime
-            if (delay <= 0f) engine.removeEntity(entity)
+            if (delay <= 0f) {
+                engine.removeEntity(entity)
+            }
         }
     }
 }

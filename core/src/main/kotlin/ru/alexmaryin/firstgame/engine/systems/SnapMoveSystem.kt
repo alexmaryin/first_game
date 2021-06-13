@@ -34,8 +34,8 @@ class SnapMoveSystem : IteratingSystem(
         entities.forEach { entity ->
             with(entity.transform) {
                 interpolatedPosition.set(
-                    MathUtils.lerp(oldPosition.x, position.x, alpha),
-                    MathUtils.lerp(oldPosition.y, position.y, alpha),
+                    MathUtils.lerp(oldPosition.x, position.x, alpha * entity.move.speedRatio),
+                    MathUtils.lerp(oldPosition.y, position.y, alpha * entity.move.speedRatio),
                     position.z
                 )
             }
@@ -58,7 +58,7 @@ class SnapMoveSystem : IteratingSystem(
                 Move.Right -> FacingDirection.RIGHT
                 else -> FacingDirection.STOP
             }
-            move.reset()
+            move.isNotMoving = true
         }
     }
 }

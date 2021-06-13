@@ -6,8 +6,9 @@ import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import ktx.ashley.allOf
-import ru.alexmaryin.firstgame.values.PoliceSprite
 import ru.alexmaryin.firstgame.engine.components.*
+import ru.alexmaryin.firstgame.values.GameAssets
+import ru.alexmaryin.firstgame.values.RotationDeg
 
 class PlayerAnimationSystem(
     private val atlas: TextureAtlas
@@ -37,18 +38,18 @@ class PlayerAnimationSystem(
         }
 
         lastDirection = facing.direction.also { direction ->
-            graphic.setSpriteRegion(atlas.findRegion(when(direction) {
-                FacingDirection.UP -> PoliceSprite.upRegion
-                FacingDirection.DOWN -> PoliceSprite.downRegion
-                FacingDirection.RIGHT -> PoliceSprite.rightRegion
-                FacingDirection.LEFT -> PoliceSprite.leftRegion
-                else -> PoliceSprite.leftRegion
-            }))
+            graphic.setSpriteRegion (atlas.findRegion(GameAssets.policeAnim), when (direction) {
+                FacingDirection.UP -> RotationDeg.UP
+                FacingDirection.DOWN -> RotationDeg.DOWN
+                FacingDirection.RIGHT -> RotationDeg.RIGHT
+                FacingDirection.LEFT -> RotationDeg.LEFT
+                else -> RotationDeg.LEFT
+            })
         }
     }
 
     override fun entityAdded(entity: Entity) {
-        entity.graphic.setSpriteRegion(atlas.findRegion(PoliceSprite.leftRegion))
+        entity.graphic.setSpriteRegion(atlas.findRegion(GameAssets.policeAnim), 270f)
     }
 
     override fun entityRemoved(entity: Entity) {}

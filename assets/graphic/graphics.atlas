@@ -1,34 +1,83 @@
 
 graphics.png
-size: 2048, 512
+size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-police_down
+female_walk
   rotate: false
-  xy: 260, 2
-  size: 256, 256
-  orig: 256, 256
+  xy: 2, 68
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
-  index: -1
-police_left
+  index: 4
+female_walk
   rotate: false
-  xy: 776, 2
-  size: 256, 256
-  orig: 256, 256
+  xy: 2, 68
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
-  index: -1
-police_right
+  index: 0
+female_walk
+  rotate: false
+  xy: 776, 326
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+female_walk
+  rotate: false
+  xy: 776, 326
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+female_walk
   rotate: false
   xy: 2, 2
-  size: 256, 256
-  orig: 256, 256
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
-  index: -1
-police_up
+  index: 6
+female_walk
   rotate: false
-  xy: 518, 2
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+female_walk
+  rotate: false
+  xy: 68, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+female_walk
+  rotate: false
+  xy: 776, 260
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+police
+  rotate: false
+  xy: 2, 134
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
-  index: -1
+  index: 2
+police
+  rotate: false
+  xy: 260, 134
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 1
+police
+  rotate: false
+  xy: 518, 134
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 3
