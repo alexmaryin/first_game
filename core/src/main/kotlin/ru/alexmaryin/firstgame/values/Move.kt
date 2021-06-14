@@ -8,6 +8,7 @@ object Move {
     val Left = Vector3(-1f, 0f, 0f)
     val Right = Vector3(1f, 0f, 0f)
     val SlowRight = Vector3(0.25f, 0f, 0f)
+    val SlowLeft = Vector3(-0.25f, 0f, 0f)
     val Back = Vector3(0f, 0f, 1f)
     val Front = Vector3(0f, 0f, -1f)
 }

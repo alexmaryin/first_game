@@ -5,20 +5,19 @@ import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
+import ktx.ashley.exclude
 import ktx.ashley.get
 import ktx.graphics.use
 import ktx.log.error
 import ktx.log.logger
-import ru.alexmaryin.firstgame.engine.components.GraphicComponent
-import ru.alexmaryin.firstgame.engine.components.TransformComponent
-import ru.alexmaryin.firstgame.engine.components.graphic
-import ru.alexmaryin.firstgame.engine.components.transform
+import ru.alexmaryin.firstgame.engine.components.*
 
 class RenderSystem(
     private val batch: Batch,
     private val viewport: Viewport
 ) : SortedIteratingSystem(
-    allOf(TransformComponent::class, GraphicComponent::class).get(),
+    allOf(TransformComponent::class, GraphicComponent::class)
+        .exclude(RemoveComponent::class).get(),
     compareBy { entity -> entity[TransformComponent.mapper] }
 ) {
 

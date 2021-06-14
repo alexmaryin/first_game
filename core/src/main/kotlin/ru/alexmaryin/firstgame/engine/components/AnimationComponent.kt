@@ -23,4 +23,4 @@ class AnimationComponent : Component, Pool.Poolable {
     }
 }
 
-val Entity.animation get() = this[AnimationComponent.mapper]
+val Entity.animation get() = this[AnimationComponent.mapper] ?: throw NullPointerException("Entity $this has no Animation component")

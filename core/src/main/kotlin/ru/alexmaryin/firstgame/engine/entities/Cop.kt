@@ -8,11 +8,11 @@ import ktx.ashley.with
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.values.WorldDimens
 
-class Enemy(engine: Engine) : Entity(), Pool.Poolable {
+class Cop(engine: Engine) : Entity(), Pool.Poolable {
 
     init {
         engine.configureEntity(this) {
-            with<EnemyComponent>()
+            with<CopComponent>()
             with<TransformComponent>()
             with<AnimationComponent>()
             with<MoveComponent>()
@@ -29,7 +29,9 @@ class Enemy(engine: Engine) : Entity(), Pool.Poolable {
     }
 
     companion object {
-        const val Y_SPRITE_OFFSET = -5f / WorldDimens.CELL_SIZE
-        const val X_SPRITE_OFFSET = 0f / WorldDimens.CELL_SIZE
+        const val WIDTH_SPRITE_RATIO = 0.45f
+        const val HEIGHT_SPRITE_RATIO = 0.55f
+        const val Y_SPRITE_OFFSET = 15f / WorldDimens.CELL_SIZE
+        const val X_SPRITE_OFFSET = 15f / WorldDimens.CELL_SIZE
     }
 }

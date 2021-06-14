@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.GdxRuntimeException
 import ktx.ashley.allOf
+import ktx.ashley.exclude
 import ktx.log.error
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
@@ -16,7 +17,8 @@ import java.util.*
 class AnimationSystem(
     private val atlas: TextureAtlas
 ) : IteratingSystem(
-    allOf(AnimationComponent::class, GraphicComponent::class).get()
+    allOf(AnimationComponent::class, GraphicComponent::class)
+        .exclude(RemoveComponent::class).get()
 ), EntityListener {
 
     private val animationCache = EnumMap<AnimationType, Animation2D>(AnimationType::class.java)
@@ -41,7 +43,7 @@ class AnimationSystem(
     }
 
     override fun entityAdded(entity: Entity) {
-        entity.animation?.run {
+        entity.animation.run {
             animation = loadAnimation(type)
             val frame = animation.getKeyFrame(stateTime)
             entity.graphic.setSpriteRegion(frame)
@@ -50,7 +52,7 @@ class AnimationSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val animation = entity.animation
-        require(animation != null && animation.type != AnimationType.NONE) {
+        require(animation.type != AnimationType.NONE) {
             log.error { "Animation for component $animation $entity has no defined type or animation" }
             return
         }

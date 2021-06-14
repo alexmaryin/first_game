@@ -18,7 +18,7 @@ import ru.alexmaryin.firstgame.values.WorldDimens
 
 class EnemySystem : IteratingSystem(
     allOf(EnemyComponent::class, TransformComponent::class, MoveComponent::class)
-        .exclude(PlayerComponent::class, RemoveComponent::class).get()
+        .exclude(RemoveComponent::class).get()
 ), EntityListener {
 
     inner class EnemyPool : Pool<Enemy>() {
@@ -33,7 +33,7 @@ class EnemySystem : IteratingSystem(
 
     private val activeEnemies = GdxArray<Enemy>()
     private val enemiesPool = EnemyPool()
-    val poolSize get() = (activeEnemies.size to enemiesPool.peak)
+    val poolSize get() = activeEnemies.size to enemiesPool.peak
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -75,9 +75,9 @@ class EnemySystem : IteratingSystem(
         val enemy = entity.enemy
         val animation = entity.animation
         val transform = entity.transform
-        require(animation != null)
 
         _enemiesOnScreen += 1
+        transform.offset.set(Enemy.X_SPRITE_OFFSET, Enemy.Y_SPRITE_OFFSET)
         transform.setInitialPosition(0f, enemy.road * 2 + WorldDimens.ROADS_OFFSET_Y, 0f)
         entity.move.speedRatio *= enemy.speedRatio
         animation.type = AnimationType.values()[enemy.enemyVariant]
@@ -87,12 +87,8 @@ class EnemySystem : IteratingSystem(
         _enemiesOnScreen -= 1
         Gdx.input.vibrate(100)
 
-        activeEnemies.forEachIndexed { idx, enemy ->
-            if (entity.enemy.finished) {
-                activeEnemies.removeIndex(idx)
-                enemiesPool.free(enemy)
-            }
-        }
+        activeEnemies.removeValue(entity as Enemy, false)
+        enemiesPool.free(entity)
     }
 
     private fun addEnemy() {

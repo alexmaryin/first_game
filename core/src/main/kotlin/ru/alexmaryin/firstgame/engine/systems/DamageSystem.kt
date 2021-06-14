@@ -15,14 +15,19 @@ class DamageSystem : IteratingSystem(
 ) {
 
     private var getMissedEnemy = 0
+    private var getMissedCop = 0
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val player = entity.player
-        require(player != null)
 
         if (getMissedEnemy > 0) {
             player.missedEnemies += getMissedEnemy
             getMissedEnemy = 0
+        }
+
+        if (getMissedCop > 0) {
+            player.availableCops -= getMissedCop
+            getMissedCop = 0
         }
 
         if (player.missedEnemies >= Gameplay.MAX_MISSED_ENEMIES) {
@@ -38,5 +43,9 @@ class DamageSystem : IteratingSystem(
 
     fun addMissedEnemy() {
         getMissedEnemy += 1
+    }
+
+    fun addMissedCop() {
+        getMissedCop += 1
     }
 }
