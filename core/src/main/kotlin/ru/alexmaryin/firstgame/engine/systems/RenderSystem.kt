@@ -7,10 +7,12 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
+import ktx.ashley.hasNot
 import ktx.graphics.use
 import ktx.log.error
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
+import ru.alexmaryin.firstgame.values.RotationDeg
 
 class RenderSystem(
     private val batch: Batch,
@@ -41,6 +43,20 @@ class RenderSystem(
         }
 
         graphic.sprite.run {
+
+            // TODO refactor PlayerAnimationSystem - replace with standard animation and rotate textures
+            if (entity.hasNot(PlayerComponent.mapper)) {
+                entity.facing?.let {
+                    rotation = when (it.direction) {
+                        FacingDirection.LEFT -> { setFlip(true, false); RotationDeg.ZERO }
+                        FacingDirection.UP -> { setFlip(false, false); RotationDeg.ZERO }
+                        FacingDirection.DEFAULT -> { setFlip(false, false); RotationDeg.ZERO }
+                        FacingDirection.RIGHT -> { setFlip(false, false); RotationDeg.ZERO }
+                        FacingDirection.DOWN -> { setFlip(false, false); RotationDeg.ZERO }
+                        FacingDirection.STOP -> { setFlip(false, false); RotationDeg.ZERO }
+                    }
+                }
+            }
             with(transform.interpolatedPosition) { setBounds(x, y, transform.size.x, transform.size.y) }
             draw(batch)
         }

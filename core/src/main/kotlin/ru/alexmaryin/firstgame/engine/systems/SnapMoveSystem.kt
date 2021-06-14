@@ -46,16 +46,16 @@ class SnapMoveSystem : IteratingSystem(
         moveEntity(entity.transform, entity.move, entity.facing)
     }
 
-    private fun moveEntity(transform: TransformComponent, move: MoveComponent,facing: FacingComponent) {
+    private fun moveEntity(transform: TransformComponent, move: MoveComponent,facing: FacingComponent?) {
         if (move.isNotMoving) {
-            facing.direction = FacingDirection.STOP
+            facing?.direction = FacingDirection.STOP
         } else {
             transform.position.addClamp(move.direction, WorldDimens.MIN_BORDER_VECTOR, WorldDimens.maxBorderVector(transform.size))
-            facing.direction = when(move.direction) {
+            facing?.direction = when(move.direction) {
                 Move.Up -> FacingDirection.UP
                 Move.Down -> FacingDirection.DOWN
-                Move.Left -> FacingDirection.LEFT
-                Move.Right -> FacingDirection.RIGHT
+                Move.Left, Move.SlowLeft -> FacingDirection.LEFT
+                Move.Right, Move.SlowRight -> FacingDirection.RIGHT
                 else -> FacingDirection.STOP
             }
             move.isNotMoving = true

@@ -14,6 +14,7 @@ object Move {
 }
 
 object RotationDeg {
+    const val ZERO = 0f
     const val UP = 0f
     const val DOWN = 180f
     const val RIGHT = 270f

@@ -36,7 +36,7 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
 
         if (Gdx.input.isKeyPressed(Input.Keys.F11)) {
             log.debug { "Forced game over" }
-            entity.player?.missedEnemies = Gameplay.MAX_MISSED_ENEMIES
+            entity.player.missedEnemies = Gameplay.MAX_MISSED_ENEMIES
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
@@ -64,17 +64,17 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
         if (enableDebugInfo) {
             val transform = entity.transform
             val player = entity.player
-            require(player != null)
             val enemies = engine.getSystem<EnemySystem>()
             Gdx.graphics.setTitle(buildString {
 //                append("pos:${transform.position} ")
                 append("caught:${player.enemiesCaught} ")
                 append("missed:${player.missedEnemies} ")
                 append("enemies:${enemies.enemiesOnScreen} ")
-                append("interval from last:${enemies.lastEnemyArisen} ")
+                append("cops:${player.availableCops} ")
+//                append("interval from last:${enemies.lastEnemyArisen} ")
                 append("render calls:${batch.renderCalls} ")
                 append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB ")
-                append("enemies pool size/free:${enemies.poolSize.first}/${enemies.poolSize.second} ")
+//                append("enemies pool size/free:${enemies.poolSize.first}/${enemies.poolSize.second} ")
             })
         } else {
             Gdx.graphics.setTitle(Gameplay.DEFAULT_TITLE)

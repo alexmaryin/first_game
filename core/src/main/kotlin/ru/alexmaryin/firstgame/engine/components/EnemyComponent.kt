@@ -7,11 +7,19 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
 
+enum class EnemyState {
+    WALK_STRAIGHT,
+    UNDER_ATTACK,
+    WALK_BACK
+}
+
 class EnemyComponent : Component, Pool.Poolable {
 
     var speedRatio = 1f     // should raise for difficulty growing
     var enemyVariant = random(0, 5)    // variant of enemy.
     var road = random(1, 4)
+    var state = EnemyState.WALK_STRAIGHT
+    var underAttackTime = 0f
     var finished = false
     var caught = false
 
@@ -19,6 +27,8 @@ class EnemyComponent : Component, Pool.Poolable {
         speedRatio = 1f
         road = random(1, 4)
         enemyVariant = random(0, 5)
+        state = EnemyState.WALK_STRAIGHT
+        underAttackTime = 0f
         finished = false
         caught = false
     }

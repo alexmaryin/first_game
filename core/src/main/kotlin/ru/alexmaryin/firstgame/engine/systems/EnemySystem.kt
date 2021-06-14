@@ -50,14 +50,29 @@ class EnemySystem : IteratingSystem(
     }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        // next move right
-        entity.move.moveToPosition(Move.SlowRight)
+        val enemy = entity.enemy
+        // next move
+        when (enemy.state) {
+            EnemyState.WALK_STRAIGHT -> entity.move.moveToPosition(Move.SlowRight)
+            EnemyState.UNDER_ATTACK -> {
+                enemy.underAttackTime += deltaTime
+                if (enemy.underAttackTime >= Gameplay.ENEMY_ATTACK_INTERVAL) {
+                    enemy.state = EnemyState.WALK_BACK
+                    enemy.underAttackTime = 0f
+                }
+                return
+            }
+            EnemyState.WALK_BACK -> entity.move.moveToPosition(Move.SlowLeft)
+        }
 
-        // check if enemy reached end of the road
-        if (entity.transform.position.x >= WorldDimens.F_WIDTH - 1) {
-            entity.enemy.finished = true
-            entity.addComponent<RemoveComponent>(engine) { delay = 0.5f }
-            engine.getSystem<DamageSystem>().addMissedEnemy()
+        // check if enemy reached end of the road or hides
+        when {
+            entity.transform.position.x >= WorldDimens.F_WIDTH - 1 && enemy.state == EnemyState.WALK_STRAIGHT  -> {
+                enemy.finished = true
+                removeEnemyFromScreen(entity)
+                return
+            }
+            entity.transform.position.x <= 0  && enemy.state == EnemyState.WALK_BACK -> removeEnemyFromScreen(entity)
         }
     }
 
@@ -95,5 +110,10 @@ class EnemySystem : IteratingSystem(
         val newEnemy = enemiesPool.obtain()
         activeEnemies.add(newEnemy)
         _lastEnemyArisen = 0f
+    }
+
+    private fun removeEnemyFromScreen(entity: Entity) {
+        entity.addComponent<RemoveComponent>(engine) { delay = 0.5f }
+        if (entity.enemy.finished) engine.getSystem<DamageSystem>().addMissedEnemy()
     }
 }

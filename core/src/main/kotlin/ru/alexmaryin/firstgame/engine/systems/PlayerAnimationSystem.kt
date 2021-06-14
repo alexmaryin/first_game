@@ -31,6 +31,7 @@ class PlayerAnimationSystem(
     }
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val facing = entity.facing
+        require(facing != null)
         val graphic = entity.graphic
 
         if(facing.direction == lastDirection && graphic.sprite.texture != null) {

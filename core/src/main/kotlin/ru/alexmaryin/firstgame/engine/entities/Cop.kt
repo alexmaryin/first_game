@@ -19,7 +19,6 @@ class Cop(engine: Engine) : Entity(), Pool.Poolable {
             with<FacingComponent>()
             with<GraphicComponent>()
         }
-        engine.addEntity(this)
     }
 
     override fun reset() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
 import ru.alexmaryin.firstgame.values.Gameplay.MAX_AVAILABLE_COPS
+import kotlin.math.min
 
 class PlayerComponent : Component, Pool.Poolable {
 
@@ -17,6 +18,10 @@ class PlayerComponent : Component, Pool.Poolable {
         enemiesCaught = 0
         missedEnemies = 0
         availableCops = MAX_AVAILABLE_COPS
+    }
+
+    fun restoreCop() {
+        availableCops = min(availableCops + 1, MAX_AVAILABLE_COPS)
     }
 
     companion object {
