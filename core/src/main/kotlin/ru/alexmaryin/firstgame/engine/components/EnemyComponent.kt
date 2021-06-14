@@ -10,7 +10,7 @@ import ktx.ashley.mapperFor
 class EnemyComponent : Component, Pool.Poolable {
 
     var speedRatio = 1f     // should raise for difficulty growing
-    var enemyVariant = 0    // variant of enemy. TODO: When other will be implemented - change it to randomize
+    var enemyVariant = random(0, 5)    // variant of enemy.
     var road = random(1, 4)
     var finished = false
     var caught = false
@@ -18,7 +18,7 @@ class EnemyComponent : Component, Pool.Poolable {
     override fun reset() {
         speedRatio = 1f
         road = random(1, 4)
-        enemyVariant = 0
+        enemyVariant = random(0, 5)
         finished = false
         caught = false
     }
