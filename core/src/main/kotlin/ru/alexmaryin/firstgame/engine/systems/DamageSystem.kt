@@ -2,6 +2,7 @@ package ru.alexmaryin.firstgame.engine.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.Gdx
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
@@ -27,6 +28,8 @@ class DamageSystem : IteratingSystem(
         if (player.missedEnemies >= Gameplay.MAX_MISSED_ENEMIES) {
             engine.getSystem<SnapMoveSystem>().setProcessing(false)
             engine.getSystem<AnimationSystem>().setProcessing(false)
+            engine.getSystem<EnemySystem>().setProcessing(false)
+            Gdx.input.vibrate(1000)
             entity.addComponent<RemoveComponent>(engine) {
                 delay = Gameplay.GAME_OVER_DELAY
             }

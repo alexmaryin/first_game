@@ -25,7 +25,7 @@ class StartWindow : KtxGame<GameScreen>() {
 
     private val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal(GameAssets.GRAPHICS_ATLAS)) }
 
-    val batch by lazy { SpriteBatch(50) }
+    val batch by lazy { SpriteBatch(100) }
     val engine by lazy {
         PooledEngine().apply {
             addSystem(DebugSystem(batch))

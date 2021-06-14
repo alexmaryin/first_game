@@ -7,7 +7,7 @@ enum class AnimationType(
     val playMode: Animation.PlayMode = Animation.PlayMode.LOOP,
     var speedRate: Float = 1f
 ) {
-    ENEMY1_WALK_FROM_LEFT("female_walk"),
-    ENEMY2_WALK_FROM_LEFT("male_walk"),
+    ENEMY1_WALK_FROM_LEFT("female_walk", speedRate = 0.4f),
+    ENEMY2_WALK_FROM_LEFT("male_walk", speedRate = 0.4f),
     NONE("")
 }

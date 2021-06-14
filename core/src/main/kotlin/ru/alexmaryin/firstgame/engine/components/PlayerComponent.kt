@@ -5,8 +5,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
-
-const val MAX_AVAILABLE_COPS = 10
+import ru.alexmaryin.firstgame.values.Gameplay.MAX_AVAILABLE_COPS
 
 class PlayerComponent : Component, Pool.Poolable {
 

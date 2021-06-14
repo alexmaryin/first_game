@@ -4,10 +4,11 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.utils.GdxRuntimeException
+import com.badlogic.gdx.math.MathUtils.random
 import ktx.ashley.*
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.values.AnimationType
+import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.values.Move
 import ru.alexmaryin.firstgame.values.WorldDimens
 
@@ -15,11 +16,25 @@ class EnemySystem : IteratingSystem(
     allOf(EnemyComponent::class, TransformComponent::class, MoveComponent::class)
         .exclude(PlayerComponent::class, RemoveComponent::class).get()), EntityListener {
 
-    private var enemiesOnScreen = 0
+    private var _enemiesOnScreen = 0
+    val enemiesOnScreen get() = _enemiesOnScreen
+
+    private var _lastEnemyArisen: Float = 0f
+    val lastEnemyArisen get() = _lastEnemyArisen
+
+
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
-
+        _lastEnemyArisen += deltaTime
+        if (lastEnemyArisen >= Gameplay.ENEMY_ARISE_MIN_INTERVAL
+            && enemiesOnScreen < Gameplay.MAX_AVAILABLE_COPS * Gameplay.DIFFICULTY_RATIO) {
+            if (random(1, 100) % 2 == 0) {
+                addEnemy()
+            } else {
+                _lastEnemyArisen = 0f
+            }
+        }
     }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
@@ -49,17 +64,13 @@ class EnemySystem : IteratingSystem(
         val transform = entity.transform
         require(animation != null)
 
-        enemiesOnScreen += 1
+        _enemiesOnScreen += 1
         transform.setInitialPosition(0f, enemy.road * 2 + WorldDimens.ROADS_OFFSET_Y, 0f)
         entity.move.speedRatio *= enemy.speedRatio
-        animation.type = when(enemy.enemyVariant) {
-            1 -> AnimationType.ENEMY1_WALK_FROM_LEFT
-            2 -> AnimationType.ENEMY2_WALK_FROM_LEFT
-            else -> throw GdxRuntimeException("Animation for enemy ${enemy.enemyVariant} is not implemented yet")
-        }.apply { speedRate = 0.4f }
+        animation.type = AnimationType.values()[enemy.enemyVariant]
     }
 
-    override fun entityRemoved(entity: Entity) { enemiesOnScreen -= 1 }
+    override fun entityRemoved(entity: Entity) { _enemiesOnScreen -= 1 }
 
     fun addEnemy() {
         engine.entity {
@@ -70,5 +81,7 @@ class EnemySystem : IteratingSystem(
             with<FacingComponent>()
             with<GraphicComponent>()
         }
+
+        _lastEnemyArisen = 0f
     }
 }

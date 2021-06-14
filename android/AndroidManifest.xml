@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ru.alexmaryin.firstgame">
+          xmlns:tools="http://schemas.android.com/tools" package="ru.alexmaryin.firstgame">
+
+    <uses-feature android:glEsVersion="0x00030000" android:required="true" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
             android:isGame="true"
             android:appCategory="game"
             android:label="@string/app_name"
-            android:theme="@style/GdxTheme">
+            android:useAccelerometer="false"
+            android:theme="@style/GdxTheme" tools:targetApi="lollipop">
         <activity
                 android:name="ru.alexmaryin.firstgame.AndroidLauncher"
                 android:label="@string/app_name"

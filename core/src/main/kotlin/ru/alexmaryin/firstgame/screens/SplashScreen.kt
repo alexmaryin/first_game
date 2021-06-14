@@ -37,7 +37,6 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
 
         when {
             Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) -> game.setScreen<MenuScreen>()
-            Gdx.input.isKeyJustPressed(Input.Keys.SPACE) -> game.engine.getSystem<EnemySystem>().addEnemy()
         }
     }
 }
