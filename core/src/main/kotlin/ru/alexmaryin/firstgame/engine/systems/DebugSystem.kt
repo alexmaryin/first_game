@@ -65,14 +65,16 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
             val transform = entity.transform
             val player = entity.player
             require(player != null)
+            val enemies = engine.getSystem<EnemySystem>()
             Gdx.graphics.setTitle(buildString {
-                append("pos:${transform.position} ")
+//                append("pos:${transform.position} ")
                 append("caught:${player.enemiesCaught} ")
                 append("missed:${player.missedEnemies} ")
-                append("enemies:${engine.getSystem<EnemySystem>().enemiesOnScreen} ")
-                append("interval from last:${engine.getSystem<EnemySystem>().lastEnemyArisen} ")
+                append("enemies:${enemies.enemiesOnScreen} ")
+                append("interval from last:${enemies.lastEnemyArisen} ")
                 append("render calls:${batch.renderCalls} ")
-                append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB")
+                append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB ")
+                append("enemies pool size/free:${enemies.poolSize.first}/${enemies.poolSize.second} ")
             })
         } else {
             Gdx.graphics.setTitle(Gameplay.DEFAULT_TITLE)

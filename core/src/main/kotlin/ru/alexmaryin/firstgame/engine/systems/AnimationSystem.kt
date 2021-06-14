@@ -11,7 +11,6 @@ import ktx.log.error
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.values.AnimationType
-import ru.alexmaryin.firstgame.values.RotationDeg
 import java.util.*
 
 class AnimationSystem(
