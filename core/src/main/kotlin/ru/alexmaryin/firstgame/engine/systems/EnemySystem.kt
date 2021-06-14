@@ -72,7 +72,7 @@ class EnemySystem : IteratingSystem(
 
     override fun entityRemoved(entity: Entity) { _enemiesOnScreen -= 1 }
 
-    fun addEnemy() {
+    private fun addEnemy() {
         engine.entity {
             with<EnemyComponent>()
             with<TransformComponent>()
@@ -81,7 +81,6 @@ class EnemySystem : IteratingSystem(
             with<FacingComponent>()
             with<GraphicComponent>()
         }
-
         _lastEnemyArisen = 0f
     }
 }
