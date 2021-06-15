@@ -40,6 +40,7 @@ class DamageSystem : IteratingSystem(
             engine.getSystem<SnapMoveSystem>().setProcessing(false)
             engine.getSystem<AnimationSystem>().setProcessing(false)
             engine.getSystem<EnemySystem>().setProcessing(false)
+            engine.getSystem<CopSystem>().setProcessing(false)
             Gdx.input.vibrate(1000)
             entity.addComponent<RemoveComponent>(engine) {
                 delay = Gameplay.GAME_OVER_DELAY

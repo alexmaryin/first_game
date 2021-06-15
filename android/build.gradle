@@ -130,4 +130,3 @@ task run(type: Exec) {
 	commandLine "$adb", 'shell', 'am', 'start', '-n', 'ru.alexmaryin.ru.alexmaryin.firstgame/ru.alexmaryin.ru.alexmaryin.firstgame.AndroidLauncher'
 }
 
-eclipse.project.name = appName + "-android"

@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.configureEntity
+import ktx.ashley.remove
 import ktx.ashley.with
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.values.WorldDimens
@@ -19,7 +20,7 @@ class Enemy(engine: Engine) : Entity(), Pool.Poolable {
             with<FacingComponent>()
             with<GraphicComponent>()
         }
-        engine.addEntity(this)
+//        engine.addEntity(this)
     }
 
     override fun reset() {

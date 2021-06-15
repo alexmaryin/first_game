@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.MathUtils.random
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.*
 import ktx.collections.GdxArray
+import ktx.log.debug
+import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.entities.Enemy
 import ru.alexmaryin.firstgame.values.AnimationType
@@ -34,6 +36,7 @@ class EnemySystem : IteratingSystem(
     private val activeEnemies = GdxArray<Enemy>()
     private val enemiesPool = EnemyPool()
     val poolSize get() = activeEnemies.size to enemiesPool.peak
+    private val log = logger<EnemySystem>()
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -87,6 +90,8 @@ class EnemySystem : IteratingSystem(
     }
 
     override fun entityAdded(entity: Entity) {
+//        log.debug { "Enemy added to engine $entity" }
+
         val enemy = entity.enemy
         val animation = entity.animation
         val transform = entity.transform
@@ -108,6 +113,8 @@ class EnemySystem : IteratingSystem(
 
     private fun addEnemy() {
         val newEnemy = enemiesPool.obtain()
+        newEnemy.remove<RemoveComponent>()
+        engine.addEntity(newEnemy)
         activeEnemies.add(newEnemy)
         _lastEnemyArisen = 0f
     }
