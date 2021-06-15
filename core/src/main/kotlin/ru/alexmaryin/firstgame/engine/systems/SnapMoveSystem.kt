@@ -59,4 +59,14 @@ class SnapMoveSystem : IteratingSystem(
             move.isNotMoving = true
         }
     }
+
+    fun stopMoving(vararg entities: Entity) {
+        entities.forEach { entity ->
+            with (entity.transform) {
+                oldPosition.set(interpolatedPosition)
+                position.set(interpolatedPosition)
+            }
+            entity.move.isNotMoving = true
+        }
+    }
 }

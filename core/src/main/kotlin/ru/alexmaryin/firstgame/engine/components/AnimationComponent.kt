@@ -9,13 +9,29 @@ import ru.alexmaryin.firstgame.values.AnimationType
 
 class AnimationComponent : Component, Pool.Poolable {
 
+    private var previousType = AnimationType.NONE
     var type = AnimationType.NONE
     var stateTime = 0f
     lateinit var animation: Animation2D
 
     override fun reset() {
         type = AnimationType.NONE
+        previousType = AnimationType.NONE
         stateTime = 0f
+    }
+
+    fun animateEnemyUnderAttack() {
+        previousType = type
+        type = AnimationType.values()[type.ordinal + 6]
+    }
+
+    fun animateCopAttack() {
+        previousType = type
+        type = AnimationType.COP_ATTACK
+    }
+
+    fun setPreviousAnimation() {
+        type = previousType
     }
 
     companion object {

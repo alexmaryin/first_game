@@ -5,14 +5,10 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.configureEntity
 import ktx.ashley.with
-import ktx.log.debug
-import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.values.WorldDimens
 
 class Cop(engine: Engine) : Entity(), Pool.Poolable {
-
-    private val log = logger<Cop>()
 
     init {
         engine.configureEntity(this) {
@@ -26,7 +22,6 @@ class Cop(engine: Engine) : Entity(), Pool.Poolable {
     }
 
     override fun reset() {
-        log.debug { "Reset for cop ${hashCode()} invoked" }
         components.forEach { component ->
             if (component is Pool.Poolable) component.reset()
         }

@@ -23,7 +23,7 @@ class EnemySystem : IteratingSystem(
     }
 
     private var _enemiesOnScreen = 0
-    val enemiesOnScreen get() = _enemiesOnScreen
+    private val enemiesOnScreen get() = _enemiesOnScreen
 
     private var _lastEnemyArisen: Float = 0f
     private val lastEnemyArisen get() = _lastEnemyArisen
@@ -54,10 +54,11 @@ class EnemySystem : IteratingSystem(
             EnemyState.WALK_STRAIGHT -> entity.move.moveToPosition(MoveRight(level))
             EnemyState.WALK_BACK -> entity.move.moveToPosition(MoveLeft(level))
             EnemyState.UNDER_ATTACK -> {
-                entity.facing?.direction = FacingDirection.LEFT
+                entity.facing?.direction = FacingDirection.RIGHT
                 enemy.underAttackTime -= deltaTime
                 if (enemy.underAttackTime <= 0) {
                     enemy.state = EnemyState.WALK_BACK
+                    entity.animation.setPreviousAnimation()
                 }
                 return
             }

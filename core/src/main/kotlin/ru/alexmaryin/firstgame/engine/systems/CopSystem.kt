@@ -72,7 +72,7 @@ class CopSystem : IteratingSystem(
                 entity.facing?.direction = FacingDirection.LEFT
                 if (cop.attackTime <= 0) {
                     cop.state = CopState.WALK_BACK
-                    entity.animation.type = AnimationType.COP_WALK_FROM_LEFT
+                    entity.animation.setPreviousAnimation()
                     engine.getSystem<DamageSystem>().addCaughtEnemy()
                 }
                 return          // No need check other states if cop is attacking
@@ -88,10 +88,11 @@ class CopSystem : IteratingSystem(
                 if (boundingRect.overlaps(enemyBound) && enemyComp.enemy.state == EnemyState.WALK_STRAIGHT) {
                     cop.state = CopState.ATTACK
                     cop.attackTime = Gameplay.nextAttackTime
-                    entity.animation.type = AnimationType.COP_ATTACK
+                    entity.animation.animateCopAttack()
+                    enemyComp.animation.animateEnemyUnderAttack()
                     enemyComp.enemy.underAttackTime = cop.attackTime
                     enemyComp.enemy.state = EnemyState.UNDER_ATTACK
-                    stopMoving(entity, enemyComp)
+                    engine.getSystem<SnapMoveSystem>().stopMoving(entity, enemyComp)
                     return
                 }
             }
@@ -116,22 +117,13 @@ class CopSystem : IteratingSystem(
         }
     }
 
-    private fun stopMoving(vararg entities: Entity) {
-        entities.forEach { entity ->
-            with (entity.transform) {
-                oldPosition.set(interpolatedPosition)
-                position.set(interpolatedPosition)
-            }
-            entity.move.isNotMoving = true
-        }
-    }
-
     fun addCop(position: Vector2) {
         newPosition.set(position, 0f)
-        val newCop = copsPool.obtain()
-        newCop.remove<RemoveComponent>()
-        engine.addEntity(newCop)
-        activeCops.add(newCop)
+        copsPool.obtain().apply {
+            remove<RemoveComponent>()
+            engine.addEntity(this)
+            activeCops.add(this)
+        }
     }
 
     private fun removeCopFromScreen(entity: Entity) {

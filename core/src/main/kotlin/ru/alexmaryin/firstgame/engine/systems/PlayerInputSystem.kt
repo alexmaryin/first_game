@@ -25,8 +25,8 @@ class PlayerInputSystem : IteratingSystem(allOf(
         if (move.isNotMoving) when {
             Gdx.input.isKeyJustPressed(Input.Keys.UP) -> move.moveToPosition(MoveUp)
             Gdx.input.isKeyJustPressed(Input.Keys.DOWN) -> move.moveToPosition(MoveDown)
-            Gdx.input.isKeyJustPressed(Input.Keys.LEFT) -> move.moveToPosition(MoveLeft())
-            Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) -> move.moveToPosition(MoveRight())
+//            Gdx.input.isKeyJustPressed(Input.Keys.LEFT) -> move.moveToPosition(MoveLeft())
+//            Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) -> move.moveToPosition(MoveRight())
             Gdx.input.isKeyJustPressed(Input.Keys.SPACE) -> {
                 val player = entity.player
                 val position = entity.transform.position
