@@ -35,7 +35,7 @@ class Cop(engine: Engine) : Entity(), Pool.Poolable {
     companion object {
         const val WIDTH_SPRITE_RATIO = 0.45f
         const val HEIGHT_SPRITE_RATIO = 0.55f
-        const val Y_SPRITE_OFFSET = 15f / WorldDimens.CELL_SIZE
+        const val Y_SPRITE_OFFSET = 13f / WorldDimens.CELL_SIZE
         const val X_SPRITE_OFFSET = 15f / WorldDimens.CELL_SIZE
     }
 }

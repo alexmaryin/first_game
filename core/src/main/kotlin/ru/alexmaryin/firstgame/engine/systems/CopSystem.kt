@@ -5,14 +5,12 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.MathUtils.random
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.*
 import ktx.collections.GdxArray
-import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.entities.Cop
@@ -27,12 +25,10 @@ class CopSystem : IteratingSystem(
 ), EntityListener {
 
     inner class CopPool : Pool<Cop>() {
-        override fun newObject() = Cop(engine).also {
-            log.debug { "New cop created ${it.hashCode()}" }
-        }
+        override fun newObject() = Cop(engine)
     }
 
-    private val log = logger<CopSystem>()
+//    private val log = logger<CopSystem>()
 
     private val newPosition = Vector3()
     private val activeCops = GdxArray<Cop>()
@@ -51,7 +47,6 @@ class CopSystem : IteratingSystem(
     }
 
     override fun entityAdded(entity: Entity) {
-        log.debug { "Cop added to engine ${entity.hashCode()}" }
         val transform = entity.transform
         val animation = entity.animation
 
@@ -95,7 +90,7 @@ class CopSystem : IteratingSystem(
                 val enemyBound = Rectangle(position.x, position.y, size.x, size.y)
                 if (boundingRect.overlaps(enemyBound) && enemyComp.enemy.state == EnemyState.WALK_STRAIGHT) {
                     cop.state = CopState.ATTACK
-                    cop.attackTime = random(Gameplay.ENEMY_ATTACK_MIN_INTERVAL, Gameplay.ENEMY_ATTACK_MAX_INTERVAL)
+                    cop.attackTime = Gameplay.nextAttackTime
                     enemyComp.enemy.underAttackTime = cop.attackTime
                     enemyComp.enemy.state = EnemyState.UNDER_ATTACK
                     return
@@ -123,8 +118,7 @@ class CopSystem : IteratingSystem(
     }
 
     fun addCop(position: Vector2) {
-        log.debug { "Add cop invoked with pos $position" }
-        newPosition.set(position, 1f)
+        newPosition.set(position, 0f)
         val newCop = copsPool.obtain()
         newCop.remove<RemoveComponent>()
         engine.addEntity(newCop)

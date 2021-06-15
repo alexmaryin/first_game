@@ -50,7 +50,7 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
                         sprite.setRegion(texture)
                     }
                     with<TransformComponent> {
-                        setInitialPosition(0f, 0f, 1f)
+                        setInitialPosition(0f, 0f, 5f)
                         size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
                     }
                 }

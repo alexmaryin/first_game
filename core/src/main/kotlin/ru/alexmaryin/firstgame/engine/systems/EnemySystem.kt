@@ -37,7 +37,7 @@ class EnemySystem : IteratingSystem(
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
         _lastEnemyArisen += deltaTime
-        if (lastEnemyArisen >= Gameplay.ENEMY_ARISE_MIN_INTERVAL
+        if (lastEnemyArisen >= Gameplay.nextEnemyInterval
             && enemiesOnScreen < Gameplay.MAX_AVAILABLE_COPS * Gameplay.DIFFICULTY_RATIO
         ) {
             if (random(1, 100) % 2 == 0) {
@@ -55,6 +55,7 @@ class EnemySystem : IteratingSystem(
             EnemyState.WALK_STRAIGHT -> entity.move.moveToPosition(Move.SlowRight)
             EnemyState.WALK_BACK -> entity.move.moveToPosition(Move.SlowLeft)
             EnemyState.UNDER_ATTACK -> {
+                entity.facing?.direction = FacingDirection.LEFT
                 enemy.underAttackTime -= deltaTime
                 if (enemy.underAttackTime <= 0) {
                     enemy.state = EnemyState.WALK_BACK
@@ -91,7 +92,7 @@ class EnemySystem : IteratingSystem(
 
         _enemiesOnScreen += 1
         transform.offset.set(Enemy.X_SPRITE_OFFSET, Enemy.Y_SPRITE_OFFSET)
-        transform.setInitialPosition(0f, enemy.road * 2 + WorldDimens.ROADS_OFFSET_Y, 0f)
+        transform.setInitialPosition(0f, enemy.road * 2 + WorldDimens.ROADS_OFFSET_Y, 1f)
         entity.move.speedRatio *= enemy.speedRatio
         animation.type = AnimationType.values()[enemy.enemyVariant]
     }
