@@ -10,6 +10,7 @@ object Gameplay {
     const val GAME_OVER_DELAY = 1f
     const val MAX_AVAILABLE_COPS = 10
     const val ENEMY_ARISE_MIN_INTERVAL = 3f  // interval before new enemy might arise in seconds
-    const val ENEMY_ATTACK_INTERVAL = 5f
+    const val ENEMY_ATTACK_MIN_INTERVAL = 5f
+    const val ENEMY_ATTACK_MAX_INTERVAL = 10f
     const val DIFFICULTY_RATIO = 1f // multiplier for max of enemies on screen, speed or other
 }

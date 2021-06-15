@@ -31,7 +31,6 @@ class PlayerInputSystem : IteratingSystem(allOf(
                 val player = entity.player
                 val position = entity.transform.position
                 if (player.availableCops > 0) {
-                    log.debug { "Invoke next available cop" }
                     engine.getSystem<CopSystem>().addCop(Vector2(position.x, position.y))
                     player.availableCops -= 1
                 } else {

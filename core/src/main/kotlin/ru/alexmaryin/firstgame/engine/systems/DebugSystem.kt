@@ -71,10 +71,8 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
                 append("missed:${player.missedEnemies} ")
                 append("enemies:${enemies.enemiesOnScreen} ")
                 append("cops:${player.availableCops} ")
-//                append("interval from last:${enemies.lastEnemyArisen} ")
                 append("render calls:${batch.renderCalls} ")
                 append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB ")
-//                append("enemies pool size/free:${enemies.poolSize.first}/${enemies.poolSize.second} ")
             })
         } else {
             Gdx.graphics.setTitle(Gameplay.DEFAULT_TITLE)

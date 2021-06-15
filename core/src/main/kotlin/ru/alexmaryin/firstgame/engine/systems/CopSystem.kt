@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils.random
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -77,11 +78,10 @@ class CopSystem : IteratingSystem(
             CopState.ATTACK -> {
                 entity.animation.type = AnimationType.COP_ATTACK
                 entity.facing?.direction = FacingDirection.LEFT
-                cop.attackTime += deltaTime
-                if (cop.attackTime >= Gameplay.ENEMY_ATTACK_INTERVAL) {
+                cop.attackTime -= deltaTime
+                if (cop.attackTime <= 0) {
                     cop.state = CopState.WALK_BACK
                     entity.animation.type = AnimationType.COP_WALK_FROM_LEFT
-                    cop.attackTime = 0f
                     engine.getSystem<DamageSystem>().addCaughtEnemy()
                 }
                 return          // No need check other states if cop is attacking
@@ -95,6 +95,8 @@ class CopSystem : IteratingSystem(
                 val enemyBound = Rectangle(position.x, position.y, size.x, size.y)
                 if (boundingRect.overlaps(enemyBound) && enemyComp.enemy.state == EnemyState.WALK_STRAIGHT) {
                     cop.state = CopState.ATTACK
+                    cop.attackTime = random(Gameplay.ENEMY_ATTACK_MIN_INTERVAL, Gameplay.ENEMY_ATTACK_MAX_INTERVAL)
+                    enemyComp.enemy.underAttackTime = cop.attackTime
                     enemyComp.enemy.state = EnemyState.UNDER_ATTACK
                     return
                 }

@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.configureEntity
-import ktx.ashley.remove
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
@@ -24,7 +23,6 @@ class Cop(engine: Engine) : Entity(), Pool.Poolable {
             with<FacingComponent>()
             with<GraphicComponent>()
         }
-//        engine.addEntity(this)
     }
 
     override fun reset() {
