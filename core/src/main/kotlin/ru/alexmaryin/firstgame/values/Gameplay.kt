@@ -16,7 +16,7 @@ object Gameplay {
     private const val ENEMY_ATTACK_MAX_INTERVAL = 10f
     const val DIFFICULTY_RATIO = 1f // multiplier or divider for difficulty ratio
     const val LEVEL_UP = 10f    // count of caught enemies to level up
-    const val LEVELS_MAX = 10   // max of levels
+    const val LEVELS_MAX = 20   // max of levels
 
     val nextEnemyInterval get() = ENEMY_ARISE_MIN_INTERVAL / DIFFICULTY_RATIO
     val nextAttackTime get() = random(ENEMY_ATTACK_MIN_INTERVAL / DIFFICULTY_RATIO, ENEMY_ATTACK_MAX_INTERVAL / DIFFICULTY_RATIO)

@@ -46,6 +46,7 @@ class StartWindow : KtxGame<GameScreen>() {
         log.debug { "Create a game instance" }
         addScreen(SplashScreen(this))
         addScreen(MenuScreen(this))
+        Gdx.input.setCursorPosition(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
         setScreen<SplashScreen>()
     }
 
