@@ -10,7 +10,7 @@ import ktx.ashley.getSystem
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.values.Move
+import ru.alexmaryin.firstgame.values.*
 
 class PlayerInputSystem : IteratingSystem(allOf(
     PlayerComponent::class,
@@ -23,10 +23,10 @@ class PlayerInputSystem : IteratingSystem(allOf(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val move = entity.move
         if (move.isNotMoving) when {
-            Gdx.input.isKeyJustPressed(Input.Keys.UP) -> move.moveToPosition(Move.Up)
-            Gdx.input.isKeyJustPressed(Input.Keys.DOWN) -> move.moveToPosition(Move.Down)
-            Gdx.input.isKeyJustPressed(Input.Keys.LEFT) -> move.moveToPosition(Move.Left)
-            Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) -> move.moveToPosition(Move.Right)
+            Gdx.input.isKeyJustPressed(Input.Keys.UP) -> move.moveToPosition(MoveUp)
+            Gdx.input.isKeyJustPressed(Input.Keys.DOWN) -> move.moveToPosition(MoveDown)
+            Gdx.input.isKeyJustPressed(Input.Keys.LEFT) -> move.moveToPosition(MoveLeft())
+            Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) -> move.moveToPosition(MoveRight())
             Gdx.input.isKeyJustPressed(Input.Keys.SPACE) -> {
                 val player = entity.player
                 val position = entity.transform.position

@@ -3,6 +3,7 @@ package ru.alexmaryin.firstgame.engine.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
@@ -12,6 +13,9 @@ import ru.alexmaryin.firstgame.engine.components.RemoveComponent
 import ru.alexmaryin.firstgame.engine.components.TransformComponent
 import ru.alexmaryin.firstgame.engine.components.player
 import ru.alexmaryin.firstgame.values.Gameplay
+import ru.alexmaryin.firstgame.values.WorldDimens
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.max
 
 class DamageSystem : IteratingSystem(
@@ -21,6 +25,7 @@ class DamageSystem : IteratingSystem(
     private var getMissedEnemy = 0
     private var getMissedCop = 0
     private var getCaughtEnemy = 0
+    var gameLevel = 1
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val player = entity.player
@@ -42,6 +47,8 @@ class DamageSystem : IteratingSystem(
 
         if (player.missedEnemies >= Gameplay.MAX_MISSED_ENEMIES)
             gameOver(entity)
+
+        gameLevel = MathUtils.clamp(ceil(player.enemiesCaught / Gameplay.LEVEL_UP).toInt(), 1, Gameplay.LEVELS_MAX)
     }
 
     fun addMissedEnemy() {

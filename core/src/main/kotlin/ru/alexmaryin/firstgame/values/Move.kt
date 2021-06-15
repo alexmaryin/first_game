@@ -2,15 +2,16 @@ package ru.alexmaryin.firstgame.values
 
 import com.badlogic.gdx.math.Vector3
 
-object Move {
-    val Up = Vector3(0f, 1f, 0f)
-    val Down = Vector3(0f, -1f, 0f)
-    val Left = Vector3(-1f, 0f, 0f)
-    val Right = Vector3(1f, 0f, 0f)
-    val SlowRight = Vector3(0.25f, 0f, 0f)
-    val SlowLeft = Vector3(-0.25f, 0f, 0f)
-    val Back = Vector3(0f, 0f, 1f)
-    val Front = Vector3(0f, 0f, -1f)
+sealed class Move { abstract val vector: Vector3 }
+
+object Stand : Move() { override val vector: Vector3 get() = Vector3.Zero }
+object MoveUp : Move() { override val vector get() = Vector3(0f, 1f, 0f) }
+object MoveDown : Move() { override val vector get() = Vector3(0f, -1f, 0f) }
+class MoveLeft(private val level: Int = -1) : Move() {
+    override val vector get() = Vector3(if (level > 0) (-0.15f - level / 10f) else -1f, 0f, 0f)
+}
+class MoveRight(private val level: Int = -1) : Move() {
+    override val vector get() = Vector3(if (level > 0) (0.15f + level / 10f) else 1f, 0f, 0f)
 }
 
 object RotationDeg {

@@ -11,13 +11,9 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.*
 import ktx.collections.GdxArray
-import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.entities.Cop
-import ru.alexmaryin.firstgame.values.AnimationType
-import ru.alexmaryin.firstgame.values.Gameplay
-import ru.alexmaryin.firstgame.values.Move
-import ru.alexmaryin.firstgame.values.WorldDimens
+import ru.alexmaryin.firstgame.values.*
 
 class CopSystem : IteratingSystem(
     allOf(CopComponent::class, TransformComponent::class, MoveComponent::class)
@@ -65,11 +61,12 @@ class CopSystem : IteratingSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity.transform
         val cop = entity.cop
+        val level = engine.getSystem<DamageSystem>().gameLevel
 
         // At first, let's make next move
         when (cop.state) {
-            CopState.WALK_TO_ENEMY -> entity.move.moveToPosition(Move.SlowLeft)
-            CopState.WALK_BACK -> entity.move.moveToPosition(Move.SlowRight)
+            CopState.WALK_TO_ENEMY -> entity.move.moveToPosition(MoveLeft(level))
+            CopState.WALK_BACK -> entity.move.moveToPosition(MoveRight(level))
             CopState.ATTACK -> {
                 entity.animation.type = AnimationType.COP_ATTACK
                 entity.facing?.direction = FacingDirection.LEFT

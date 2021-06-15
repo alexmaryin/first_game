@@ -2,26 +2,25 @@ package ru.alexmaryin.firstgame.engine.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
+import ru.alexmaryin.firstgame.values.Move
+import ru.alexmaryin.firstgame.values.Stand
 
 class MoveComponent : Component, Pool.Poolable {
 
-    var speedRatio = 1f
     var isNotMoving = true
-    val direction = Vector3()
+    var direction: Move = Stand
 
     override fun reset() {
-        speedRatio = 1f
         isNotMoving = true
-        direction.set(Vector3.Zero)
+        direction = Stand
     }
 
-    fun moveToPosition(delta: Vector3) {
+    fun moveToPosition(delta: Move) {
         isNotMoving = false
-        direction.set(delta)
+        direction = delta
     }
 
     companion object {

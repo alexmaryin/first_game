@@ -21,7 +21,6 @@ class EnemyComponent : Component, Pool.Poolable {
     var state = EnemyState.WALK_STRAIGHT
     var underAttackTime = 0f
     var finished = false
-    var caught = false
 
     override fun reset() {
         speedRatio = 1f
@@ -30,7 +29,6 @@ class EnemyComponent : Component, Pool.Poolable {
         state = EnemyState.WALK_STRAIGHT
         underAttackTime = 0f
         finished = false
-        caught = false
     }
 
     companion object {

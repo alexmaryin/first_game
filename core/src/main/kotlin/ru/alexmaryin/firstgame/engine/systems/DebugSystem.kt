@@ -65,13 +65,16 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
             val transform = entity.transform
             val player = entity.player
             val enemies = engine.getSystem<EnemySystem>()
+            val damage = engine.getSystem<DamageSystem>()
             Gdx.graphics.setTitle(buildString {
 //                append("pos:${transform.position} ")
+                append("level: ${damage.gameLevel} ")
+                append("speed: ${0.15f + damage.gameLevel / 10f} ")
                 append("caught:${player.enemiesCaught} ")
                 append("missed:${player.missedEnemies} ")
-                append("enemies:${enemies.enemiesOnScreen} ")
+//                append("enemies:${enemies.enemiesOnScreen} ")
                 append("cops:${player.availableCops} ")
-                append("render calls:${batch.renderCalls} ")
+//                append("render calls:${batch.renderCalls} ")
                 append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB ")
             })
         } else {

@@ -11,10 +11,7 @@ import ktx.ashley.*
 import ktx.collections.GdxArray
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.entities.Enemy
-import ru.alexmaryin.firstgame.values.AnimationType
-import ru.alexmaryin.firstgame.values.Gameplay
-import ru.alexmaryin.firstgame.values.Move
-import ru.alexmaryin.firstgame.values.WorldDimens
+import ru.alexmaryin.firstgame.values.*
 
 class EnemySystem : IteratingSystem(
     allOf(EnemyComponent::class, TransformComponent::class, MoveComponent::class)
@@ -50,10 +47,12 @@ class EnemySystem : IteratingSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val enemy = entity.enemy
+        val level = engine.getSystem<DamageSystem>().gameLevel
+
         // next move
         when (enemy.state) {
-            EnemyState.WALK_STRAIGHT -> entity.move.moveToPosition(Move.SlowRight)
-            EnemyState.WALK_BACK -> entity.move.moveToPosition(Move.SlowLeft)
+            EnemyState.WALK_STRAIGHT -> entity.move.moveToPosition(MoveRight(level))
+            EnemyState.WALK_BACK -> entity.move.moveToPosition(MoveLeft(level))
             EnemyState.UNDER_ATTACK -> {
                 entity.facing?.direction = FacingDirection.LEFT
                 enemy.underAttackTime -= deltaTime
@@ -93,7 +92,6 @@ class EnemySystem : IteratingSystem(
         _enemiesOnScreen += 1
         transform.offset.set(Enemy.X_SPRITE_OFFSET, Enemy.Y_SPRITE_OFFSET)
         transform.setInitialPosition(0f, enemy.road * 2 + WorldDimens.ROADS_OFFSET_Y, 1f)
-        entity.move.speedRatio *= enemy.speedRatio
         animation.type = AnimationType.values()[enemy.enemyVariant]
     }
 
