@@ -68,9 +68,8 @@ class CopSystem : IteratingSystem(
             CopState.WALK_TO_ENEMY -> entity.move.moveToPosition(MoveLeft(level))
             CopState.WALK_BACK -> entity.move.moveToPosition(MoveRight(level))
             CopState.ATTACK -> {
-                entity.animation.type = AnimationType.COP_ATTACK
-                entity.facing?.direction = FacingDirection.LEFT
                 cop.attackTime -= deltaTime
+                entity.facing?.direction = FacingDirection.LEFT
                 if (cop.attackTime <= 0) {
                     cop.state = CopState.WALK_BACK
                     entity.animation.type = AnimationType.COP_WALK_FROM_LEFT
@@ -81,15 +80,18 @@ class CopSystem : IteratingSystem(
         }
 
         // Check whether cop overlaps any of enemies with state walk_straight
-        val boundingRect = Rectangle(transform.position.x, transform.position.y, transform.size.x, transform.size.y)
+        val boundingRect = Rectangle(
+            transform.interpolatedPosition.x, transform.interpolatedPosition.y, transform.size.x, transform.size.y)
         enemies.forEach { enemyComp ->
             with(enemyComp.transform) {
-                val enemyBound = Rectangle(position.x, position.y, size.x, size.y)
+                val enemyBound = Rectangle(interpolatedPosition.x - size.x / 2, interpolatedPosition.y, size.x, size.y)
                 if (boundingRect.overlaps(enemyBound) && enemyComp.enemy.state == EnemyState.WALK_STRAIGHT) {
                     cop.state = CopState.ATTACK
                     cop.attackTime = Gameplay.nextAttackTime
+                    entity.animation.type = AnimationType.COP_ATTACK
                     enemyComp.enemy.underAttackTime = cop.attackTime
                     enemyComp.enemy.state = EnemyState.UNDER_ATTACK
+                    stopMoving(entity, enemyComp)
                     return
                 }
             }
@@ -111,6 +113,16 @@ class CopSystem : IteratingSystem(
         if (transform.position.x <= 0f || transform.position.x >= WorldDimens.F_WIDTH - 1) {
             cop.isMissed = true
             removeCopFromScreen(entity)
+        }
+    }
+
+    private fun stopMoving(vararg entities: Entity) {
+        entities.forEach { entity ->
+            with (entity.transform) {
+                oldPosition.set(interpolatedPosition)
+                position.set(interpolatedPosition)
+            }
+            entity.move.isNotMoving = true
         }
     }
 
