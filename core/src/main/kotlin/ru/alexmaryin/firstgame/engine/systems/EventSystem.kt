@@ -47,16 +47,18 @@ class EventSystem : IntervalIteratingSystem(
                 }
                 EventDispatcher.listeners.clear()
             }
+
             is CopCatchEnemy -> {
                 engine.getSystem<SnapMoveSystem>().stopMoving(event.cop, event.enemy)
+                val attackTime = Gameplay.nextAttackTime
                 with (event.cop) {
                     cop.state = CopState.ATTACK
-                    cop.attackTime = Gameplay.nextAttackTime
+                    cop.attackTime = attackTime
                     animation.animateCopAttack()
                 }
                 with (event.enemy) {
                     enemy.state = EnemyState.UNDER_ATTACK
-                    enemy.underAttackTime = event.cop.cop.attackTime
+                    enemy.underAttackTime = attackTime
                     animation.animateEnemyUnderAttack()
                 }
             }
