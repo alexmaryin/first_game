@@ -5,5 +5,7 @@ object GameAssets {
     const val DEBUG_GRID = "graphic/debug_grid_layout.png"
 
     const val policeAnim = "police"
-    const val femaleWalk = "female"
+
+    const val LEVEL_1_BACK = "graphic/back_1_level.png"
+    const val LEVEL_1_FRONT = "graphic/front_1_level.png"
 }
