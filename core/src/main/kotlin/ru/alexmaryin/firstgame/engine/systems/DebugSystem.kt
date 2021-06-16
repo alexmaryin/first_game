@@ -78,6 +78,7 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
                 append("cops:${player.availableCops} ")
 //                append("render calls:${batch.renderCalls} ")
                 append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB ")
+                append("FPS: ${Gdx.graphics.framesPerSecond} ")
             })
         } else {
             Gdx.graphics.setTitle(Gameplay.DEFAULT_TITLE)
