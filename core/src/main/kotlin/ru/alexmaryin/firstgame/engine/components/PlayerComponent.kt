@@ -2,22 +2,35 @@ package ru.alexmaryin.firstgame.engine.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
+import ru.alexmaryin.firstgame.engine.events.*
+import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.values.Gameplay.MAX_AVAILABLE_COPS
+import kotlin.math.ceil
+import kotlin.math.max
 import kotlin.math.min
 
-class PlayerComponent : Component, Pool.Poolable {
+class PlayerComponent : Component, Pool.Poolable, GameEventsListener {
 
     var enemiesCaught = 0
     var missedEnemies = 0
     var availableCops = MAX_AVAILABLE_COPS
+    var gameLevel = 1
+
+
+    init { reset() }
 
     override fun reset() {
         enemiesCaught = 0
         missedEnemies = 0
         availableCops = MAX_AVAILABLE_COPS
+
+        EventDispatcher.subscribeOn<CopMissed>(this)
+        EventDispatcher.subscribeOn<EnemyMissed>(this)
+        EventDispatcher.subscribeOn<EnemyCaught>(this)
     }
 
     fun restoreCop() {
@@ -26,6 +39,22 @@ class PlayerComponent : Component, Pool.Poolable {
 
     companion object {
         val mapper = mapperFor<PlayerComponent>()
+    }
+
+    override fun onEventDelivered(event: GameEvent) {
+        when (event) {
+            is CopMissed -> availableCops = max(availableCops - 1, 0)
+            is EnemyCaught -> {
+                enemiesCaught++
+                gameLevel = MathUtils.clamp(ceil(enemiesCaught / Gameplay.LEVEL_UP).toInt(), 1, Gameplay.LEVELS_MAX)
+            }
+            is EnemyMissed -> {
+                missedEnemies++
+                if (missedEnemies >= Gameplay.MAX_MISSED_ENEMIES)
+                    EventDispatcher.send(GameOver(enemiesCaught))
+            }
+            else -> {}
+        }
     }
 }
 

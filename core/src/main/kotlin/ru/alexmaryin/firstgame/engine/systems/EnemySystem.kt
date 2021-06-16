@@ -11,6 +11,8 @@ import ktx.ashley.*
 import ktx.collections.GdxArray
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.entities.Enemy
+import ru.alexmaryin.firstgame.engine.events.EnemyMissed
+import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.values.*
 
 class EnemySystem : IteratingSystem(
@@ -47,7 +49,7 @@ class EnemySystem : IteratingSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val enemy = entity.enemy
-        val level = engine.getSystem<DamageSystem>().gameLevel
+        val level = engine.getSystem<EventSystem>().level
 
         // next move
         when (enemy.state) {
@@ -67,7 +69,7 @@ class EnemySystem : IteratingSystem(
         // check if enemy reached end of the road or hides
         when {
             entity.transform.position.x >= WorldDimens.F_WIDTH - 1 && enemy.state == EnemyState.WALK_STRAIGHT  -> {
-                enemy.finished = true
+                EventDispatcher.send(EnemyMissed)
                 removeEnemyFromScreen(entity)
                 return
             }
@@ -99,7 +101,6 @@ class EnemySystem : IteratingSystem(
     override fun entityRemoved(entity: Entity) {
         _enemiesOnScreen -= 1
         Gdx.input.vibrate(100)
-
         activeEnemies.removeValue(entity as Enemy, false)
         enemiesPool.free(entity)
     }
@@ -114,6 +115,5 @@ class EnemySystem : IteratingSystem(
 
     private fun removeEnemyFromScreen(entity: Entity) {
         entity.addComponent<RemoveComponent>(engine) { delay = 0.5f }
-        if (entity.enemy.finished) engine.getSystem<DamageSystem>().addMissedEnemy()
     }
 }

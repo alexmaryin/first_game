@@ -13,12 +13,10 @@ enum class CopState {
 }
 class CopComponent : Component, Pool.Poolable {
 
-    var isMissed = false
     var state = CopState.WALK_TO_ENEMY
     var attackTime = 0f
 
     override fun reset() {
-        isMissed = false
         state = CopState.WALK_TO_ENEMY
         attackTime = 0f
     }

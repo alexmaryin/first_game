@@ -13,6 +13,10 @@ import ktx.ashley.*
 import ktx.collections.GdxArray
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.entities.Cop
+import ru.alexmaryin.firstgame.engine.events.CopCatchEnemy
+import ru.alexmaryin.firstgame.engine.events.CopMissed
+import ru.alexmaryin.firstgame.engine.events.EnemyCaught
+import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.values.*
 
 class CopSystem : IteratingSystem(
@@ -61,7 +65,7 @@ class CopSystem : IteratingSystem(
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity.transform
         val cop = entity.cop
-        val level = engine.getSystem<DamageSystem>().gameLevel
+        val level = engine.getSystem<EventSystem>().level
 
         // At first, let's make next move
         when (cop.state) {
@@ -73,7 +77,7 @@ class CopSystem : IteratingSystem(
                 if (cop.attackTime <= 0) {
                     cop.state = CopState.WALK_BACK
                     entity.animation.setPreviousAnimation()
-                    engine.getSystem<DamageSystem>().addCaughtEnemy()
+                    EventDispatcher.send(EnemyCaught)
                 }
                 return          // No need check other states if cop is attacking
             }
@@ -86,13 +90,7 @@ class CopSystem : IteratingSystem(
             with(enemyComp.transform) {
                 val enemyBound = Rectangle(interpolatedPosition.x - size.x / 2, interpolatedPosition.y, size.x, size.y)
                 if (boundingRect.overlaps(enemyBound) && enemyComp.enemy.state == EnemyState.WALK_STRAIGHT) {
-                    cop.state = CopState.ATTACK
-                    cop.attackTime = Gameplay.nextAttackTime
-                    entity.animation.animateCopAttack()
-                    enemyComp.animation.animateEnemyUnderAttack()
-                    enemyComp.enemy.underAttackTime = cop.attackTime
-                    enemyComp.enemy.state = EnemyState.UNDER_ATTACK
-                    engine.getSystem<SnapMoveSystem>().stopMoving(entity, enemyComp)
+                    EventDispatcher.send(CopCatchEnemy(entity, enemyComp))
                     return
                 }
             }
@@ -112,7 +110,7 @@ class CopSystem : IteratingSystem(
 
         // At the end, check whether cop has reached the screen border and is going to disappear
         if (transform.position.x <= 0f || transform.position.x >= WorldDimens.F_WIDTH - 1) {
-            cop.isMissed = true
+            EventDispatcher.send(CopMissed)
             removeCopFromScreen(entity)
         }
     }
@@ -128,6 +126,5 @@ class CopSystem : IteratingSystem(
 
     private fun removeCopFromScreen(entity: Entity) {
         entity.addComponent<RemoveComponent>(engine)
-        if (entity.cop.isMissed) engine.getSystem<DamageSystem>().addMissedCop()
     }
 }

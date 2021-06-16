@@ -12,7 +12,7 @@ import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
 import ru.alexmaryin.firstgame.screens.MenuScreen
-import ru.alexmaryin.firstgame.screens.SplashScreen
+import ru.alexmaryin.firstgame.screens.GameplayScreen
 import ru.alexmaryin.firstgame.values.GameAssets
 import ru.alexmaryin.firstgame.values.WorldDimens
 
@@ -22,7 +22,6 @@ private val log = logger<StartWindow>()
 class StartWindow : KtxGame<GameScreen>() {
 
     val viewport = FitViewport(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
-
     private val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal(GameAssets.GRAPHICS_ATLAS)) }
 
     val batch by lazy { SpriteBatch(100) }
@@ -33,7 +32,7 @@ class StartWindow : KtxGame<GameScreen>() {
             addSystem(EnemySystem())
             addSystem(CopSystem())
             addSystem(SnapMoveSystem())
-            addSystem(DamageSystem())
+            addSystem(EventSystem())
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport))
@@ -44,10 +43,12 @@ class StartWindow : KtxGame<GameScreen>() {
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         log.debug { "Create a game instance" }
-        addScreen(SplashScreen(this))
+        val gameplay = GameplayScreen(this)
+        addScreen(gameplay)
         addScreen(MenuScreen(this))
         Gdx.input.setCursorPosition(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
-        setScreen<SplashScreen>()
+        setScreen<GameplayScreen>()
+        gameplay.startGame()
     }
 
     override fun dispose() {

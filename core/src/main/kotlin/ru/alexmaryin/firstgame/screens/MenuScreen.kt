@@ -15,7 +15,7 @@ class MenuScreen(game: StartWindow) : GameScreen(game) {
 
     override fun render(delta: Float) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            game.setScreen<SplashScreen>()
+            game.setScreen<GameplayScreen>()
         }
     }
 }

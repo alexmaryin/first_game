@@ -20,7 +20,6 @@ class EnemyComponent : Component, Pool.Poolable {
     var road = random(1, 4)
     var state = EnemyState.WALK_STRAIGHT
     var underAttackTime = 0f
-    var finished = false
 
     override fun reset() {
         speedRatio = 1f
@@ -28,7 +27,6 @@ class EnemyComponent : Component, Pool.Poolable {
         enemyVariant = random(0, 5)
         state = EnemyState.WALK_STRAIGHT
         underAttackTime = 0f
-        finished = false
     }
 
     companion object {

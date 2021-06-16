@@ -10,6 +10,8 @@ import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
+import ru.alexmaryin.firstgame.engine.events.EventDispatcher
+import ru.alexmaryin.firstgame.engine.events.GameOver
 import ru.alexmaryin.firstgame.values.GameAssets
 import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.values.WorldDimens
@@ -36,7 +38,7 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
 
         if (Gdx.input.isKeyPressed(Input.Keys.F11)) {
             log.debug { "Forced game over" }
-            entity.player.missedEnemies = Gameplay.MAX_MISSED_ENEMIES
+            EventDispatcher.send(GameOver(5))
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
@@ -65,11 +67,11 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
             val transform = entity.transform
             val player = entity.player
             val enemies = engine.getSystem<EnemySystem>()
-            val damage = engine.getSystem<DamageSystem>()
+            val damage = engine.getSystem<EventSystem>()
             Gdx.graphics.setTitle(buildString {
 //                append("pos:${transform.position} ")
-                append("level: ${damage.gameLevel} ")
-                append("speed: ${0.15f + damage.gameLevel / 10f} ")
+                append("level: ${damage.level} ")
+                append("speed: ${0.15f + damage.level / 10f} ")
                 append("caught:${player.enemiesCaught} ")
                 append("missed:${player.missedEnemies} ")
 //                append("enemies:${enemies.enemiesOnScreen} ")
