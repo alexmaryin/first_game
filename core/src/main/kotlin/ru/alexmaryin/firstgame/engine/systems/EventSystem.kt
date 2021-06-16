@@ -4,12 +4,14 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IntervalIteratingSystem
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.getSystem
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.*
 import ru.alexmaryin.firstgame.values.Gameplay
+import kotlin.math.ceil
 
 class EventSystem : IntervalIteratingSystem(
     allOf(PlayerComponent::class).get(), 1f
@@ -63,6 +65,6 @@ class EventSystem : IntervalIteratingSystem(
     }
 
     override fun processEntity(entity: Entity) {
-        _level = entity.player.gameLevel
+        _level = MathUtils.clamp(ceil(entity.player.enemiesCaught / Gameplay.LEVEL_UP).toInt(), 1, Gameplay.LEVELS_MAX)
     }
 }
