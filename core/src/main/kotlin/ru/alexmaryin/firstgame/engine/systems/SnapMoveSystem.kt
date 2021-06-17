@@ -10,11 +10,7 @@ import ru.alexmaryin.firstgame.engine.utils.addClamp
 import ru.alexmaryin.firstgame.values.*
 
 class SnapMoveSystem : IteratingSystem(
-    allOf(
-        TransformComponent::class,
-        MoveComponent::class,
-        FacingComponent::class
-    ).exclude(RemoveComponent::class).get()) {
+    allOf(MoveComponent::class).exclude(RemoveComponent::class).get()) {
 
     private var accumulator = 0f
 
@@ -41,21 +37,22 @@ class SnapMoveSystem : IteratingSystem(
     }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        moveEntity(entity.transform, entity.move, entity.facing)
-    }
+        val move = entity.move
+        val facing = entity.facing
+        val transform = entity.transform
 
-    private fun moveEntity(transform: TransformComponent, move: MoveComponent,facing: FacingComponent?) {
         if (move.isNotMoving) {
             facing?.direction = FacingDirection.STOP
         } else {
-            transform.position.addClamp(move.direction.vector, WorldDimens.MIN_BORDER_VECTOR, WorldDimens.maxBorderVector(transform.size))
-            facing?.direction = when(move.direction) {
-                is MoveUp -> FacingDirection.UP
-                is MoveDown -> FacingDirection.DOWN
-                is MoveLeft -> FacingDirection.LEFT
-                is MoveRight -> FacingDirection.RIGHT
-                else -> FacingDirection.STOP
+            val vector = move.direction.vector
+            when(move.direction) {
+                is MoveUp -> { facing?.direction = FacingDirection.UP; vector.y += move.initialSpeed }
+                is MoveDown -> { facing?.direction = FacingDirection.DOWN; vector.y -= move.initialSpeed }
+                is MoveLeft -> { facing?.direction = FacingDirection.LEFT; vector.x -= move.initialSpeed }
+                is MoveRight -> { facing?.direction = FacingDirection.RIGHT; vector.x += move.initialSpeed }
+                else -> facing?.direction = FacingDirection.STOP
             }
+            transform.position.addClamp(vector, transform.size)
             move.isNotMoving = true
         }
     }
@@ -67,6 +64,7 @@ class SnapMoveSystem : IteratingSystem(
                 position.set(interpolatedPosition)
             }
             entity.move.isNotMoving = true
+            entity.move.direction = Stand
         }
     }
 }

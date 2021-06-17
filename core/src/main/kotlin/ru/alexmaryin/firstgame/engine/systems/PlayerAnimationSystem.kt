@@ -50,7 +50,7 @@ class PlayerAnimationSystem(
     }
 
     override fun entityAdded(entity: Entity) {
-        entity.graphic.setSpriteRegion(atlas.findRegion(GameAssets.policeAnim), 270f)
+        entity.graphic.setSpriteRegion(atlas.findRegion(GameAssets.policeAnim), RotationDeg.LEFT)
     }
 
     override fun entityRemoved(entity: Entity) {}

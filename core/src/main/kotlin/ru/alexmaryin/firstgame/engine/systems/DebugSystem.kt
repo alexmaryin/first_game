@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Vector2
 import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
@@ -48,12 +49,12 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
                 debugGrid = engine.entity {
                     with<GraphicComponent> {
                         val texture = Texture(Gdx.files.internal(GameAssets.DEBUG_GRID))
-                        sprite.setAlpha(0.5f)
+                        sprite.setAlpha(0.2f)
                         sprite.setRegion(texture)
                     }
                     with<TransformComponent> {
-                        setInitialPosition(0f, 0f, 5f)
                         size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                        setInitialPosition(0f, 0f, 0f)
                     }
                 }
             } else {

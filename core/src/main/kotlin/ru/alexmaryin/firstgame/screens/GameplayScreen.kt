@@ -30,11 +30,11 @@ enum class GameState {
 
 class GameplayScreen(game: StartWindow) : GameScreen(game) {
 
-    private val player = PoliceCar(engine)
+    private val player by lazy { PoliceCar(engine) }
     private var state = GameState.PAUSED
 
     override fun show() {
-        log.debug { "Splash screen showing" }
+        log.debug { "Main game play screen showing" }
     }
 
     fun startGame() {
@@ -47,8 +47,8 @@ class GameplayScreen(game: StartWindow) : GameScreen(game) {
                 sprite.setRegion(texture)
             }
             with<TransformComponent> {
-                setInitialPosition(0f, 0f, 5f)
                 size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                setInitialPosition(0f, 0f, 5f)
             }
         }
 
@@ -58,8 +58,8 @@ class GameplayScreen(game: StartWindow) : GameScreen(game) {
                 sprite.setRegion(texture)
             }
             with<TransformComponent> {
-                setInitialPosition(0f, 0f, -1f)
                 size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                setInitialPosition(0f, 0f, -1f)
             }
         }
     }

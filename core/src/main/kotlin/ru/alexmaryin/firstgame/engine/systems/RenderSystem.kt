@@ -18,8 +18,7 @@ class RenderSystem(
     private val batch: Batch,
     private val viewport: Viewport
 ) : SortedIteratingSystem(
-    allOf(TransformComponent::class, GraphicComponent::class)
-        .exclude(RemoveComponent::class).get(),
+    allOf(GraphicComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get(),
     compareBy { entity -> entity[TransformComponent.mapper] }
 ) {
 
@@ -46,14 +45,11 @@ class RenderSystem(
 
             // TODO refactor PlayerAnimationSystem - replace with standard animation and rotate textures
             if (entity.hasNot(PlayerComponent.mapper)) {
+                rotation = RotationDeg.ZERO
                 entity.facing?.let {
-                    rotation = when (it.direction) {
-                        FacingDirection.LEFT -> { setFlip(true, false); RotationDeg.ZERO }
-                        FacingDirection.UP -> { setFlip(false, false); RotationDeg.ZERO }
-                        FacingDirection.DEFAULT -> { setFlip(false, false); RotationDeg.ZERO }
-                        FacingDirection.RIGHT -> { setFlip(false, false); RotationDeg.ZERO }
-                        FacingDirection.DOWN -> { setFlip(false, false); RotationDeg.ZERO }
-                        FacingDirection.STOP -> { setFlip(false, false); RotationDeg.ZERO }
+                    when (it.direction) {
+                        FacingDirection.LEFT -> setFlip(true, false)
+                        else -> setFlip(false, false)
                     }
                 }
             }

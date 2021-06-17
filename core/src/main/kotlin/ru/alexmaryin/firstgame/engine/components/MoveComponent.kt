@@ -12,10 +12,12 @@ class MoveComponent : Component, Pool.Poolable {
 
     var isNotMoving = true
     var direction: Move = Stand
+    var initialSpeed = 0f
 
     override fun reset() {
         isNotMoving = true
         direction = Stand
+        initialSpeed = 0f
     }
 
     fun moveToPosition(delta: Move) {
