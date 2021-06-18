@@ -27,6 +27,10 @@ private val log = logger<StartWindow>()
 class StartWindow : KtxGame<GameScreen>() {
 
     val viewport = FitViewport(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+    val uiViewport = FitViewport(
+        WorldDimens.F_WIDTH * WorldDimens.F_CELL_SIZE,
+        WorldDimens.F_HEIGHT * WorldDimens.F_CELL_SIZE
+    )
 
     private val assetManager = AssetManager()
     private val graphicsAtlas by assetManager.loadOnDemand<TextureAtlas>(GameAssets.GRAPHICS_ATLAS)
@@ -43,7 +47,7 @@ class StartWindow : KtxGame<GameScreen>() {
             addSystem(EventSystem { pauseEngine() })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
-            addSystem(RenderSystem(batch, viewport))
+            addSystem(RenderSystem(batch, viewport, uiViewport))
             addSystem(RemoveSystem())
             addSystem(DebugSystem(batch))
         }
