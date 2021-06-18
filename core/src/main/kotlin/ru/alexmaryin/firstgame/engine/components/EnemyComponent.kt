@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils.random
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
+import ru.alexmaryin.firstgame.values.WorldDimens
 
 enum class EnemyState {
     WALK_STRAIGHT,
@@ -15,20 +16,16 @@ enum class EnemyState {
 
 class EnemyComponent : Component, Pool.Poolable {
 
-    var speedRatio = 1f     // should raise for difficulty growing
     var enemyVariant = random(0, 5)    // variant of enemy.
-    var road = random(1, 4)
+    var road = WorldDimens.ROADS_Y_CELLS.random()
     var state = EnemyState.WALK_STRAIGHT
     var underAttackTime = 0f
-    var finished = false
 
     override fun reset() {
-        speedRatio = 1f
-        road = random(1, 4)
+        road = WorldDimens.ROADS_Y_CELLS.random()
         enemyVariant = random(0, 5)
         state = EnemyState.WALK_STRAIGHT
         underAttackTime = 0f
-        finished = false
     }
 
     companion object {

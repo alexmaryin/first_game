@@ -1,26 +1,20 @@
 package ru.alexmaryin.firstgame.engine.systems
 
-import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
-import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils.random
-import com.badlogic.gdx.utils.Pool
 import ktx.ashley.*
-import ktx.collections.GdxArray
+import ktx.log.debug
+import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.engine.entities.Enemy
+import ru.alexmaryin.firstgame.engine.events.EnemyMissed
+import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.values.*
 
 class EnemySystem : IteratingSystem(
-    allOf(EnemyComponent::class, TransformComponent::class, MoveComponent::class)
-        .exclude(RemoveComponent::class).get()
-), EntityListener {
-
-    inner class EnemyPool : Pool<Enemy>() {
-        override fun newObject() = Enemy(engine)
-    }
+    allOf(EnemyComponent::class).exclude(RemoveComponent::class).get()
+) {
 
     private var _enemiesOnScreen = 0
     private val enemiesOnScreen get() = _enemiesOnScreen
@@ -28,8 +22,7 @@ class EnemySystem : IteratingSystem(
     private var _lastEnemyArisen: Float = 0f
     private val lastEnemyArisen get() = _lastEnemyArisen
 
-    private val activeEnemies = GdxArray<Enemy>()
-    private val enemiesPool = EnemyPool()
+    private val log = logger<EnemySystem>()
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -47,7 +40,7 @@ class EnemySystem : IteratingSystem(
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val enemy = entity.enemy
-        val level = engine.getSystem<DamageSystem>().gameLevel
+        val level = engine.getSystem<EventSystem>().level
 
         // next move
         when (enemy.state) {
@@ -66,54 +59,36 @@ class EnemySystem : IteratingSystem(
 
         // check if enemy reached end of the road or hides
         when {
-            entity.transform.position.x >= WorldDimens.F_WIDTH - 1 && enemy.state == EnemyState.WALK_STRAIGHT  -> {
-                enemy.finished = true
+            entity.transform.position.x >= WorldDimens.F_WIDTH - 1f && enemy.state == EnemyState.WALK_STRAIGHT  -> {
+                EventDispatcher.send(EnemyMissed)
                 removeEnemyFromScreen(entity)
                 return
             }
-            entity.transform.position.x <= 0  && enemy.state == EnemyState.WALK_BACK -> removeEnemyFromScreen(entity)
+            entity.transform.position.x <= 0f  && enemy.state == EnemyState.WALK_BACK -> removeEnemyFromScreen(entity)
         }
     }
 
-    override fun addedToEngine(engine: Engine) {
-        super.addedToEngine(engine)
-        engine.addEntityListener(family, this)
-    }
-
-    override fun removedFromEngine(engine: Engine) {
-        super.removedFromEngine(engine)
-        engine.removeEntityListener(this)
-    }
-
-    override fun entityAdded(entity: Entity) {
-        val enemy = entity.enemy
-        val animation = entity.animation
-        val transform = entity.transform
-
-        _enemiesOnScreen += 1
-        transform.offset.set(Enemy.X_SPRITE_OFFSET, Enemy.Y_SPRITE_OFFSET)
-        transform.setInitialPosition(0f, enemy.road * 2 + WorldDimens.ROADS_OFFSET_Y, 1f)
-        animation.type = AnimationType.values()[enemy.enemyVariant]
-    }
-
-    override fun entityRemoved(entity: Entity) {
-        _enemiesOnScreen -= 1
-        Gdx.input.vibrate(100)
-
-        activeEnemies.removeValue(entity as Enemy, false)
-        enemiesPool.free(entity)
-    }
-
     private fun addEnemy() {
-        val newEnemy = enemiesPool.obtain()
-        newEnemy.remove<RemoveComponent>()
-        engine.addEntity(newEnemy)
-        activeEnemies.add(newEnemy)
+        engine.entity {
+            val enemy = with<EnemyComponent>()
+            with<FacingComponent>()
+            with<MoveComponent>()
+            with<AnimationComponent> { type = AnimationType.values()[enemy.enemyVariant] }
+            with<TransformComponent> {
+                size.set(Entities.ENEMY_WIDTH_SPRITE_RATIO, Entities.ENEMY_HEIGHT_SPRITE_RATIO)
+                offset.set(Entities.ENEMY_X_SPRITE_OFFSET, Entities.ENEMY_Y_SPRITE_OFFSET)
+                setInitialPosition(0f, enemy.road, 1f)
+                log.debug { "Add enemy at position $position" }
+            }
+            with<GraphicComponent>()
+        }
+        _enemiesOnScreen += 1
         _lastEnemyArisen = 0f
     }
 
     private fun removeEnemyFromScreen(entity: Entity) {
-        entity.addComponent<RemoveComponent>(engine) { delay = 0.5f }
-        if (entity.enemy.finished) engine.getSystem<DamageSystem>().addMissedEnemy()
+        entity.addComponent<RemoveComponent>(engine)
+        _enemiesOnScreen -= 1
+        Gdx.input.vibrate(100)
     }
 }

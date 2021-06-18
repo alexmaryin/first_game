@@ -12,11 +12,7 @@ import ru.alexmaryin.firstgame.values.RotationDeg
 
 class PlayerAnimationSystem(
     private val atlas: TextureAtlas
-    ) : IteratingSystem(allOf(
-    PlayerComponent::class,
-    FacingComponent::class,
-    GraphicComponent::class
-).get()), EntityListener {
+    ) : IteratingSystem(allOf(PlayerComponent::class).get()), EntityListener {
 
     private var lastDirection = FacingDirection.DEFAULT
 
@@ -50,7 +46,7 @@ class PlayerAnimationSystem(
     }
 
     override fun entityAdded(entity: Entity) {
-        entity.graphic.setSpriteRegion(atlas.findRegion(GameAssets.policeAnim), 270f)
+        entity.graphic.setSpriteRegion(atlas.findRegion(GameAssets.policeAnim), RotationDeg.LEFT)
     }
 
     override fun entityRemoved(entity: Entity) {}

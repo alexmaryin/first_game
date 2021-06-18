@@ -17,11 +17,9 @@ class TransformComponent : Component, Pool.Poolable, Comparable<TransformCompone
     val offset: Vector2 = Vector2.Zero
 
     override fun reset() {
-        position.set(Vector3.Zero)
-        oldPosition.set(Vector3.Zero)
-        interpolatedPosition.set(Vector3.Zero)
         size.set(1f, 1f)
         offset.set(Vector2.Zero)
+        setInitialPosition(0f, 0f, 0f)
     }
 
     fun setInitialPosition(x: Float, y: Float, z: Float = 0f) {
@@ -29,6 +27,7 @@ class TransformComponent : Component, Pool.Poolable, Comparable<TransformCompone
         oldPosition.set(x + offset.x, y + offset.y, z)
         interpolatedPosition.set(x + offset.x, y + offset.y, z)
     }
+
 
     override fun compareTo(other: TransformComponent): Int {
         val zDiff = other.position.z.compareTo(position.z)
