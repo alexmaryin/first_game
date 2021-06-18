@@ -13,11 +13,10 @@ import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.engine.events.GameOver
-import ru.alexmaryin.firstgame.values.GameAssets
 import ru.alexmaryin.firstgame.values.Gameplay
 import ru.alexmaryin.firstgame.values.WorldDimens
 
-class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
+class DebugSystem(private val batch: SpriteBatch, private val debugTexture: Texture) : IntervalIteratingSystem(
     allOf(PlayerComponent::class).get(), Gameplay.DEBUG_UPDATE_RATE
 ) {
 
@@ -48,9 +47,8 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
                 log.debug { "Showing debug grid" }
                 debugGrid = engine.entity {
                     with<GraphicComponent> {
-                        val texture = Texture(Gdx.files.internal(GameAssets.DEBUG_GRID))
                         sprite.setAlpha(0.2f)
-                        sprite.setRegion(texture)
+                        sprite.setRegion(debugTexture)
                     }
                     with<TransformComponent> {
                         size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
@@ -61,7 +59,6 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
             } else {
                 log.debug { "Hide debug grid" }
                 debugGrid.addComponent<RemoveComponent>(engine) { delay = 0f }
-                debugGrid.graphic.sprite.texture.dispose()
             }
         }
 

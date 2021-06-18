@@ -1,8 +1,8 @@
 package ru.alexmaryin.firstgame.screens
 
+import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -10,10 +10,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.StartWindow
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.values.Entities
-import ru.alexmaryin.firstgame.values.GameAssets
-import ru.alexmaryin.firstgame.values.Gameplay
-import ru.alexmaryin.firstgame.values.WorldDimens
+import ru.alexmaryin.firstgame.values.*
 import kotlin.math.min
 
 private val log = logger<GameplayScreen>()
@@ -23,9 +20,13 @@ enum class GameState {
     PAUSED
 }
 
-class GameplayScreen(game: StartWindow, atlas: TextureAtlas) : GameScreen(game) {
+class GameplayScreen(
+    game: StartWindow,
+    private val engine: Engine = game.engine
+) : GameScreen(game) {
 
     private var state = GameState.PAUSED
+    private val atlas = game.assets[TextureAtlases.GRAPHIC_ATLAS.descriptor]
     private val backTexture = WorldDimens.BACK_LAYER_Z to atlas.findRegion(GameAssets.BACK_LAYER)
     private val frontTextures = GameAssets.FRONT_LAYERS.mapIndexed { index, region ->
         WorldDimens.IN_FRONT_LAYERS_Z[index] to atlas.findRegion(region)

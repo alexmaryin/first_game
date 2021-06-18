@@ -1,12 +1,28 @@
 package ru.alexmaryin.firstgame.values
 
-object GameAssets {
-    const val GRAPHICS_ATLAS = "graphic/graphics.atlas"
-    const val DEBUG_GRID = "graphic/debug_grid_layout.png"
+import com.badlogic.gdx.assets.AssetDescriptor
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 
+enum class Textures(
+    file: String,
+    dir: String = "graphic",
+    val descriptor: AssetDescriptor<Texture> = AssetDescriptor("$dir/$file", Texture::class.java)
+) {
+    DEBUG_GRID("debug_grid_layout.png")
+}
+
+enum class TextureAtlases(
+    file: String,
+    dir: String = "graphic",
+    val descriptor: AssetDescriptor<TextureAtlas> = AssetDescriptor("$dir/$file", TextureAtlas::class.java)
+) {
+    GRAPHIC_ATLAS("sprites.atlas")
+}
+
+object GameAssets {
     const val policeAnim = "police"
 
-    const val ENVIRONMENT_ATLAS = "graphic/environment.atlas"
+    val FRONT_LAYERS = listOf("front_0_layer", "front_2_layer", "front_4_layer", "front_6_layer")
     const val BACK_LAYER = "back_8_layer"
-    val FRONT_LAYERS = listOf("front_0_layer", "front_2_layer", "front_4_layer", "front_6_layer",)
 }

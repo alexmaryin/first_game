@@ -7,7 +7,6 @@ import ktx.ashley.get
 import ktx.ashley.mapperFor
 import ru.alexmaryin.firstgame.engine.events.*
 import ru.alexmaryin.firstgame.values.Gameplay
-import ru.alexmaryin.firstgame.values.Gameplay.MAX_AVAILABLE_COPS
 import kotlin.math.max
 import kotlin.math.min
 
@@ -15,14 +14,16 @@ class PlayerComponent : Component, Pool.Poolable, GameEventsListener {
 
     var enemiesCaught = 0
     var missedEnemies = 0
-    var availableCops = MAX_AVAILABLE_COPS
+    private var missedCops = 0
+    var availableCops = Gameplay.MAX_AVAILABLE_COPS
 
     init { reset() }
 
     override fun reset() {
         enemiesCaught = 0
         missedEnemies = 0
-        availableCops = MAX_AVAILABLE_COPS
+        missedCops = 0
+        availableCops = Gameplay.MAX_AVAILABLE_COPS
 
         EventDispatcher.subscribeOn<CopMissed>(this)
         EventDispatcher.subscribeOn<EnemyMissed>(this)
@@ -30,7 +31,7 @@ class PlayerComponent : Component, Pool.Poolable, GameEventsListener {
     }
 
     fun restoreCop() {
-        availableCops = min(availableCops + 1, MAX_AVAILABLE_COPS)
+        availableCops = min(availableCops + 1, Gameplay.MAX_AVAILABLE_COPS)
     }
 
     companion object {
@@ -39,15 +40,14 @@ class PlayerComponent : Component, Pool.Poolable, GameEventsListener {
 
     override fun onEventDelivered(event: GameEvent) {
         when (event) {
-            is CopMissed -> availableCops = max(availableCops - 1, 0)
+            is CopMissed -> {availableCops = max(availableCops - 1, 0); missedCops++ }
             is EnemyCaught -> enemiesCaught++
-            is EnemyMissed -> {
-                missedEnemies++
-                if (missedEnemies >= Gameplay.MAX_MISSED_ENEMIES)
-                    EventDispatcher.send(GameOver(enemiesCaught))
-            }
+            is EnemyMissed -> missedEnemies++
+
             else -> {}
         }
+        if (max(missedCops, missedEnemies) >= Gameplay.MAX_MISSED_ENEMIES)
+            EventDispatcher.send(GameOver(enemiesCaught))
     }
 }
 

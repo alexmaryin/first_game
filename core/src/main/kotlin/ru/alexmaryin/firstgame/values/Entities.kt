@@ -3,8 +3,8 @@ package ru.alexmaryin.firstgame.values
 object Entities {
 
     // Cop values
-    const val COP_WIDTH_SPRITE_RATIO = 0.85f
-    const val COP_HEIGHT_SPRITE_RATIO = 0.95f
+    const val COP_WIDTH_SPRITE_RATIO = 1f
+    const val COP_HEIGHT_SPRITE_RATIO = 1.2f
     const val COP_Y_SPRITE_OFFSET = 10f / WorldDimens.F_CELL_SIZE
     const val COP_X_SPRITE_OFFSET = 0f / WorldDimens.F_CELL_SIZE
 

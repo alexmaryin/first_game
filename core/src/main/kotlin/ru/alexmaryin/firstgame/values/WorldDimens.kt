@@ -8,7 +8,7 @@ object WorldDimens {
     const val HEIGHT = 9
     const val F_HEIGHT = 9f
     val ROADS_Y_CELLS = listOf(1f, 3f, 5f, 7f)
-    val ENTITIES_LAYERS_Z = listOf(1f, 3f, 5f, 7f)
+    private val ENTITIES_LAYERS_Z = listOf(1f, 3f, 5f, 7f)
     val IN_FRONT_LAYERS_Z = listOf(0f, 2f, 4f, 6f)
     const val BACK_LAYER_Z = 8f
 
