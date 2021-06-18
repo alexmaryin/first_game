@@ -23,8 +23,8 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
 
     private var enableDebugInfo = false
     private var isGridEnabled = false
-    private val log = logger<DebugSystem>()
     private lateinit var debugGrid: Entity
+    private val log = logger<DebugSystem>()
 
     init {
         setProcessing(true)
@@ -54,6 +54,7 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
                     }
                     with<TransformComponent> {
                         size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                        offset.set(Vector2.Zero)
                         setInitialPosition(0f, 0f, 0f)
                     }
                 }
@@ -65,19 +66,14 @@ class DebugSystem(private val batch: SpriteBatch) : IntervalIteratingSystem(
         }
 
         if (enableDebugInfo) {
-            val transform = entity.transform
             val player = entity.player
-            val enemies = engine.getSystem<EnemySystem>()
             val damage = engine.getSystem<EventSystem>()
             Gdx.graphics.setTitle(buildString {
-//                append("pos:${transform.position} ")
                 append("level: ${damage.level} ")
-                append("speed: ${0.15f + damage.level / 10f} ")
                 append("caught:${player.enemiesCaught} ")
                 append("missed:${player.missedEnemies} ")
-//                append("enemies:${enemies.enemiesOnScreen} ")
                 append("cops:${player.availableCops} ")
-//                append("render calls:${batch.renderCalls} ")
+                append("render calls:${batch.renderCalls} ")
                 append("heap java/native:${Gdx.app.javaHeap / 1024 / 1024} MiB/${Gdx.app.nativeHeap / 1024 / 1024} MiB ")
                 append("FPS: ${Gdx.graphics.framesPerSecond} ")
             })

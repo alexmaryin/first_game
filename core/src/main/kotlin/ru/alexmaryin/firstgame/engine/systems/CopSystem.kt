@@ -4,20 +4,13 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Rectangle
-import ktx.ashley.addComponent
-import ktx.ashley.allOf
-import ktx.ashley.exclude
-import ktx.ashley.getSystem
+import ktx.ashley.*
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.engine.entities.Cop
 import ru.alexmaryin.firstgame.engine.events.CopCatchEnemy
 import ru.alexmaryin.firstgame.engine.events.CopMissed
 import ru.alexmaryin.firstgame.engine.events.EnemyCaught
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
-import ru.alexmaryin.firstgame.values.AnimationType
-import ru.alexmaryin.firstgame.values.MoveLeft
-import ru.alexmaryin.firstgame.values.MoveRight
-import ru.alexmaryin.firstgame.values.WorldDimens
+import ru.alexmaryin.firstgame.values.*
 
 class CopSystem : IteratingSystem(
     allOf(CopComponent::class).exclude(RemoveComponent::class).get()
@@ -83,10 +76,17 @@ class CopSystem : IteratingSystem(
     }
 
     fun addCop(road: Float) {
-        Cop(engine).apply {
-            transform.setInitialPosition(14f, road, 0f)
-            animation.type = AnimationType.COP_WALK_FROM_LEFT
-            engine.addEntity(this)
+        engine.entity {
+            with<CopComponent>()
+            with<MoveComponent> { initialSpeed = 0.05f }
+            with<FacingComponent>()
+            with<TransformComponent> {
+                size.set(Entities.COP_WIDTH_SPRITE_RATIO, Entities.COP_HEIGHT_SPRITE_RATIO)
+                offset.set(Entities.COP_X_SPRITE_OFFSET, Entities.COP_Y_SPRITE_OFFSET)
+                setInitialPosition(14f, road, 0f)
+            }
+            with<AnimationComponent> { type = AnimationType.COP_WALK_FROM_LEFT }
+            with<GraphicComponent>()
         }
     }
 

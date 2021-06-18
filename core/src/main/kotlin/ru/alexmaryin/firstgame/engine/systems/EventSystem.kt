@@ -13,7 +13,7 @@ import ru.alexmaryin.firstgame.engine.events.*
 import ru.alexmaryin.firstgame.values.Gameplay
 import kotlin.math.ceil
 
-class EventSystem : IntervalIteratingSystem(
+class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingSystem(
     allOf(PlayerComponent::class).get(), 1f
 ), GameEventsListener {
 
@@ -35,10 +35,7 @@ class EventSystem : IntervalIteratingSystem(
 
         when (event) {
             is GameOver -> {
-                engine.getSystem<SnapMoveSystem>().setProcessing(false)
-                engine.getSystem<AnimationSystem>().setProcessing(false)
-                engine.getSystem<EnemySystem>().setProcessing(false)
-                engine.getSystem<CopSystem>().setProcessing(false)
+                gameOverCallback()
                 Gdx.input.vibrate(1000)
                 engine.getEntitiesFor(allOf(PlayerComponent::class).get()).forEach { player ->
                     player.addComponent<RemoveComponent>(engine) {

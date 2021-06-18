@@ -26,16 +26,15 @@ class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class).get()) {
         if (move.isNotMoving) {
             val position = entity.transform.position
             when {
-                Gdx.input.isKeyJustPressed(Input.Keys.UP) && position.y < WorldDimens.F_HEIGHT - 2f -> move.moveToPosition(MoveUp())
+                Gdx.input.isKeyJustPressed(Input.Keys.UP) && position.y < WorldDimens.F_HEIGHT - 3f -> move.moveToPosition(MoveUp())
                 Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && position.y > 1f -> move.moveToPosition(MoveDown())
                 Gdx.input.isKeyJustPressed(Input.Keys.SPACE) -> {
                     val player = entity.player
                     if (player.availableCops > 0 &&  round(position.y) in WorldDimens.ROADS_Y_CELLS) {
                         engine.getSystem<CopSystem>().addCop(round(position.y))
-                        log.debug { "Add cop at road ${round(position.y)}" }
                         player.availableCops -= 1
                     } else {
-                        log.debug { "No available cops!" }
+                        log.debug { "No available cops or wrong road!" }
                     }
                 }
             }

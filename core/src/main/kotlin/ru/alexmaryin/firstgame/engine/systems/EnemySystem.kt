@@ -8,7 +8,6 @@ import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.engine.entities.Enemy
 import ru.alexmaryin.firstgame.engine.events.EnemyMissed
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.values.*
@@ -70,15 +69,21 @@ class EnemySystem : IteratingSystem(
     }
 
     private fun addEnemy() {
-        Enemy(engine).apply {
-            transform.setInitialPosition(0f, enemy.road, 1f)
-            animation.type = AnimationType.values()[enemy.enemyVariant]
-            engine.addEntity(this)
-            log.debug { "Add enemy at position ${transform.position}" }
+        engine.entity {
+            val enemy = with<EnemyComponent>()
+            with<FacingComponent>()
+            with<MoveComponent>()
+            with<AnimationComponent> { type = AnimationType.values()[enemy.enemyVariant] }
+            with<TransformComponent> {
+                size.set(Entities.ENEMY_WIDTH_SPRITE_RATIO, Entities.ENEMY_HEIGHT_SPRITE_RATIO)
+                offset.set(Entities.ENEMY_X_SPRITE_OFFSET, Entities.ENEMY_Y_SPRITE_OFFSET)
+                setInitialPosition(0f, enemy.road, 1f)
+                log.debug { "Add enemy at position $position" }
+            }
+            with<GraphicComponent>()
         }
         _enemiesOnScreen += 1
         _lastEnemyArisen = 0f
-
     }
 
     private fun removeEnemyFromScreen(entity: Entity) {

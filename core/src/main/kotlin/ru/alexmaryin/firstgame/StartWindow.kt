@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
+import ktx.ashley.getSystem
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.systems.*
@@ -24,7 +25,7 @@ class StartWindow : KtxGame<GameScreen>() {
     val viewport = FitViewport(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
     private val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal(GameAssets.GRAPHICS_ATLAS)) }
 
-    val batch by lazy { SpriteBatch(100) }
+    private val batch by lazy { SpriteBatch(100) }
     val engine by lazy {
         PooledEngine().apply {
             addSystem(DebugSystem(batch))
@@ -32,7 +33,7 @@ class StartWindow : KtxGame<GameScreen>() {
             addSystem(EnemySystem())
             addSystem(CopSystem())
             addSystem(SnapMoveSystem())
-            addSystem(EventSystem())
+            addSystem(EventSystem { pauseEngine() })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport))
@@ -55,5 +56,19 @@ class StartWindow : KtxGame<GameScreen>() {
         log.debug { "Disposed ${batch.maxSpritesInBatch} sprites" }
         batch.dispose()
         graphicsAtlas.dispose()
+    }
+
+    fun pauseEngine() {
+        engine.getSystem<SnapMoveSystem>().setProcessing(false)
+        engine.getSystem<AnimationSystem>().setProcessing(false)
+        engine.getSystem<EnemySystem>().setProcessing(false)
+        engine.getSystem<CopSystem>().setProcessing(false)
+    }
+
+    fun resumeEngine() {
+        engine.getSystem<SnapMoveSystem>().setProcessing(true)
+        engine.getSystem<AnimationSystem>().setProcessing(true)
+        engine.getSystem<EnemySystem>().setProcessing(true)
+        engine.getSystem<CopSystem>().setProcessing(true)
     }
 }
