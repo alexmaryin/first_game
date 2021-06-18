@@ -77,7 +77,7 @@ class EnemySystem : IteratingSystem(
             with<TransformComponent> {
                 size.set(Entities.ENEMY_WIDTH_SPRITE_RATIO, Entities.ENEMY_HEIGHT_SPRITE_RATIO)
                 offset.set(Entities.ENEMY_X_SPRITE_OFFSET, Entities.ENEMY_Y_SPRITE_OFFSET)
-                setInitialPosition(0f, enemy.road, 1f)
+                setInitialPosition(0f, enemy.road, WorldDimens.getLayerForRoad(enemy.road))
                 log.debug { "Add enemy at position $position" }
             }
             with<GraphicComponent>()

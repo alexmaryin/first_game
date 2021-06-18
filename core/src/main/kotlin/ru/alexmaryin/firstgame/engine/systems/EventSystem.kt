@@ -2,6 +2,7 @@ package ru.alexmaryin.firstgame.engine.systems
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
+import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.ashley.systems.IntervalIteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
@@ -37,6 +38,7 @@ class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingS
         when (event) {
             is GameOver -> {
                 gameOverCallback()
+                (engine as PooledEngine).clearPools()
                 Gdx.input.vibrate(1000)
                 engine.getEntitiesFor(allOf(PlayerComponent::class).get()).forEach { player ->
                     player.addComponent<RemoveComponent>(engine) {

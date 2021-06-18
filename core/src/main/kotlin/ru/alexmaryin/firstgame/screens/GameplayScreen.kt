@@ -5,16 +5,11 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.entity
-import ktx.ashley.getSystem
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.StartWindow
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.engine.systems.AnimationSystem
-import ru.alexmaryin.firstgame.engine.systems.CopSystem
-import ru.alexmaryin.firstgame.engine.systems.EnemySystem
-import ru.alexmaryin.firstgame.engine.systems.SnapMoveSystem
 import ru.alexmaryin.firstgame.values.Entities
 import ru.alexmaryin.firstgame.values.GameAssets
 import ru.alexmaryin.firstgame.values.Gameplay
@@ -31,8 +26,10 @@ enum class GameState {
 class GameplayScreen(game: StartWindow) : GameScreen(game) {
 
     private var state = GameState.PAUSED
-    private val backTexture = Texture(Gdx.files.internal(GameAssets.LEVEL_1_BACK))
-    private val frontTexture = Texture(Gdx.files.internal(GameAssets.LEVEL_1_FRONT))
+    private val backTexture = WorldDimens.BACK_LAYER_Z to Texture(Gdx.files.internal(GameAssets.BACK_LAYER))
+    private val frontTextures = GameAssets.FRONT_LAYERS.mapIndexed { index, file ->
+        WorldDimens.IN_FRONT_LAYERS_Z[index] to Texture(Gdx.files.internal(file))
+    }.toMap()
 
     override fun show() {
         log.debug { "Main game play screen showing" }
@@ -41,25 +38,27 @@ class GameplayScreen(game: StartWindow) : GameScreen(game) {
     fun startGame() {
         state = GameState.PLAY
 
-        val back = engine.entity {
+        engine.entity {
             with<TransformComponent> {
                 size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
                 offset.set(Vector2.Zero)
-                setInitialPosition(0f, 0f, 5f)
+                setInitialPosition(0f, 0f, backTexture.first)
             }
-            with<GraphicComponent> { sprite.setRegion(backTexture) }
+            with<GraphicComponent> { sprite.setRegion(backTexture.second) }
         }
 
-        val front = engine.entity {
-            with<TransformComponent> {
-                size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
-                offset.set(Vector2.Zero)
-                setInitialPosition(0f, 0f, -1f)
+        frontTextures.forEach { (layer, texture) ->
+            engine.entity {
+                with<TransformComponent> {
+                    size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                    offset.set(Vector2.Zero)
+                    setInitialPosition(0f, 0f, layer)
+                }
+                with<GraphicComponent> { sprite.setRegion(texture) }
             }
-            with<GraphicComponent> { sprite.setRegion(frontTexture) }
         }
 
-        val player = engine.entity {
+        engine.entity {
             with<PlayerComponent>()
             with<FacingComponent>()
             with<MoveComponent>()
@@ -96,8 +95,8 @@ class GameplayScreen(game: StartWindow) : GameScreen(game) {
     }
 
     override fun dispose() {
-        backTexture.dispose()
-        frontTexture.dispose()
+        backTexture.second.dispose()
+        frontTextures.forEach { (_, texture) -> texture.dispose() }
         super.dispose()
     }
 }

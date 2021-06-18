@@ -48,7 +48,7 @@ class CopSystem : IteratingSystem(
             with<TransformComponent> {
                 size.set(Entities.COP_WIDTH_SPRITE_RATIO, Entities.COP_HEIGHT_SPRITE_RATIO)
                 offset.set(Entities.COP_X_SPRITE_OFFSET, Entities.COP_Y_SPRITE_OFFSET)
-                setInitialPosition(14f, road, 0f)
+                setInitialPosition(14f, road, WorldDimens.getLayerForRoad(road))
             }
             with<AnimationComponent> { type = AnimationType.COP_WALK_FROM_LEFT }
             with<GraphicComponent>()
