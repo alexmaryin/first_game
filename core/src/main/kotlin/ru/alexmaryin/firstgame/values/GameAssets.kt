@@ -6,11 +6,7 @@ object GameAssets {
 
     const val policeAnim = "police"
 
-    val FRONT_LAYERS = listOf(
-        "graphic/front_0_layer.png",
-        "graphic/front_2_layer.png",
-        "graphic/front_4_layer.png",
-        "graphic/front_6_layer.png",
-    )
-    const val BACK_LAYER = "graphic/back_8_layer.png"
+    const val ENVIRONMENT_ATLAS = "graphic/environment.atlas"
+    const val BACK_LAYER = "back_8_layer"
+    val FRONT_LAYERS = listOf("front_0_layer", "front_2_layer", "front_4_layer", "front_6_layer",)
 }

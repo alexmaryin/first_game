@@ -2,7 +2,7 @@ package ru.alexmaryin.firstgame.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.entity
 import ktx.ashley.with
@@ -23,12 +23,12 @@ enum class GameState {
     PAUSED
 }
 
-class GameplayScreen(game: StartWindow) : GameScreen(game) {
+class GameplayScreen(game: StartWindow, atlas: TextureAtlas) : GameScreen(game) {
 
     private var state = GameState.PAUSED
-    private val backTexture = WorldDimens.BACK_LAYER_Z to Texture(Gdx.files.internal(GameAssets.BACK_LAYER))
-    private val frontTextures = GameAssets.FRONT_LAYERS.mapIndexed { index, file ->
-        WorldDimens.IN_FRONT_LAYERS_Z[index] to Texture(Gdx.files.internal(file))
+    private val backTexture = WorldDimens.BACK_LAYER_Z to atlas.findRegion(GameAssets.BACK_LAYER)
+    private val frontTextures = GameAssets.FRONT_LAYERS.mapIndexed { index, region ->
+        WorldDimens.IN_FRONT_LAYERS_Z[index] to atlas.findRegion(region)
     }.toMap()
 
     override fun show() {
@@ -92,11 +92,5 @@ class GameplayScreen(game: StartWindow) : GameScreen(game) {
                 GameState.PLAY -> pauseGame()
             }
         }
-    }
-
-    override fun dispose() {
-        backTexture.second.dispose()
-        frontTextures.forEach { (_, texture) -> texture.dispose() }
-        super.dispose()
     }
 }

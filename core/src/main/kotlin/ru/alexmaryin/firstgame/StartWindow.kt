@@ -3,17 +3,21 @@ package ru.alexmaryin.firstgame
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
 import ktx.ashley.getSystem
+import ktx.assets.disposeSafely
+import ktx.assets.getValue
+import ktx.assets.loadOnDemand
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
-import ru.alexmaryin.firstgame.screens.MenuScreen
 import ru.alexmaryin.firstgame.screens.GameplayScreen
+import ru.alexmaryin.firstgame.screens.MenuScreen
 import ru.alexmaryin.firstgame.values.GameAssets
 import ru.alexmaryin.firstgame.values.WorldDimens
 
@@ -23,12 +27,14 @@ private val log = logger<StartWindow>()
 class StartWindow : KtxGame<GameScreen>() {
 
     val viewport = FitViewport(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
-    private val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal(GameAssets.GRAPHICS_ATLAS)) }
 
-    private val batch by lazy { SpriteBatch(100) }
+    private val assetManager = AssetManager()
+    private val graphicsAtlas by assetManager.loadOnDemand<TextureAtlas>(GameAssets.GRAPHICS_ATLAS)
+    private val environmentAtlas by assetManager.loadOnDemand<TextureAtlas>(GameAssets.ENVIRONMENT_ATLAS)
+
+    private val batch by lazy { SpriteBatch() }
     val engine by lazy {
         PooledEngine().apply {
-            addSystem(DebugSystem(batch))
             addSystem(PlayerInputSystem())
             addSystem(EnemySystem())
             addSystem(CopSystem())
@@ -39,13 +45,14 @@ class StartWindow : KtxGame<GameScreen>() {
             addSystem(AnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport))
             addSystem(RemoveSystem())
+            addSystem(DebugSystem(batch))
         }
     }
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
         log.debug { "Create a game instance" }
-        val gameplay = GameplayScreen(this)
+        val gameplay = GameplayScreen(this, environmentAtlas)
         addScreen(gameplay)
         addScreen(MenuScreen(this))
         Gdx.input.setCursorPosition(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
@@ -54,9 +61,9 @@ class StartWindow : KtxGame<GameScreen>() {
     }
 
     override fun dispose() {
-        log.debug { "Disposed ${batch.maxSpritesInBatch} sprites" }
+        log.debug { "Disposed ${batch.maxSpritesInBatch} sprites, ${graphicsAtlas.regions.size + environmentAtlas.regions.size} regions " }
         batch.dispose()
-        graphicsAtlas.dispose()
+        assetManager.disposeSafely()
     }
 
     fun pauseEngine() {

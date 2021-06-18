@@ -1,0 +1,41 @@
+
+environment.png
+size: 4096, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+back_8_layer
+  rotate: false
+  xy: 1284, 724
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+front_0_layer
+  rotate: false
+  xy: 2, 724
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+front_2_layer
+  rotate: false
+  xy: 1284, 2
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+front_4_layer
+  rotate: false
+  xy: 2566, 724
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+front_6_layer
+  rotate: false
+  xy: 2, 2
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
