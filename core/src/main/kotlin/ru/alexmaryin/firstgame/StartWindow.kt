@@ -33,6 +33,7 @@ class StartWindow : KtxGame<GameScreen>() {
             addSystem(EnemySystem())
             addSystem(CopSystem())
             addSystem(SnapMoveSystem())
+            addSystem(CollisionSystem())
             addSystem(EventSystem { pauseEngine() })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))

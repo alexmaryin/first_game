@@ -3,10 +3,8 @@ package ru.alexmaryin.firstgame.engine.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.Rectangle
 import ktx.ashley.*
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.engine.events.CopCatchEnemy
 import ru.alexmaryin.firstgame.engine.events.CopMissed
 import ru.alexmaryin.firstgame.engine.events.EnemyCaught
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
@@ -16,47 +14,14 @@ class CopSystem : IteratingSystem(
     allOf(CopComponent::class).exclude(RemoveComponent::class).get()
 ) {
 
-    private val enemies by lazy { engine.getEntitiesFor(allOf(EnemyComponent::class).exclude(RemoveComponent::class).get()) }
-    private val players by lazy { engine.getEntitiesFor(allOf(PlayerComponent::class).exclude(RemoveComponent::class).get()) }
-
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity.transform
         val cop = entity.cop
         val level = engine.getSystem<EventSystem>().level
-        val boundingRect = Rectangle(
-            transform.interpolatedPosition.x, transform.interpolatedPosition.y, transform.size.x, transform.size.y
-        )
 
-        // At first, let's make next move and check overlaps with enemy or player
         when (cop.state) {
-            CopState.WALK_TO_ENEMY -> {
-                entity.move.moveToPosition(MoveLeft(level))
-                // Check whether cop overlaps any of enemies with state walk_straight
-                enemies.forEach { enemyComp ->
-                    with(enemyComp.transform) {
-                        val enemyBound =
-                            Rectangle(interpolatedPosition.x - size.x / 2, interpolatedPosition.y, size.x, size.y)
-                        if (boundingRect.overlaps(enemyBound) && enemyComp.enemy.state == EnemyState.WALK_STRAIGHT) {
-                            EventDispatcher.send(CopCatchEnemy(entity, enemyComp))
-                            return
-                        }
-                    }
-                }
-            }
-            CopState.WALK_BACK -> {
-                entity.move.moveToPosition(MoveRight(level))
-                // Check whether cop overlaps player
-                players.forEach { playerComp ->
-                    with(playerComp.transform) {
-                        val playerBound = Rectangle(interpolatedPosition.x, interpolatedPosition.y, size.x, size.y)
-                        if (boundingRect.overlaps(playerBound) && cop.state == CopState.WALK_BACK) {
-                            playerComp.player.restoreCop()
-                            removeCopFromScreen(entity)
-                            return
-                        }
-                    }
-                }
-            }
+            CopState.WALK_TO_ENEMY -> entity.move.moveToPosition(MoveLeft(level))
+            CopState.WALK_BACK -> entity.move.moveToPosition(MoveRight(level))
             CopState.ATTACK -> {
                 cop.attackTime -= deltaTime
                 entity.facing?.direction = FacingDirection.LEFT
@@ -68,7 +33,7 @@ class CopSystem : IteratingSystem(
                 return          // No need check other states if cop is attacking
             }
         }
-        // At the end, check whether cop has reached the screen border and is going to disappear
+
         if (transform.position.x <= 0f || transform.position.x >= WorldDimens.F_WIDTH - 1f) {
             EventDispatcher.send(CopMissed)
             removeCopFromScreen(entity)
@@ -90,7 +55,7 @@ class CopSystem : IteratingSystem(
         }
     }
 
-    private fun removeCopFromScreen(entity: Entity) {
+    fun removeCopFromScreen(entity: Entity) {
         entity.addComponent<RemoveComponent>(engine)
         Gdx.input.vibrate(100)
     }

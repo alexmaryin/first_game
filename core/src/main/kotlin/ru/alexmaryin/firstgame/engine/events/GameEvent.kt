@@ -6,6 +6,7 @@ sealed class GameEvent
 
 class GameOver(val score: Int) : GameEvent()
 class CopCatchEnemy(val cop: Entity, val enemy: Entity) : GameEvent()
+class PlayerRestoresCop(val cop: Entity) : GameEvent()
 object EnemyMissed : GameEvent()
 object EnemyCaught : GameEvent()
 object CopMissed : GameEvent()

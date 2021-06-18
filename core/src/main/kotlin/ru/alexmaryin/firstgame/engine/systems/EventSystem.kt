@@ -24,6 +24,7 @@ class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingS
         super.addedToEngine(engine)
         EventDispatcher.subscribeOn<GameOver>(this)
         EventDispatcher.subscribeOn<CopCatchEnemy>(this)
+        EventDispatcher.subscribeOn<PlayerRestoresCop>(this)
     }
 
     override fun removedFromEngine(engine: Engine?) {
@@ -59,6 +60,11 @@ class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingS
                     animation.animateEnemyUnderAttack()
                 }
             }
+
+            is PlayerRestoresCop -> {
+                engine.getSystem<CopSystem>().removeCopFromScreen(event.cop)
+            }
+
             else -> {}
         }
     }
