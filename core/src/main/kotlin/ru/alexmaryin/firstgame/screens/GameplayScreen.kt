@@ -8,6 +8,7 @@ import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
+import ktx.preferences.get
 import ru.alexmaryin.firstgame.StartWindow
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.*
@@ -34,17 +35,19 @@ class GameplayScreen(
     }.toMap()
 
     override fun show() {
+        val lastScores: Int? = game.preferences["last_scores"]
         log.debug { "Main game play screen showing" }
+        log.debug { lastScores?.let { "Last saved scores is $it" } ?: "No last scores saved in preferences yet."  }
     }
 
     fun startGame() {
         state = GameState.PLAY
-        game.audioService.play(MusicAssets.GAME_MUSIC_UP_10)
+        game.audioService.play(MusicAssets.GAME_MUSIC_UP_10, 0.5f)
         EventDispatcher.subscribeOn<LevelUp>(this)
 
         engine.entity {
             with<TransformComponent> {
-                size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                size.set(WorldDimens.WIDTH, WorldDimens.HEIGHT)
                 offset.set(Vector2.Zero)
                 setInitialPosition(0f, 0f, backTexture.first)
             }
@@ -54,7 +57,7 @@ class GameplayScreen(
         frontTextures.forEach { (layer, texture) ->
             engine.entity {
                 with<TransformComponent> {
-                    size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                    size.set(WorldDimens.WIDTH, WorldDimens.HEIGHT)
                     offset.set(Vector2.Zero)
                     setInitialPosition(0f, 0f, layer)
                 }
@@ -88,9 +91,10 @@ class GameplayScreen(
 
     override fun onEventDelivered(event: GameEvent) {
         if (event is LevelUp && event.level >= 5) {
-            game.audioService.play(MusicAssets.GAME_MUSIC_FROM_10)
+            game.audioService.play(MusicAssets.GAME_MUSIC_FROM_10, 0.5f)
             EventDispatcher.removeSubscriptions(this)
         }
+
     }
 
     override fun render(delta: Float) {

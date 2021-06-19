@@ -15,4 +15,5 @@ dependencies {
 	api("io.github.libktx:ktx-ashley:$ktxVersion")
 	api("io.github.libktx:ktx-collections:$ktxVersion")
 	api("io.github.libktx:ktx-assets-async:$ktxVersion")
+	api("io.github.libktx:ktx-preferences:$ktxVersion")
 }

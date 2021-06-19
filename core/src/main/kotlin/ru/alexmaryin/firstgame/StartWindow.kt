@@ -12,7 +12,11 @@ import ktx.assets.disposeSafely
 import ktx.async.KtxAsync
 import ktx.log.debug
 import ktx.log.logger
+import ktx.preferences.flush
+import ktx.preferences.get
+import ktx.preferences.set
 import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
+import ru.alexmaryin.firstgame.engine.audio.NoAudioService
 import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
 import ru.alexmaryin.firstgame.screens.SplashScreen
@@ -25,10 +29,10 @@ private val log = logger<StartWindow>()
 /** implementation shared by all platforms.  */
 class  StartWindow : KtxGame<GameScreen>() {
 
-    val viewport = FitViewport(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+    val viewport = FitViewport(WorldDimens.WIDTH, WorldDimens.HEIGHT)
     private val uiViewport = FitViewport(
-        WorldDimens.F_WIDTH * WorldDimens.F_CELL_SIZE,
-        WorldDimens.F_HEIGHT * WorldDimens.F_CELL_SIZE
+        WorldDimens.WIDTH * WorldDimens.CELL_SIZE,
+        WorldDimens.HEIGHT * WorldDimens.CELL_SIZE
     )
 
     val assets: AssetStorage by lazy {
@@ -36,17 +40,23 @@ class  StartWindow : KtxGame<GameScreen>() {
         AssetStorage()
     }
     private val graphicsAtlas by lazy { assets[TextureAtlases.GRAPHIC_ATLAS.descriptor] }
-    val audioService by lazy { DefaultAudioService(assets) }
+    val preferences by lazy { Gdx.app.getPreferences("deter_revolution_0_1") }
+    val audioService by lazy { if (preferences["audio_on", true]) DefaultAudioService(assets) else NoAudioService }
 
     private val batch by lazy { SpriteBatch() }
     val engine by lazy {
         PooledEngine().apply {
-            addSystem(PlayerInputSystem())
+            addSystem(PlayerInputSystem(viewport))
             addSystem(EnemySystem(audioService))
             addSystem(CopSystem(audioService))
             addSystem(SnapMoveSystem())
             addSystem(CollisionSystem())
-            addSystem(EventSystem(audioService) { pauseEngine() })
+            addSystem(EventSystem(audioService) { event ->
+                pauseEngine()
+                preferences.flush {
+                    this["last_scores"] = event.score
+                }
+            })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport, uiViewport))

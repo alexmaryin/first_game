@@ -2,8 +2,12 @@ package ru.alexmaryin.firstgame.engine.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.ashley.getSystem
 import ktx.log.debug
@@ -17,7 +21,11 @@ import ru.alexmaryin.firstgame.values.MoveUp
 import ru.alexmaryin.firstgame.values.WorldDimens
 import kotlin.math.round
 
-class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class).get()) {
+enum class PlayerAction { UP, DOWN, COP, NONE }
+
+class PlayerInputSystem(
+    private val viewport: Viewport
+) : IteratingSystem(allOf(PlayerComponent::class).get()) {
 
     private val log = logger<PlayerInputSystem>()
 
@@ -25,12 +33,19 @@ class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class).get()) {
         val move = entity.move
         if (move.isNotMoving) {
             val position = entity.transform.position
+            val action = when (Gdx.app.type) {
+                Application.ApplicationType.Desktop -> checkKeyboardInput()
+                Application.ApplicationType.Android -> checkTouchInput(position)
+                else -> PlayerAction.NONE
+            }
+            if (action == PlayerAction.NONE)
+                return
             when {
-                Gdx.input.isKeyJustPressed(Input.Keys.UP) && position.y < WorldDimens.F_HEIGHT - 3f -> move.moveToPosition(MoveUp())
-                Gdx.input.isKeyJustPressed(Input.Keys.DOWN) && position.y > 1f -> move.moveToPosition(MoveDown())
-                Gdx.input.isKeyJustPressed(Input.Keys.SPACE) -> {
+                action == PlayerAction.UP && position.y < WorldDimens.HEIGHT - 3f -> move.moveToPosition(MoveUp())
+                action == PlayerAction.DOWN && position.y > 1f -> move.moveToPosition(MoveDown())
+                action == PlayerAction.COP -> {
                     val player = entity.player
-                    if (player.availableCops > 0 &&  round(position.y) in WorldDimens.ROADS_Y_CELLS) {
+                    if (player.availableCops > 0 && round(position.y) in WorldDimens.ROADS_Y_CELLS) {
                         engine.getSystem<CopSystem>().addCop(round(position.y))
                         player.availableCops -= 1
                     } else {
@@ -39,5 +54,26 @@ class PlayerInputSystem : IteratingSystem(allOf(PlayerComponent::class).get()) {
                 }
             }
         }
+    }
+
+    private fun checkKeyboardInput() = when {
+        Gdx.input.isKeyJustPressed(Input.Keys.UP) -> PlayerAction.UP
+        Gdx.input.isKeyJustPressed(Input.Keys.DOWN) -> PlayerAction.DOWN
+        Gdx.input.isKeyJustPressed(Input.Keys.SPACE) -> PlayerAction.COP
+        else -> PlayerAction.NONE
+    }
+
+    private fun checkTouchInput(playerPosition: Vector3) = if (Gdx.input.justTouched()) {
+        with (Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())) {
+            viewport.unproject(this)
+            when {
+                x >= playerPosition.x - 1f && y > playerPosition.y -> PlayerAction.UP
+                x >= playerPosition.x - 1f && y < playerPosition.y -> PlayerAction.DOWN
+                x < playerPosition.x - 2f && round(y) == round(playerPosition.y) -> PlayerAction.COP
+                else -> PlayerAction.NONE
+            }
+        }
+    } else {
+        PlayerAction.NONE
     }
 }

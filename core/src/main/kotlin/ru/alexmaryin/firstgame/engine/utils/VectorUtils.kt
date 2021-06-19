@@ -8,8 +8,8 @@ import ru.alexmaryin.firstgame.values.WorldDimens
 
 fun Vector3.addClamp(delta: Vector3, size: Vector2) {
     set(
-        MathUtils.clamp(x + delta.x, 0f, WorldDimens.F_WIDTH + 1f - size.x),
-        MathUtils.clamp(y + delta.y, 0f, WorldDimens.F_HEIGHT + 1f - size.y),
+        MathUtils.clamp(x + delta.x, 0f, WorldDimens.WIDTH + 1f - size.x),
+        MathUtils.clamp(y + delta.y, 0f, WorldDimens.HEIGHT + 1f - size.y),
         z + delta.z
     )
 }

@@ -1,6 +1,5 @@
 package lwjgl3
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import ru.alexmaryin.firstgame.StartWindow
@@ -15,8 +14,8 @@ fun main() {
         setTitle(Gameplay.DEFAULT_TITLE)
         val monitor = Lwjgl3ApplicationConfiguration.getDisplayMode()
         setWindowedMode(
-            min(monitor.width, WorldDimens.WIDTH * WorldDimens.CELL_SIZE),
-            min(monitor.height, WorldDimens.HEIGHT * WorldDimens.CELL_SIZE)
+            min(monitor.width, (WorldDimens.WIDTH * WorldDimens.CELL_SIZE).toInt()),
+            min(monitor.height, (WorldDimens.HEIGHT * WorldDimens.CELL_SIZE).toInt())
         )
         setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png")
     })

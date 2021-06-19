@@ -5,10 +5,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils.random
 import ktx.ashley.*
-import ktx.log.debug
-import ktx.log.logger
 import ru.alexmaryin.firstgame.engine.audio.AudioService
-import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.EnemyMissed
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
@@ -24,7 +21,7 @@ class EnemySystem(private val audioService: AudioService) : IteratingSystem(
     private var _lastEnemyArisen: Float = 0f
     private val lastEnemyArisen get() = _lastEnemyArisen
 
-    private val log = logger<EnemySystem>()
+//    private val log = logger<EnemySystem>()
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -61,7 +58,7 @@ class EnemySystem(private val audioService: AudioService) : IteratingSystem(
 
         // check if enemy reached end of the road or hides
         when {
-            entity.transform.position.x >= WorldDimens.F_WIDTH - 1f && enemy.state == EnemyState.WALK_STRAIGHT  -> {
+            entity.transform.position.x >= WorldDimens.WIDTH - 1f && enemy.state == EnemyState.WALK_STRAIGHT  -> {
                 EventDispatcher.send(EnemyMissed)
                 removeEnemyFromScreen(entity)
                 audioService.play(SoundAssets.ENEMY_MISSED)
@@ -81,7 +78,6 @@ class EnemySystem(private val audioService: AudioService) : IteratingSystem(
                 size.set(Entities.ENEMY_WIDTH_SPRITE_RATIO, Entities.ENEMY_HEIGHT_SPRITE_RATIO)
                 offset.set(Entities.ENEMY_X_SPRITE_OFFSET, Entities.ENEMY_Y_SPRITE_OFFSET)
                 setInitialPosition(0f, enemy.road, WorldDimens.getLayerForRoad(enemy.road))
-                log.debug { "Add enemy at position $position" }
             }
             with<GraphicComponent>()
         }

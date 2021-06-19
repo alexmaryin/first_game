@@ -10,7 +10,6 @@ import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.getSystem
 import ru.alexmaryin.firstgame.engine.audio.AudioService
-import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.*
 import ru.alexmaryin.firstgame.values.Gameplay
@@ -20,7 +19,7 @@ import kotlin.math.ceil
 
 class EventSystem(
     private val audioService: AudioService,
-    private val gameOverCallback: () -> Unit
+    private val gameOverCallback: (event: GameOver) -> Unit
 ) : IntervalIteratingSystem(allOf(PlayerComponent::class).get(), 1f
 ), GameEventsListener {
 
@@ -43,9 +42,9 @@ class EventSystem(
 
         when (event) {
             is GameOver -> {
-                gameOverCallback()
+                gameOverCallback(event)
                 (engine as PooledEngine).clearPools()
-                audioService.play(MusicAssets.GAME_OVER)
+                audioService.play(MusicAssets.GAME_OVER, 0.7f)
                 Gdx.input.vibrate(1000)
                 engine.getEntitiesFor(allOf(PlayerComponent::class).get()).forEach { player ->
                     player.addComponent<RemoveComponent>(engine) {

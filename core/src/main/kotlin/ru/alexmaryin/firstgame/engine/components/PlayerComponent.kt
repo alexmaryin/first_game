@@ -40,7 +40,7 @@ class PlayerComponent : Component, Pool.Poolable, GameEventsListener {
 
     override fun onEventDelivered(event: GameEvent) {
         when (event) {
-            is CopMissed -> {availableCops = max(availableCops - 1, 0); missedCops++ }
+            is CopMissed -> {availableCops--; missedCops++ }
             is EnemyCaught -> enemiesCaught++
             is EnemyMissed -> missedEnemies++
 

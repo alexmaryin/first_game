@@ -51,7 +51,7 @@ class DebugSystem(private val batch: SpriteBatch, private val debugTexture: Text
                         sprite.setRegion(debugTexture)
                     }
                     with<TransformComponent> {
-                        size.set(WorldDimens.F_WIDTH, WorldDimens.F_HEIGHT)
+                        size.set(WorldDimens.WIDTH, WorldDimens.HEIGHT)
                         offset.set(Vector2.Zero)
                         setInitialPosition(0f, 0f, 0f)
                     }
