@@ -1,6 +1,8 @@
 package ru.alexmaryin.firstgame.values
 
 import com.badlogic.gdx.assets.AssetDescriptor
+import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 
@@ -18,6 +20,30 @@ enum class TextureAtlases(
     val descriptor: AssetDescriptor<TextureAtlas> = AssetDescriptor("$dir/$file", TextureAtlas::class.java)
 ) {
     GRAPHIC_ATLAS("sprites.atlas")
+}
+
+enum class MusicAssets(
+    file: String,
+    dir: String = "music",
+    val descriptor: AssetDescriptor<Music> = AssetDescriptor("$dir/$file", Music::class.java)
+) {
+    INTRO_HELP("intro_and_help.mp3"),
+    MENU_PAUSE("menu_pause.mp3"),
+    GAME_MUSIC_UP_10("gameplay_up_to_10_level.mp3"),
+    GAME_MUSIC_FROM_10("gameplay_from_10_level.mp3"),
+    GAME_OVER("game_over.mp3")
+}
+
+enum class SoundAssets(
+    file: String,
+    dir: String = "sound",
+    val descriptor: AssetDescriptor<Sound> = AssetDescriptor("$dir/$file", Sound::class.java)
+) {
+    COP_ARISEN("cop_arisen.wav"),
+    COP_MISSED("cop_missed.wav"),
+    COP_RESTORED("cop_restored.wav"),
+    ENEMY_ARISEN("enemy_arisen.wav"),
+    ENEMY_MISSED("enemy_missed.wav")
 }
 
 object GameAssets {

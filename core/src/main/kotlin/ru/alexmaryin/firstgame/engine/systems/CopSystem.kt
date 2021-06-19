@@ -4,13 +4,15 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import ktx.ashley.*
+import ru.alexmaryin.firstgame.engine.audio.AudioService
+import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.CopMissed
 import ru.alexmaryin.firstgame.engine.events.EnemyCaught
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.values.*
 
-class CopSystem : IteratingSystem(
+class CopSystem(private val audioService: AudioService) : IteratingSystem(
     allOf(CopComponent::class).exclude(RemoveComponent::class).get()
 ) {
 
@@ -37,6 +39,7 @@ class CopSystem : IteratingSystem(
         if (transform.position.x <= 0f || transform.position.x >= WorldDimens.F_WIDTH - 1f) {
             EventDispatcher.send(CopMissed)
             removeCopFromScreen(entity)
+            audioService.play(SoundAssets.COP_MISSED)
         }
     }
 
@@ -53,6 +56,7 @@ class CopSystem : IteratingSystem(
             with<AnimationComponent> { type = AnimationType.COP_WALK_FROM_LEFT }
             with<GraphicComponent>()
         }
+        audioService.play(SoundAssets.COP_ARISEN)
     }
 
     fun removeCopFromScreen(entity: Entity) {

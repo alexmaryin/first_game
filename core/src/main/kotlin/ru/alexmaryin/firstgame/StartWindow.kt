@@ -12,6 +12,7 @@ import ktx.assets.disposeSafely
 import ktx.async.KtxAsync
 import ktx.log.debug
 import ktx.log.logger
+import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
 import ru.alexmaryin.firstgame.screens.SplashScreen
@@ -35,16 +36,17 @@ class  StartWindow : KtxGame<GameScreen>() {
         AssetStorage()
     }
     private val graphicsAtlas by lazy { assets[TextureAtlases.GRAPHIC_ATLAS.descriptor] }
+    val audioService by lazy { DefaultAudioService(assets) }
 
     private val batch by lazy { SpriteBatch() }
     val engine by lazy {
         PooledEngine().apply {
             addSystem(PlayerInputSystem())
-            addSystem(EnemySystem())
-            addSystem(CopSystem())
+            addSystem(EnemySystem(audioService))
+            addSystem(CopSystem(audioService))
             addSystem(SnapMoveSystem())
             addSystem(CollisionSystem())
-            addSystem(EventSystem { pauseEngine() })
+            addSystem(EventSystem(audioService) { pauseEngine() })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
             addSystem(RenderSystem(batch, viewport, uiViewport))

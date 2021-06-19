@@ -7,12 +7,14 @@ import com.badlogic.gdx.math.MathUtils.random
 import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
+import ru.alexmaryin.firstgame.engine.audio.AudioService
+import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.EnemyMissed
 import ru.alexmaryin.firstgame.engine.events.EventDispatcher
 import ru.alexmaryin.firstgame.values.*
 
-class EnemySystem : IteratingSystem(
+class EnemySystem(private val audioService: AudioService) : IteratingSystem(
     allOf(EnemyComponent::class).exclude(RemoveComponent::class).get()
 ) {
 
@@ -62,6 +64,7 @@ class EnemySystem : IteratingSystem(
             entity.transform.position.x >= WorldDimens.F_WIDTH - 1f && enemy.state == EnemyState.WALK_STRAIGHT  -> {
                 EventDispatcher.send(EnemyMissed)
                 removeEnemyFromScreen(entity)
+                audioService.play(SoundAssets.ENEMY_MISSED)
                 return
             }
             entity.transform.position.x <= 0f  && enemy.state == EnemyState.WALK_BACK -> removeEnemyFromScreen(entity)
@@ -84,6 +87,7 @@ class EnemySystem : IteratingSystem(
         }
         _enemiesOnScreen += 1
         _lastEnemyArisen = 0f
+        audioService.play(SoundAssets.ENEMY_ARISEN)
     }
 
     private fun removeEnemyFromScreen(entity: Entity) {

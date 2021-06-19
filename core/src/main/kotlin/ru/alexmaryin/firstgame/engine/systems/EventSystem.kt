@@ -9,13 +9,19 @@ import com.badlogic.gdx.math.MathUtils
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.getSystem
+import ru.alexmaryin.firstgame.engine.audio.AudioService
+import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.components.*
 import ru.alexmaryin.firstgame.engine.events.*
 import ru.alexmaryin.firstgame.values.Gameplay
+import ru.alexmaryin.firstgame.values.MusicAssets
+import ru.alexmaryin.firstgame.values.SoundAssets
 import kotlin.math.ceil
 
-class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingSystem(
-    allOf(PlayerComponent::class).get(), 1f
+class EventSystem(
+    private val audioService: AudioService,
+    private val gameOverCallback: () -> Unit
+) : IntervalIteratingSystem(allOf(PlayerComponent::class).get(), 1f
 ), GameEventsListener {
 
     private var _level = 1
@@ -39,6 +45,7 @@ class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingS
             is GameOver -> {
                 gameOverCallback()
                 (engine as PooledEngine).clearPools()
+                audioService.play(MusicAssets.GAME_OVER)
                 Gdx.input.vibrate(1000)
                 engine.getEntitiesFor(allOf(PlayerComponent::class).get()).forEach { player ->
                     player.addComponent<RemoveComponent>(engine) {
@@ -65,6 +72,7 @@ class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingS
 
             is PlayerRestoresCop -> {
                 engine.getSystem<CopSystem>().removeCopFromScreen(event.cop)
+                audioService.play(SoundAssets.COP_RESTORED)
             }
 
             else -> {}
@@ -72,6 +80,8 @@ class EventSystem(private val gameOverCallback: () -> Unit) : IntervalIteratingS
     }
 
     override fun processEntity(entity: Entity) {
-        _level = MathUtils.clamp(ceil(entity.player.enemiesCaught / Gameplay.LEVEL_UP).toInt(), 1, Gameplay.LEVELS_MAX)
+        val checkLevel = MathUtils.clamp(ceil(entity.player.enemiesCaught / Gameplay.LEVEL_UP).toInt(), 1, Gameplay.LEVELS_MAX)
+        if (checkLevel > _level) EventDispatcher.send(LevelUp(checkLevel))
+        _level = checkLevel
     }
 }

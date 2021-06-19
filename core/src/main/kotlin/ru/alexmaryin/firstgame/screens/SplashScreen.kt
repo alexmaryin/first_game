@@ -7,6 +7,8 @@ import ktx.collections.gdxArrayOf
 import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.StartWindow
+import ru.alexmaryin.firstgame.values.MusicAssets
+import ru.alexmaryin.firstgame.values.SoundAssets
 import ru.alexmaryin.firstgame.values.TextureAtlases
 import ru.alexmaryin.firstgame.values.Textures
 
@@ -19,7 +21,8 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
         val assetsRefs = gdxArrayOf(
             Textures.values().map { assets.loadAsync(it.descriptor) },
             TextureAtlases.values().map { assets.loadAsync(it.descriptor) },
-        ).flatten()
+            SoundAssets.values().map { assets.loadAsync(it.descriptor) },
+        ).flatten().plus(assets.loadAsync(MusicAssets.INTRO_HELP.descriptor))
 
         KtxAsync.launch {
             assetsRefs.joinAll()

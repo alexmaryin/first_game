@@ -10,6 +10,7 @@ import ktx.log.debug
 import ktx.log.logger
 import ru.alexmaryin.firstgame.StartWindow
 import ru.alexmaryin.firstgame.engine.components.*
+import ru.alexmaryin.firstgame.engine.events.*
 import ru.alexmaryin.firstgame.values.*
 import kotlin.math.min
 
@@ -23,7 +24,7 @@ enum class GameState {
 class GameplayScreen(
     game: StartWindow,
     private val engine: Engine = game.engine
-) : GameScreen(game) {
+) : GameScreen(game), GameEventsListener {
 
     private var state = GameState.PAUSED
     private val atlas = game.assets[TextureAtlases.GRAPHIC_ATLAS.descriptor]
@@ -38,6 +39,8 @@ class GameplayScreen(
 
     fun startGame() {
         state = GameState.PLAY
+        game.audioService.play(MusicAssets.GAME_MUSIC_UP_10)
+        EventDispatcher.subscribeOn<LevelUp>(this)
 
         engine.entity {
             with<TransformComponent> {
@@ -83,9 +86,17 @@ class GameplayScreen(
         game.resumeEngine()
     }
 
+    override fun onEventDelivered(event: GameEvent) {
+        if (event is LevelUp && event.level >= 5) {
+            game.audioService.play(MusicAssets.GAME_MUSIC_FROM_10)
+            EventDispatcher.removeSubscriptions(this)
+        }
+    }
+
     override fun render(delta: Float) {
 
         engine.update(min(delta, Gameplay.MIN_DELTA_TME))
+        game.audioService.update()
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             when (state) {
