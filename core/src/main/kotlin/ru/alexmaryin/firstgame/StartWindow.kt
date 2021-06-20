@@ -3,23 +3,30 @@ package ru.alexmaryin.firstgame
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import ktx.app.KtxGame
 import ktx.ashley.getSystem
 import ktx.assets.async.AssetStorage
 import ktx.assets.disposeSafely
 import ktx.async.KtxAsync
+import ktx.collections.gdxArrayOf
 import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.flush
 import ktx.preferences.get
 import ktx.preferences.set
+import ru.alexmaryin.firstgame.engine.audio.AudioService
 import ru.alexmaryin.firstgame.engine.audio.DefaultAudioService
 import ru.alexmaryin.firstgame.engine.audio.NoAudioService
 import ru.alexmaryin.firstgame.engine.systems.*
 import ru.alexmaryin.firstgame.screens.GameScreen
 import ru.alexmaryin.firstgame.screens.SplashScreen
+import ru.alexmaryin.firstgame.ui.createSkin
 import ru.alexmaryin.firstgame.values.TextureAtlases
 import ru.alexmaryin.firstgame.values.Textures
 import ru.alexmaryin.firstgame.values.WorldDimens
@@ -30,18 +37,21 @@ private val log = logger<StartWindow>()
 class  StartWindow : KtxGame<GameScreen>() {
 
     val viewport = FitViewport(WorldDimens.WIDTH, WorldDimens.HEIGHT)
-    private val uiViewport = FitViewport(
+    val uiViewport = FitViewport(
         WorldDimens.WIDTH * WorldDimens.CELL_SIZE,
         WorldDimens.HEIGHT * WorldDimens.CELL_SIZE
     )
+    val stage: Stage by lazy { Stage(uiViewport, batch).apply { Gdx.input.inputProcessor = this } }
 
     val assets: AssetStorage by lazy {
         KtxAsync.initiate()
         AssetStorage()
     }
+
     private val graphicsAtlas by lazy { assets[TextureAtlases.GRAPHIC_ATLAS.descriptor] }
-    val preferences by lazy { Gdx.app.getPreferences("deter_revolution_0_1") }
-    val audioService by lazy { if (preferences["audio_on", true]) DefaultAudioService(assets, preferences["music_volume", 1f]) else NoAudioService }
+    val preferences: Preferences by lazy { Gdx.app.getPreferences("deter_revolution_0_1") }
+    private val defaultAudioService by lazy { DefaultAudioService(assets, preferences["music_volume", 0.5f]) }
+    lateinit var audioService: AudioService
 
     private val batch by lazy { SpriteBatch() }
     val engine by lazy {
@@ -53,9 +63,7 @@ class  StartWindow : KtxGame<GameScreen>() {
             addSystem(CollisionSystem())
             addSystem(EventSystem(audioService) { event ->
                 pauseEngine()
-                preferences.flush {
-                    this["last_scores"] = event.score
-                }
+                preferences.flush { this["last_scores"] = event.score }
             })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
@@ -67,16 +75,26 @@ class  StartWindow : KtxGame<GameScreen>() {
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
-        log.debug { "Create a game instance" }
-        addScreen(SplashScreen(this))
         Gdx.input.setCursorPosition(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
-        setScreen<SplashScreen>()
+        log.debug { "Create a game instance" }
+        setAudio(preferences["audio_on", true])
+
+        val assetRefs = gdxArrayOf(
+            TextureAtlases.values().filter { it.isSkinAtlas }.map { assets.loadAsync(it.descriptor) }
+        ).flatten()
+        KtxAsync.launch {
+            assetRefs.joinAll()
+            createSkin(assets)
+            addScreen(SplashScreen(this@StartWindow))
+            setScreen<SplashScreen>()
+        }
     }
 
     override fun dispose() {
         log.debug { "Disposed ${batch.maxSpritesInBatch} sprites, ${graphicsAtlas.regions.size} regions" }
         batch.disposeSafely()
         assets.disposeSafely()
+        stage.disposeSafely()
     }
 
     fun pauseEngine() {
@@ -91,5 +109,15 @@ class  StartWindow : KtxGame<GameScreen>() {
         engine.getSystem<AnimationSystem>().setProcessing(true)
         engine.getSystem<EnemySystem>().setProcessing(true)
         engine.getSystem<CopSystem>().setProcessing(true)
+    }
+
+    fun setAudio(on: Boolean) {
+        if (on) {
+            audioService = defaultAudioService
+            audioService.resume()
+        } else {
+            defaultAudioService.pause()
+            audioService = NoAudioService
+        }
     }
 }
