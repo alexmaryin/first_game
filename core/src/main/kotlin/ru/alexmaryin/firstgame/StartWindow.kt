@@ -41,7 +41,7 @@ class  StartWindow : KtxGame<GameScreen>() {
     }
     private val graphicsAtlas by lazy { assets[TextureAtlases.GRAPHIC_ATLAS.descriptor] }
     val preferences by lazy { Gdx.app.getPreferences("deter_revolution_0_1") }
-    val audioService by lazy { if (preferences["audio_on", true]) DefaultAudioService(assets) else NoAudioService }
+    val audioService by lazy { if (preferences["audio_on", true]) DefaultAudioService(assets, preferences["music_volume", 1f]) else NoAudioService }
 
     private val batch by lazy { SpriteBatch() }
     val engine by lazy {
@@ -74,8 +74,8 @@ class  StartWindow : KtxGame<GameScreen>() {
     }
 
     override fun dispose() {
-        log.debug { "Disposed ${batch.maxSpritesInBatch} sprites, ${graphicsAtlas.regions.size} regions " }
-        batch.dispose()
+        log.debug { "Disposed ${batch.maxSpritesInBatch} sprites, ${graphicsAtlas.regions.size} regions" }
+        batch.disposeSafely()
         assets.disposeSafely()
     }
 

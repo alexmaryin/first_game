@@ -42,7 +42,7 @@ class GameplayScreen(
 
     fun startGame() {
         state = GameState.PLAY
-        game.audioService.play(MusicAssets.GAME_MUSIC_UP_10, 0.5f)
+        game.audioService.play(MusicAssets.GAME_MUSIC_UP_10)
         EventDispatcher.subscribeOn<LevelUp>(this)
 
         engine.entity {
@@ -90,8 +90,8 @@ class GameplayScreen(
     }
 
     override fun onEventDelivered(event: GameEvent) {
-        if (event is LevelUp && event.level >= 5) {
-            game.audioService.play(MusicAssets.GAME_MUSIC_FROM_10, 0.5f)
+        if (event is LevelUp && event.level >= 2) {
+            game.audioService.play(MusicAssets.GAME_MUSIC_FROM_10)
             EventDispatcher.removeSubscriptions(this)
         }
 
@@ -100,7 +100,7 @@ class GameplayScreen(
     override fun render(delta: Float) {
 
         engine.update(min(delta, Gameplay.MIN_DELTA_TME))
-        game.audioService.update()
+        game.audioService.update(delta)
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             when (state) {

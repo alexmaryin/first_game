@@ -44,7 +44,7 @@ class EventSystem(
             is GameOver -> {
                 gameOverCallback(event)
                 (engine as PooledEngine).clearPools()
-                audioService.play(MusicAssets.GAME_OVER, 0.7f)
+                audioService.play(MusicAssets.GAME_OVER)
                 Gdx.input.vibrate(1000)
                 engine.getEntitiesFor(allOf(PlayerComponent::class).get()).forEach { player ->
                     player.addComponent<RemoveComponent>(engine) {
