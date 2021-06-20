@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import ktx.ashley.entity
 import ktx.ashley.with
+import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.get
@@ -98,6 +99,11 @@ class GameplayScreen(
     }
 
     override fun render(delta: Float) {
+
+//        game.uiViewport.apply()
+//        game.batch.use(game.uiViewport.camera.combined) {
+//            game.ruFont.draw(it, "Привет, жопа!", 1f, 1f)
+//        }
 
         engine.update(min(delta, Gameplay.MIN_DELTA_TME))
         game.audioService.update(delta)
