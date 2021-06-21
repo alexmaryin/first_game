@@ -14,7 +14,7 @@ import ru.alexmaryin.firstgame.values.SoundAssets
 
 class DefaultAudioService(
     private val assets: AssetStorage,
-    private val musicVolume: Float,
+    private var musicVolume: Float,
 ) : AudioService {
 
     private val log = logger<DefaultAudioService>()
@@ -82,6 +82,13 @@ class DefaultAudioService(
     override fun resume() {
         currentMusic?.let {
             assets[it.descriptor].play()
+        }
+    }
+
+    override fun changeVolume(volume: Float) {
+        musicVolume = volume
+        currentMusic?.let {
+            assets[it.descriptor].volume = volume
         }
     }
 

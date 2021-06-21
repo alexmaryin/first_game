@@ -23,11 +23,21 @@ fun createSkin(assets: AssetStorage) {
             font = uiFont
             fontColor = Color.RED
         }
+        label("secondary") {
+            font = uiFont
+            fontColor = Color.WHITE.apply { a = 0.7f }
+        }
         checkBox("checkBox") {
             font = uiFont
             fontColor = Color.GRAY
             checkboxOn = skin.getDrawable("BTN_CHECKBOX_IN")
             checkboxOff = skin.getDrawable("BTN_CHECKBOX_OUT")
+        }
+        slider("default-horizontal") {
+            background = skin.getDrawable("UI_FULLBAR")
+            knob = skin.getDrawable("BTN_SLIDER_SM (9)")
+            knobAfter = skin.getDrawable("UI_BARFRAME")
+            knobBefore = skin.getDrawable("UI_COLORBAR (1)")
         }
     }
 }

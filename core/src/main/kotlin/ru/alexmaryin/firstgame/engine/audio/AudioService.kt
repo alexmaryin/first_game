@@ -10,4 +10,5 @@ interface AudioService {
     fun resume()
     suspend fun stop(clear: Boolean = true)
     fun update(delta: Float)
+    fun changeVolume(volume: Float)
 }

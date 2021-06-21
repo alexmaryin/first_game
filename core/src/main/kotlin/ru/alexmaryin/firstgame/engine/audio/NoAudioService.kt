@@ -10,4 +10,5 @@ object NoAudioService : AudioService {
     override fun resume() {}
     override suspend fun stop(clear: Boolean) {}
     override fun update(delta: Float) {}
+    override fun changeVolume(volume: Float) {}
 }

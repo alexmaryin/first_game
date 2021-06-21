@@ -16,5 +16,6 @@ abstract class GameScreen(
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, true)
+        stage.viewport.update(width, height, true)
     }
 }
