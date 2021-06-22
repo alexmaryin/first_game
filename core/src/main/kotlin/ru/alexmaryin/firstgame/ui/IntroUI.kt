@@ -1,5 +1,7 @@
 package ru.alexmaryin.firstgame.ui
 
+import com.badlogic.gdx.Application
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.utils.Align
 import ktx.actors.onClick
@@ -31,7 +33,7 @@ class IntroUI : Dialog("", Scene2DSkin.defaultSkin, "dialog"
             fadeScrollBars = true
             variableSizeKnobs = false
 
-            label(Gameplay.INTRO_HELP, "black") {
+            label(if (Gdx.app.type == Application.ApplicationType.Android) Gameplay.INTRO_HELP_MOBILE else Gameplay.INTRO_HELP, "black") {
                 wrap = true
                 setFontScale(2f)
                 setAlignment(Align.topLeft)
