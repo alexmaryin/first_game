@@ -48,7 +48,7 @@ BTN_BLUE_SQ
   index: -1
 BTN_CHECKBOX_IN
   rotate: false
-  xy: 774, 852
+  xy: 664, 27
   size: 58, 60
   orig: 58, 60
   offset: 0, 0
@@ -132,168 +132,168 @@ BTN_GREEN_SQ
   index: -1
 BTN_HORIZ_SINGLE (1)
   rotate: false
-  xy: 836, 303
+  xy: 1354, 809
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (10)
   rotate: false
-  xy: 1626, 1431
+  xy: 1213, 883
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (11)
   rotate: false
-  xy: 1444, 1378
+  xy: 1307, 917
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (12)
   rotate: false
-  xy: 836, 357
+  xy: 1354, 863
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (13)
   rotate: false
-  xy: 883, 521
+  xy: 836, 826
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (14)
   rotate: false
-  xy: 883, 305
+  xy: 930, 830
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (15)
   rotate: false
-  xy: 883, 197
+  xy: 1024, 830
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (16)
   rotate: false
-  xy: 806, 36
+  xy: 1195, 937
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (17)
   rotate: false
-  xy: 1350, 1366
+  xy: 1213, 829
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (18)
   rotate: false
-  xy: 836, 465
+  xy: 1307, 809
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (19)
   rotate: false
-  xy: 836, 195
+  xy: 1307, 755
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (2)
   rotate: false
-  xy: 883, 467
+  xy: 836, 772
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (20)
   rotate: false
-  xy: 1966, 1701
+  xy: 795, 36
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (21)
   rotate: false
-  xy: 1303, 1362
+  xy: 1260, 885
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (22)
   rotate: false
-  xy: 836, 519
+  xy: 1307, 863
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (23)
   rotate: false
-  xy: 836, 249
+  xy: 1260, 777
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (24)
   rotate: false
-  xy: 883, 413
+  xy: 883, 826
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (3)
   rotate: false
-  xy: 883, 251
+  xy: 977, 830
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (4)
   rotate: false
-  xy: 883, 143
+  xy: 930, 776
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (5)
   rotate: false
-  xy: 1579, 1431
+  xy: 1242, 939
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (6)
   rotate: false
-  xy: 1397, 1366
+  xy: 1260, 831
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (7)
   rotate: false
-  xy: 836, 411
+  xy: 1354, 917
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (8)
   rotate: false
-  xy: 836, 141
+  xy: 1354, 755
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
   index: -1
 BTN_HORIZ_SINGLE (9)
   rotate: false
-  xy: 883, 359
+  xy: 883, 772
   size: 45, 52
   orig: 45, 52
   offset: 0, 0
@@ -363,56 +363,56 @@ BTN_ORANGE_SQ
   index: -1
 BTN_PLAIN (1)
   rotate: false
-  xy: 834, 880
+  xy: 1724, 1400
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_PLAIN (2)
   rotate: false
-  xy: 1773, 1700
+  xy: 1795, 1346
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_PLAIN (3)
   rotate: false
-  xy: 1631, 1723
+  xy: 1440, 1432
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_PLAIN (4)
   rotate: false
-  xy: 1121, 805
+  xy: 1071, 871
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_PLAIN (5)
   rotate: false
-  xy: 664, 35
+  xy: 1961, 1874
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_PLAIN (6)
   rotate: false
-  xy: 850, 683
+  xy: 1511, 1431
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_RADIO_IN
   rotate: false
-  xy: 1528, 1430
+  xy: 1866, 1402
   size: 49, 53
   orig: 49, 53
   offset: 0, 0
   index: -1
 BTN_RADIO_OUT
   rotate: false
-  xy: 1844, 1699
+  xy: 1303, 1322
   size: 49, 53
   orig: 49, 53
   offset: 0, 0
@@ -538,91 +538,91 @@ BTN_SLIDER (9)
   index: -1
 BTN_SLIDER_SM (1)
   rotate: false
-  xy: 790, 573
+  xy: 1511, 1377
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (10)
   rotate: false
-  xy: 779, 681
+  xy: 1440, 1378
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (11)
   rotate: false
-  xy: 861, 629
+  xy: 1582, 1377
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (12)
   rotate: false
-  xy: 1961, 1874
+  xy: 1653, 1346
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (2)
   rotate: false
-  xy: 950, 713
+  xy: 1795, 1400
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (3)
   rotate: false
-  xy: 1895, 1701
+  xy: 1866, 1348
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (4)
   rotate: false
-  xy: 1440, 1432
+  xy: 724, 36
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (5)
   rotate: false
-  xy: 1121, 751
+  xy: 1142, 871
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (6)
   rotate: false
-  xy: 735, 36
+  xy: 831, 880
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (7)
   rotate: false
-  xy: 790, 627
+  xy: 1582, 1431
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (8)
   rotate: false
-  xy: 861, 575
+  xy: 1653, 1400
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_SLIDER_SM (9)
   rotate: false
-  xy: 1702, 1700
+  xy: 1724, 1346
   size: 69, 52
   orig: 69, 52
   offset: 0, 0
   index: -1
 BTN_VERT_ (1)
   rotate: false
-  xy: 1366, 854
+  xy: 1734, 1571
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -636,14 +636,14 @@ BTN_VERT_ (10)
   index: -1
 BTN_VERT_ (11)
   rotate: false
-  xy: 1195, 874
+  xy: 779, 720
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
   index: -1
 BTN_VERT_ (12)
   rotate: false
-  xy: 893, 737
+  xy: 1677, 1454
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -685,7 +685,7 @@ BTN_VERT_ (17)
   index: -1
 BTN_VERT_ (18)
   rotate: false
-  xy: 836, 737
+  xy: 1848, 1574
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -699,7 +699,7 @@ BTN_VERT_ (19)
   index: -1
 BTN_VERT_ (2)
   rotate: false
-  xy: 1064, 742
+  xy: 1848, 1457
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -720,7 +720,7 @@ BTN_VERT_ (21)
   index: -1
 BTN_VERT_ (22)
   rotate: false
-  xy: 779, 735
+  xy: 1791, 1571
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -762,14 +762,14 @@ BTN_VERT_ (27)
   index: -1
 BTN_VERT_ (28)
   rotate: false
-  xy: 1309, 854
+  xy: 1677, 1571
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
   index: -1
 BTN_VERT_ (29)
   rotate: false
-  xy: 1007, 767
+  xy: 1791, 1454
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -811,14 +811,14 @@ BTN_VERT_ (6)
   index: -1
 BTN_VERT_ (7)
   rotate: false
-  xy: 1252, 876
+  xy: 790, 603
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
   index: -1
 BTN_VERT_ (8)
   rotate: false
-  xy: 950, 767
+  xy: 1734, 1454
   size: 55, 115
   orig: 55, 115
   offset: 0, 0
@@ -842,6 +842,27 @@ CRS_HAND
   xy: 1195, 1185
   size: 99, 135
   orig: 99, 135
+  offset: 0, 0
+  index: -1
+SYMB_PAUSE
+  rotate: false
+  xy: 774, 837
+  size: 44, 75
+  orig: 44, 75
+  offset: 0, 0
+  index: -1
+SYMB_PLAY
+  rotate: false
+  xy: 1631, 1699
+  size: 71, 76
+  orig: 71, 76
+  offset: 0, 0
+  index: -1
+SYMB_X
+  rotate: false
+  xy: 1828, 1691
+  size: 61, 61
+  orig: 61, 61
   offset: 0, 0
   index: -1
 UI_BARFRAME
@@ -1000,35 +1021,35 @@ UI_STAR_NORMAL
   index: -1
 UI_WINDOW (1)
   rotate: false
-  xy: 1316, 1420
+  xy: 1704, 1688
   size: 122, 64
   orig: 122, 64
   offset: 0, 0
   index: -1
 UI_WINDOW (2)
   rotate: false
-  xy: 947, 950
+  xy: 1316, 1420
   size: 122, 64
   orig: 122, 64
   offset: 0, 0
   index: -1
 UI_WINDOW (3)
   rotate: false
-  xy: 1071, 925
+  xy: 947, 950
   size: 122, 64
   orig: 122, 64
   offset: 0, 0
   index: -1
 UI_WINDOW (4)
   rotate: false
-  xy: 947, 884
+  xy: 1071, 925
   size: 122, 64
   orig: 122, 64
   offset: 0, 0
   index: -1
 UI_WINDOW (5)
   rotate: false
-  xy: 1071, 859
+  xy: 947, 884
   size: 122, 64
   orig: 122, 64
   offset: 0, 0
@@ -1087,7 +1108,7 @@ dilaoguebox
   index: -1
 h_scroll
   rotate: false
-  xy: 1511, 1434
+  xy: 1961, 1937
   size: 15, 50
   split: 0, 15, 11, 12
   orig: 15, 50
