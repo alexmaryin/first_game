@@ -38,7 +38,7 @@ fun createSkin(assets: AssetStorage) {
         }
         checkBox("checkBox") {
             font = uiFont
-            fontColor = Color.GRAY
+            fontColor = Color.WHITE.apply { a = 0.7f }
             checkboxOn = skin.getDrawable("BTN_CHECKBOX_IN")
             checkboxOff = skin.getDrawable("BTN_CHECKBOX_OUT")
         }
@@ -77,6 +77,18 @@ fun createSkin(assets: AssetStorage) {
             fontColor = Color.YELLOW
             up = skin.getDrawable("BTN_GREEN_RECT_OUT")
             down = skin.getDrawable("BTN_GREEN_RECT_IN")
+        }
+        imageButton("red_circle_button") {
+            up = skin.getDrawable("BTN_ORANGE_CIRCLE_OUT")
+            down = skin.getDrawable("BTN_ORANGE_CIRCLE_IN")
+            imageUp = skin.getDrawable("SYMB_X")
+            imageDown = imageUp
+        }
+        imageButton("orange_circle_button") {
+            up = skin.getDrawable("BTN_RED_CIRCLE_OUT")
+            down = skin.getDrawable("BTN_RED_CIRCLE_IN")
+            imageUp = skin.getDrawable("SYMB_PAUSE")
+            imageChecked = skin.getDrawable("SYMB_PLAY")
         }
         scrollPane("default_scroll") {
             vScroll = skin.getDrawable("h_scroll")

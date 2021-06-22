@@ -16,13 +16,14 @@ class IntroUI : Dialog("", Scene2DSkin.defaultSkin, "dialog"
     init {
         buttonTable.defaults().pad(10f).maxHeight(100f)
         button(scene2d.textButton("Понятно", "yellow_button").apply {
-            height = 30f
-
+            isTransform = true
+            scaleBy(-0.3f)
             label.setFontScale(2f)
             onClick { hide() }
         })
         button(scene2d.textButton("Больше не показывать", "green_button").apply {
-            height = 30f
+            isTransform = true
+            scaleBy(-0.3f)
             label.wrap = true
             label.setFontScale(2f)
             labelCell.padRight(10f).padLeft(10f)

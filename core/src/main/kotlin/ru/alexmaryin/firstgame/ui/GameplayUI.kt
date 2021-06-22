@@ -3,12 +3,12 @@ package ru.alexmaryin.firstgame.ui
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.Align
 import ktx.actors.centerPosition
 import ktx.actors.plusAssign
-import ktx.scene2d.label
-import ktx.scene2d.scene2d
-import ktx.scene2d.textButton
+import ktx.scene2d.*
 import ru.alexmaryin.firstgame.engine.events.*
+import ru.alexmaryin.firstgame.screens.GameState
 import ru.alexmaryin.firstgame.values.Gameplay
 
 class GameplayUI(stage: Stage) : Group(), GameEventsListener {
@@ -30,19 +30,17 @@ class GameplayUI(stage: Stage) : Group(), GameEventsListener {
         centerPosition(stage.width, stage.height)
         color.a = 0f
     }
-    val quitButton = scene2d.textButton("✕", "red_circle_button") {
-        setPosition(20f, stage.height - 50f)
+    val quitButton = scene2d.imageButton("red_circle_button") {
+        setPosition(20f, stage.height - 70f)
         setSize(50f, 50f)
-        color.a = 0.5f
-        label.color.a = 0.7f
-        label.setFontScale(2f)
+        imageCell.size(30f, 30f)
+        color.a = 0.7f
     }
-    val pauseButton = scene2d.textButton("⏸", "yellow_circle_button") {
-        setPosition(stage.width - 50f, stage.height - 50f)
+    val pauseButton = scene2d.imageButton("orange_circle_button") {
+        setPosition(stage.width - 70f, stage.height - 70f)
         setSize(50f, 50f)
-        color.a = 0.5f
-        label.color.a = 0.7f
-        label.setFontScale(2f)
+        imageCell.size(30f, 30f)
+        color.a = 0.7f
     }
 
     init {

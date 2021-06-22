@@ -41,13 +41,7 @@ class GameplayScreen(
     }.toMap()
     private val ui by lazy { GameplayUI(stage).apply {
         pauseButton.onClick {
-            if (state == GameState.PLAY) {
-                pauseGame()
-                setText("▶")
-            } else {
-                resumeGame()
-                setText("⏸")
-            }
+            if (isChecked) pauseGame() else resumeGame()
         }
         quitButton.onClick { hide() }
     } }
