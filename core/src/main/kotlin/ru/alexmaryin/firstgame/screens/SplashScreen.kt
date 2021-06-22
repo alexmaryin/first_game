@@ -16,6 +16,7 @@ import ktx.preferences.set
 import ktx.scene2d.actors
 import ktx.scene2d.verticalGroup
 import ru.alexmaryin.firstgame.StartWindow
+import ru.alexmaryin.firstgame.ui.IntroUI
 import ru.alexmaryin.firstgame.ui.SettingsUI
 import ru.alexmaryin.firstgame.ui.SplashUI
 import ru.alexmaryin.firstgame.values.MusicAssets
@@ -45,6 +46,7 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
             setVolumeLabel()
         }
     }
+    private val introDialog = IntroUI()
     private var startTouched = false
 
     override fun show() {
@@ -76,9 +78,12 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
             }
         }
         stage.isDebugAll = false
+
+        if (game.preferences["show_intro", true]) introDialog.show(stage)
     }
 
     override fun hide() {
+        game.preferences["show_intro"] = introDialog.isShowAgain
         game.preferences.flush()
         stage.clear()
         dispose()
@@ -99,7 +104,7 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
         ui.setProgress(assets.progress.percent)
         stage.run {
             uiViewport.apply()
-            act()
+            act(delta)
             draw()
         }
     }
