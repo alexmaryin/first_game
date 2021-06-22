@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.assets.async.AssetStorage
 import ktx.scene2d.Scene2DSkin
 import ktx.style.*
 import ru.alexmaryin.firstgame.values.GameAssets
+import ru.alexmaryin.firstgame.values.GameAssets.CYRILLIC_CHARS
 import ru.alexmaryin.firstgame.values.TextureAtlases
-import ru.alexmaryin.firstgame.values.WorldDimens.CYRILLIC_CHARS
 
 fun createSkin(assets: AssetStorage) {
     val atlas = assets[TextureAtlases.UI_ATLAS.descriptor]
@@ -60,6 +59,18 @@ fun createSkin(assets: AssetStorage) {
             fontColor = Color.YELLOW
             up = skin.getDrawable("BTN_ORANGE_RECT_OUT")
             down = skin.getDrawable("BTN_ORANGE_RECT_IN")
+        }
+        textButton("yellow_circle_button") {
+            font = uiFont
+            fontColor = Color.BLACK
+            up = skin.getDrawable("BTN_ORANGE_CIRCLE_OUT")
+            down = skin.getDrawable("BTN_ORANGE_CIRCLE_IN")
+        }
+        textButton("red_circle_button") {
+            font = uiFont
+            fontColor = Color.WHITE
+            up = skin.getDrawable("BTN_RED_CIRCLE_OUT")
+            down = skin.getDrawable("BTN_RED_CIRCLE_IN")
         }
         textButton("green_button") {
             font = uiFontBordered

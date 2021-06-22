@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import ktx.actors.stage
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
@@ -23,7 +25,7 @@ import ru.alexmaryin.firstgame.values.WorldDimens
 class RenderSystem(
     private val batch: Batch,
     private val viewport: Viewport,
-    private val uiViewport: FitViewport,
+    private val stage: Stage,
 ) : SortedIteratingSystem(
     allOf(GraphicComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get(),
     compareBy { entity -> entity[TransformComponent.mapper] }
@@ -32,12 +34,8 @@ class RenderSystem(
     private val log = logger<RenderSystem>()
 
     override fun update(deltaTime: Float) {
+
         forceSort()
-
-        uiViewport.apply()
-        batch.use(uiViewport.camera.combined) {
-
-        }
 
         viewport.apply()
         batch.use(viewport.camera.combined) {

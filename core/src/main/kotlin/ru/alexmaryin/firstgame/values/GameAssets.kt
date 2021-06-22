@@ -54,7 +54,7 @@ object GameAssets {
     const val policeAnim = "police"
 
     const val RU_FONT = "fonts/Hardpixel-nn51.otf"
-    const val RU_CHARACTERS = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя1234567890.,:;_¡!¿?*"
+    const val CYRILLIC_CHARS = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮЁйцукенгшщзхъфывапролджэячсмитьбюё\u2715\u25B6\u23F8"
 
     val FRONT_LAYERS = listOf("front_0_layer", "front_2_layer", "front_4_layer", "front_6_layer")
     const val BACK_LAYER = "back_8_layer"

@@ -67,7 +67,7 @@ class  StartWindow : KtxGame<GameScreen>() {
             })
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
-            addSystem(RenderSystem(batch, viewport, uiViewport))
+            addSystem(RenderSystem(batch, viewport, stage))
             addSystem(RemoveSystem())
             addSystem(DebugSystem(batch, assets[Textures.DEBUG_GRID.descriptor]))
         }

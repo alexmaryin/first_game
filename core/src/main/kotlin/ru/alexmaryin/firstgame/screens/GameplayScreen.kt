@@ -4,15 +4,20 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
+import ktx.actors.onClick
+import ktx.actors.plusAssign
 import ktx.ashley.entity
 import ktx.ashley.with
-import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.get
 import ru.alexmaryin.firstgame.StartWindow
 import ru.alexmaryin.firstgame.engine.components.*
-import ru.alexmaryin.firstgame.engine.events.*
+import ru.alexmaryin.firstgame.engine.events.EventDispatcher
+import ru.alexmaryin.firstgame.engine.events.GameEvent
+import ru.alexmaryin.firstgame.engine.events.GameEventsListener
+import ru.alexmaryin.firstgame.engine.events.LevelUp
+import ru.alexmaryin.firstgame.ui.GameplayUI
 import ru.alexmaryin.firstgame.values.*
 import kotlin.math.min
 
@@ -34,11 +39,26 @@ class GameplayScreen(
     private val frontTextures = GameAssets.FRONT_LAYERS.mapIndexed { index, region ->
         WorldDimens.IN_FRONT_LAYERS_Z[index] to atlas.findRegion(region)
     }.toMap()
+    private val ui by lazy { GameplayUI(stage).apply {
+        pauseButton.onClick {
+            if (state == GameState.PLAY) {
+                pauseGame()
+                setText("▶")
+            } else {
+                resumeGame()
+                setText("⏸")
+            }
+        }
+        quitButton.onClick { hide() }
+    } }
 
     override fun show() {
         val lastScores: Int? = game.preferences["last_scores"]
         log.debug { "Main game play screen showing" }
         log.debug { lastScores?.let { "Last saved scores is $it" } ?: "No last scores saved in preferences yet."  }
+
+        stage.clear()
+        stage += ui
     }
 
     fun startGame() {
@@ -82,7 +102,7 @@ class GameplayScreen(
     private fun pauseGame() {
         state = GameState.PAUSED
         game.pauseEngine()
-        game.setScreen<MenuScreen>()
+//        game.setScreen<MenuScreen>()
     }
 
     private fun resumeGame() {
@@ -100,13 +120,17 @@ class GameplayScreen(
 
     override fun render(delta: Float) {
 
-//        game.uiViewport.apply()
-//        game.batch.use(game.uiViewport.camera.combined) {
-//            game.ruFont.draw(it, "Привет, жопа!", 1f, 1f)
-//        }
+        val realDelta = min(delta, Gameplay.MIN_DELTA_TME)
 
-        engine.update(min(delta, Gameplay.MIN_DELTA_TME))
+        engine.update(realDelta)
         game.audioService.update(delta)
+
+
+        stage.run {
+            viewport.apply()
+            act(realDelta)
+            draw()
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             when (state) {

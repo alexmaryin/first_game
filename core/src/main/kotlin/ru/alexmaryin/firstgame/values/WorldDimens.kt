@@ -8,7 +8,6 @@ object WorldDimens {
     private val ENTITIES_LAYERS_Z = listOf(1f, 3f, 5f, 7f)
     val IN_FRONT_LAYERS_Z = listOf(0f, 2f, 4f, 6f)
     const val BACK_LAYER_Z = 8f
-    const val CYRILLIC_CHARS = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮЁйцукенгшщзхъфывапролджэячсмитьбюё"
 
     fun getLayerForRoad(road: Float) = ENTITIES_LAYERS_Z[ROADS_Y_CELLS.indexOf(road)]
 }
