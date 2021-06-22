@@ -131,7 +131,7 @@ class DefaultAudioService(
         // play enqueued sounds
         if (soundsQueue.notEmpty())
             with(soundsQueue.removeFirst()) {
-                assets[asset.descriptor].play(assetVolume)
+                assets[asset.descriptor].play(assetVolume * musicVolume)
                 soundsPool.free(this)
             }
     }

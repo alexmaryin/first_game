@@ -19,7 +19,7 @@ class SettingsUI(isInitialSoundOn: Boolean, initialVolume: Float) {
         table = scene2d.table {
             row().expandX().fillX().padTop(10f)
             volumeSlider = slider(style = "default-horizontal") { cell ->
-                cell.width(WorldDimens.WIDTH * WorldDimens.CELL_SIZE * 0.7f)
+                cell.width(WorldDimens.WIDTH * WorldDimens.CELL_SIZE * 0.5f)
                 value = initialVolume
             }
             volumeLabel = label("", "secondary") { cell ->
