@@ -6,9 +6,8 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.get
 import ktx.ashley.mapperFor
 import ru.alexmaryin.deter_rev.engine.events.*
-import ru.alexmaryin.deter_rev.ui.GameEventsHandler
+import ru.alexmaryin.deter_rev.engine.events.GameEventsHandler
 import ru.alexmaryin.deter_rev.values.Gameplay
-import kotlin.math.max
 
 class PlayerComponent : Component, Pool.Poolable, GameEventsListener {
 

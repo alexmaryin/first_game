@@ -56,6 +56,14 @@ class DefaultAudioService(
         currentMusic?.let {
             if (assets[it.descriptor].isPlaying)
                 fadeOut = true
+            log.debug { "Fade out previous currentMusic ${it.descriptor.fileName}" }
+        }
+        nextMusic?.let {
+            if (assets[it.descriptor].isPlaying) {
+                currentMusic = nextMusic
+                fadeOut = true
+            }
+            log.debug { "Fade out previous nextMusic ${it.descriptor.fileName}" }
         }
         // Load music to play and set it to fade in
         KtxAsync.launch {

@@ -1,7 +1,9 @@
 package ru.alexmaryin.deter_rev.screens
 
+import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import ktx.actors.onChange
@@ -13,18 +15,19 @@ import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.get
 import ktx.preferences.set
-import ktx.scene2d.actors
-import ktx.scene2d.verticalGroup
+import ktx.scene2d.*
 import ru.alexmaryin.deter_rev.StartWindow
-import ru.alexmaryin.deter_rev.ui.IntroUI
+import ru.alexmaryin.deter_rev.engine.events.DialogExit
+import ru.alexmaryin.deter_rev.engine.events.EventDispatcher
+import ru.alexmaryin.deter_rev.engine.events.GameEvent
+import ru.alexmaryin.deter_rev.engine.events.GameEventsListener
+import ru.alexmaryin.deter_rev.ui.DialogResult
+import ru.alexmaryin.deter_rev.ui.ModalTextDialogUI
 import ru.alexmaryin.deter_rev.ui.SettingsUI
 import ru.alexmaryin.deter_rev.ui.SplashUI
-import ru.alexmaryin.deter_rev.values.MusicAssets
-import ru.alexmaryin.deter_rev.values.SoundAssets
-import ru.alexmaryin.deter_rev.values.TextureAtlases
-import ru.alexmaryin.deter_rev.values.Textures
+import ru.alexmaryin.deter_rev.values.*
 
-class SplashScreen(game: StartWindow) : GameScreen(game) {
+class SplashScreen(game: StartWindow) : GameScreen(game), GameEventsListener {
 
     private val log = logger<SplashScreen>()
     private lateinit var gameplay: GameplayScreen
@@ -46,10 +49,29 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
             setVolumeLabel()
         }
     }
-    private val introDialog = IntroUI()
+    private val introDialog = ModalTextDialogUI(
+        "Понятно", "Больше не показывать",
+        0.8f, 0.8f) {
+        defaults().fill().expand()
+        add(scene2d.scrollPane("default_scroll") {
+            setScrollbarsVisible(true)
+            fadeScrollBars = true
+            variableSizeKnobs = false
+
+            label(if (Gdx.app.type == Application.ApplicationType.Android) Gameplay.INTRO_HELP_MOBILE else Gameplay.INTRO_HELP, "black") {
+                wrap = true
+                setFontScale(2f)
+                setAlignment(Align.topLeft)
+                pad(20f)
+            }
+        })
+        pack()
+    }
+
     private var startTouched = false
 
     override fun show() {
+        EventDispatcher.subscribeOn<DialogExit>(this)
         val startTime = System.currentTimeMillis()
         val assetsRefs = gdxArrayOf(
             Textures.values().map { assets.loadAsync(it.descriptor) },
@@ -83,7 +105,6 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
     }
 
     override fun hide() {
-        game.preferences["show_intro"] = introDialog.isShowAgain
         game.preferences.flush()
         stage.clear()
         dispose()
@@ -106,6 +127,12 @@ class SplashScreen(game: StartWindow) : GameScreen(game) {
             uiViewport.apply()
             act(delta)
             draw()
+        }
+    }
+
+    override fun onEventDelivered(event: GameEvent) {
+        if (event is DialogExit && event.result == DialogResult.RIGHT) {
+            game.preferences["show_intro"] = false
         }
     }
 }

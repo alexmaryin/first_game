@@ -1,4 +1,4 @@
-package ru.alexmaryin.deter_rev.ui
+package ru.alexmaryin.deter_rev.engine.events
 
 interface GameEventsHandler {
     fun updateEnemiesCaught(count: Int)

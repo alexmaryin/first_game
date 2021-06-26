@@ -2,7 +2,6 @@ package ru.alexmaryin.deter_rev.engine.events
 
 import com.badlogic.ashley.core.Entity
 import ru.alexmaryin.deter_rev.ui.DialogResult
-import ru.alexmaryin.deter_rev.ui.GameplayUI
 
 sealed class GameEvent
 

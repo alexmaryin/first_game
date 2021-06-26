@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.utils.Align
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.ashley.entity
@@ -11,12 +13,14 @@ import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.get
+import ktx.scene2d.label
+import ktx.scene2d.scene2d
 import ru.alexmaryin.deter_rev.StartWindow
 import ru.alexmaryin.deter_rev.engine.components.*
 import ru.alexmaryin.deter_rev.engine.events.*
-import ru.alexmaryin.deter_rev.ui.ConfirmDialogUI
 import ru.alexmaryin.deter_rev.ui.DialogResult
 import ru.alexmaryin.deter_rev.ui.GameplayUI
+import ru.alexmaryin.deter_rev.ui.ModalTextDialogUI
 import ru.alexmaryin.deter_rev.values.*
 import kotlin.math.min
 
@@ -39,22 +43,36 @@ class GameplayScreen(
     private val frontTextures = GameAssets.FRONT_LAYERS.mapIndexed { index, region ->
         WorldDimens.IN_FRONT_LAYERS_Z[index] to atlas.findRegion(region)
     }.toMap()
-    private val ui by lazy { GameplayUI(stage).apply {
-        pauseButton.onClick { if (isChecked) pauseGame() else resumeGame() }
-        quitButton.onClick {
-            pauseGame()
-            exitDialog.show(stage)
+    private val exitDialog = ModalTextDialogUI(
+        "Да", "Нет",
+        0.5f, 0.5f
+    ) {
+        defaults().fill().expand()
+        add(scene2d.label("Хотите выйти?", "black") {
+            wrap = true
+            setFontScale(2f)
+            setAlignment(Align.center)
+            pad(20f)
+        })
+        pack()
+    }
+    private val ui by lazy {
+        GameplayUI().apply {
+            pauseButton.onClick { if (isChecked) pauseGame() else resumeGame() }
+            quitButton.onClick {
+                pauseGame()
+                exitDialog.show(stage)
+            }
         }
-    } }
-    private val exitDialog = ConfirmDialogUI("Хотите выйти?", "Да", "Нет")
+    }
 
     override fun show() {
         val lastScores: Int? = game.preferences["last_scores"]
         log.debug { "Main game play screen showing" }
-        log.debug { lastScores?.let { "Last saved scores is $it" } ?: "No last scores saved in preferences yet."  }
+        log.debug { lastScores?.let { "Last saved scores is $it" } ?: "No last scores saved in preferences yet." }
 
         stage.clear()
-        stage += ui
+        stage += ui.table.apply { setFillParent(true) }
     }
 
     fun startGame() {
@@ -91,7 +109,7 @@ class GameplayScreen(
             with<TransformComponent> {
                 size.set(Entities.CAR_WIDTH_SPRITE_RATIO, Entities.CAR_HEIGHT_SPRITE_RATIO)
                 offset.set(Entities.CAR_X_SPRITE_OFFSET, Entities.CAR_Y_SPRITE_OFFSET)
-                setInitialPosition(14f,2f, 1f)
+                setInitialPosition(14f, 2f, 1f)
             }
             with<GraphicComponent>()
         }
@@ -120,13 +138,14 @@ class GameplayScreen(
                 ui.showMessage(Gameplay.CATCH_PHRASES.random())
             }
             is DialogExit -> {
-                if (event.result == DialogResult.OK) {
+                if (event.result == DialogResult.LEFT) {
                     log.debug { "Exit game invoked!!!" }
                 } else {
                     resumeGame()
                 }
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -137,7 +156,6 @@ class GameplayScreen(
         engine.update(realDelta)
         game.audioService.update(delta)
 
-
         stage.run {
             viewport.apply()
             act(realDelta)
@@ -145,10 +163,8 @@ class GameplayScreen(
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            when (state) {
-                GameState.PAUSED -> resumeGame()
-                GameState.PLAY -> pauseGame()
-            }
+            ui.pauseButton.fire(InputEvent().apply { type = InputEvent.Type.touchDown })
+            ui.pauseButton.fire(InputEvent().apply { type = InputEvent.Type.touchUp })
         }
     }
 }
