@@ -43,8 +43,9 @@ class GameplayUI : GameEventsHandler {
                 color.a = 0.7f
             }
 
-            row().expand().colspan(3).center()
+            row().expand().colspan(3).pad(20f).center()
             eventLabel = label("", "red") {
+                setAlignment(Align.center)
                 setFontScale(3f)
                 color.a = 0f
             }
@@ -95,11 +96,18 @@ class GameplayUI : GameEventsHandler {
         }
     }
 
-    override fun showMessage(message: String) {
+    override fun showMessage(message: String, duration: Float) {
         with (eventLabel) {
             setText(message)
-            invalidate()
-            this += sequence(fadeIn(0.5f) + delay(1f, fadeOut(0.5f)))
+            this += sequence(fadeIn(0.5f) + delay(duration, fadeOut(0.5f)))
         }
+    }
+
+    fun reset() {
+        updateAvailableCops(Gameplay.MAX_AVAILABLE_COPS)
+        updateEnemiesCaught(0)
+        updateEnemiesMissed(0)
+        updateLevel(1)
+        updateMissedCops(0)
     }
 }

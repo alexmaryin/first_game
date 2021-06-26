@@ -21,8 +21,10 @@ class AnimationComponent : Component, Pool.Poolable {
     }
 
     fun animateEnemyUnderAttack() {
-        previousType = type
-        type = AnimationType.values()[type.ordinal + 6]
+        if (type.ordinal < 6) {
+            previousType = type
+            type = AnimationType.values()[type.ordinal + 6]
+        }
     }
 
     fun animateCopAttack() {

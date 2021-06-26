@@ -113,29 +113,32 @@ class DefaultAudioService(
     override fun update(delta: Float) {
         if (fadeOut) {
             fadeOutDelta = delta / Gameplay.CROSS_FADE_DURATION
-            with(assets[currentMusic!!.descriptor]) {
-                val fadeOutVolume = (volume - fadeOutDelta).coerceAtLeast(0f)
-                if (fadeOutVolume == 0f) unloadingMusic = KtxAsync.launch {
-                    fadeOut = false
-                    fadeOutDelta = 0f
-                    stop(true)
-                } else volume -= fadeOutDelta
+            currentMusic?.let {
+                with(assets[it.descriptor]) {
+                    val fadeOutVolume = (volume - fadeOutDelta).coerceAtLeast(0f)
+                    if (fadeOutVolume == 0f) unloadingMusic = KtxAsync.launch {
+                        fadeOut = false
+                        fadeOutDelta = 0f
+                        stop(true)
+                    } else volume -= fadeOutDelta
+                }
             }
         }
         if (fadeIn) {
             fadeInDelta = delta / Gameplay.CROSS_FADE_DURATION
-            with(assets[nextMusic!!.descriptor]) {
-                volume = (volume + fadeInDelta).coerceAtMost(musicVolume)
-                if (volume == musicVolume) KtxAsync.launch {
-                    fadeIn = false
-                    fadeInDelta = 0f
-                    unloadingMusic?.join()
-                    currentMusic = nextMusic
-                    nextMusic = null
+            nextMusic?.let {
+                with(assets[it.descriptor]) {
+                    volume = (volume + fadeInDelta).coerceAtMost(musicVolume)
+                    if (volume == musicVolume) KtxAsync.launch {
+                        fadeIn = false
+                        fadeInDelta = 0f
+                        unloadingMusic?.join()
+                        currentMusic = it
+                        nextMusic = null
+                    }
                 }
             }
         }
-
         // play enqueued sounds
         if (soundsQueue.notEmpty())
             with(soundsQueue.removeFirst()) {

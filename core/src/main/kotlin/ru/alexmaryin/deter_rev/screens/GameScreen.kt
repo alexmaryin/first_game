@@ -10,7 +10,7 @@ abstract class GameScreen(
     val game: StartWindow,
     val assets: AssetStorage = game.assets,
     val stage: Stage = game.stage,
-    private val viewport: Viewport = game.viewport,
+    val viewport: Viewport = game.viewport,
     val uiViewport: Viewport = game.uiViewport,
     ) : KtxScreen {
 

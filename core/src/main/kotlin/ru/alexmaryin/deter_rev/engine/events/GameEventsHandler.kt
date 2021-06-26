@@ -6,5 +6,5 @@ interface GameEventsHandler {
     fun updateMissedCops(count: Int)
     fun updateAvailableCops(count: Int)
     fun updateLevel(level: Int)
-    fun showMessage(message: String)
+    fun showMessage(message: String, duration: Float = 1f)
 }

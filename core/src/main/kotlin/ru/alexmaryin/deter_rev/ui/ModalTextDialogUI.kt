@@ -44,6 +44,10 @@ class ModalTextDialogUI(
         isTransform = false
     }
 
+    override fun hide() {
+        super.hide()
+    }
+
     override fun getPrefHeight() = WorldDimens.HEIGHT * WorldDimens.CELL_SIZE * heightRatio
 
     override fun getPrefWidth() = WorldDimens.WIDTH * WorldDimens.CELL_SIZE * widthRatio

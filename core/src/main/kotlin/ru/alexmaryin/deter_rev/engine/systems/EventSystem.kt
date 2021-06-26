@@ -19,12 +19,15 @@ import kotlin.math.ceil
 
 class EventSystem(
     private val audioService: AudioService,
-    private val gameOverCallback: (event: GameOver) -> Unit
 ) : IntervalIteratingSystem(allOf(PlayerComponent::class).get(), 1f
 ), GameEventsListener {
 
     private var _level = 1
     val level get() = _level
+
+    fun reset() {
+        _level = 1
+    }
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -42,8 +45,6 @@ class EventSystem(
 
         when (event) {
             is GameOver -> {
-                gameOverCallback(event)
-                (engine as PooledEngine).clearPools()
                 audioService.play(MusicAssets.GAME_OVER)
                 Gdx.input.vibrate(1000)
                 engine.getEntitiesFor(allOf(PlayerComponent::class).get()).forEach { player ->
@@ -51,7 +52,6 @@ class EventSystem(
                         delay = Gameplay.GAME_OVER_DELAY
                     }
                 }
-                EventDispatcher.listeners.clear()
             }
 
             is CopCatchEnemy -> {

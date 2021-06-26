@@ -88,6 +88,12 @@ fun createSkin(assets: AssetStorage) {
             vScroll = skin.getDrawable("h_scroll")
             vScrollKnob = skin.getDrawable("BTN_RADIO_IN")
         }
+        textField("simple_input") {
+            background = skin.getDrawable("UI_INPUT")
+            font = uiFont
+            fontColor = Color.BLACK
+            cursor = skin.getDrawable("h_scroll")
+        }
     }
 }
 

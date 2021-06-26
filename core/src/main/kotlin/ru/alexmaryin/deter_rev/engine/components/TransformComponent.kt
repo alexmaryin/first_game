@@ -18,7 +18,7 @@ class TransformComponent : Component, Pool.Poolable, Comparable<TransformCompone
 
     override fun reset() {
         size.set(1f, 1f)
-        offset.set(Vector2.Zero)
+        offset.set(0f, 0f)
         setInitialPosition(0f, 0f, 0f)
     }
 

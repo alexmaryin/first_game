@@ -23,10 +23,16 @@ class EnemySystem(private val audioService: AudioService) : IteratingSystem(
 
 //    private val log = logger<EnemySystem>()
 
+    fun reset() {
+        _enemiesOnScreen = 0
+        _lastEnemyArisen = 0f
+    }
+
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
+        val level = engine.getSystem<EventSystem>().level
         _lastEnemyArisen += deltaTime
-        if (lastEnemyArisen >= Gameplay.nextEnemyInterval
+        if (lastEnemyArisen >= Gameplay.nextEnemyInterval(level)
             && enemiesOnScreen < Gameplay.MAX_AVAILABLE_COPS * Gameplay.DIFFICULTY_RATIO
         ) {
             if (random(1, 100) % 2 == 0) {

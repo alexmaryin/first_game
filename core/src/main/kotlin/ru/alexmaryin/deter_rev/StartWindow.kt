@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.Pool
 import com.badlogic.gdx.utils.viewport.FitViewport
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -17,9 +18,7 @@ import ktx.async.KtxAsync
 import ktx.collections.gdxArrayOf
 import ktx.log.debug
 import ktx.log.logger
-import ktx.preferences.flush
 import ktx.preferences.get
-import ktx.preferences.set
 import ru.alexmaryin.deter_rev.engine.audio.AudioService
 import ru.alexmaryin.deter_rev.engine.audio.DefaultAudioService
 import ru.alexmaryin.deter_rev.engine.audio.NoAudioService
@@ -58,13 +57,10 @@ class  StartWindow : KtxGame<GameScreen>() {
             addSystem(CopSystem(audioService))
             addSystem(SnapMoveSystem())
             addSystem(CollisionSystem())
-            addSystem(EventSystem(audioService) { event ->
-                pauseEngine()
-                preferences.flush { this["last_scores"] = event.score }
-            })
+            addSystem(EventSystem(audioService))
             addSystem(PlayerAnimationSystem(graphicsAtlas))
             addSystem(AnimationSystem(graphicsAtlas))
-            addSystem(RenderSystem(batch, viewport, stage))
+            addSystem(RenderSystem(batch, viewport))
             addSystem(RemoveSystem())
             addSystem(DebugSystem(batch, assets[Textures.DEBUG_GRID.descriptor]))
         }
@@ -94,18 +90,31 @@ class  StartWindow : KtxGame<GameScreen>() {
         stage.disposeSafely()
     }
 
-    fun pauseEngine() {
-        engine.getSystem<SnapMoveSystem>().setProcessing(false)
-        engine.getSystem<AnimationSystem>().setProcessing(false)
-        engine.getSystem<EnemySystem>().setProcessing(false)
-        engine.getSystem<CopSystem>().setProcessing(false)
+    fun pauseEngine() = with(engine) {
+        getSystem<SnapMoveSystem>().setProcessing(false)
+        getSystem<AnimationSystem>().setProcessing(false)
+        getSystem<EnemySystem>().setProcessing(false)
+        getSystem<CopSystem>().setProcessing(false)
     }
 
-    fun resumeEngine() {
-        engine.getSystem<SnapMoveSystem>().setProcessing(true)
-        engine.getSystem<AnimationSystem>().setProcessing(true)
-        engine.getSystem<EnemySystem>().setProcessing(true)
-        engine.getSystem<CopSystem>().setProcessing(true)
+    fun resumeEngine() = with(engine) {
+        getSystem<SnapMoveSystem>().setProcessing(true)
+        getSystem<AnimationSystem>().setProcessing(true)
+        getSystem<EnemySystem>().setProcessing(true)
+        getSystem<CopSystem>().setProcessing(true)
+    }
+
+    fun resetEngine() = with(engine) {
+        entities.forEach { entity ->
+            entity.components.forEach { component ->
+                if (component is Pool.Poolable) component.reset()
+            }
+        }
+        removeAllEntities()
+        clearPools()
+        getSystem<EnemySystem>().reset()
+        getSystem<EventSystem>().reset()
+        getSystem<SnapMoveSystem>().reset()
     }
 
     fun setAudio(on: Boolean) {

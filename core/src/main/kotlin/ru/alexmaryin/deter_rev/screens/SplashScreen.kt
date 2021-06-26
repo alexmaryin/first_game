@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import ktx.actors.onChange
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.async.KtxAsync
@@ -30,24 +29,8 @@ import ru.alexmaryin.deter_rev.values.*
 class SplashScreen(game: StartWindow) : GameScreen(game), GameEventsListener {
 
     private val log = logger<SplashScreen>()
-    private lateinit var gameplay: GameplayScreen
     private val ui = SplashUI().apply {
         startLabel.onClick { startTouched = true }
-    }
-    private val settingsUi = SettingsUI(
-        game.preferences["audio_on", true],
-        game.preferences["music_volume", 0.5f]
-    ).apply {
-        soundCheckbox.onChange {
-            game.preferences["audio_on"] = isChecked
-            game.setAudio(isChecked)
-            setSoundLabel()
-        }
-        volumeSlider.onChange {
-            game.preferences["music_volume"] = value
-            game.audioService.changeVolume(value)
-            setVolumeLabel()
-        }
     }
     private val introDialog = ModalTextDialogUI(
         "Понятно", "Больше не показывать",
@@ -83,9 +66,7 @@ class SplashScreen(game: StartWindow) : GameScreen(game), GameEventsListener {
             assetsRefs.joinAll()
             game.audioService.play(MusicAssets.INTRO_HELP)
             game.addScreen(MenuScreen(game))
-            gameplay = GameplayScreen(game)
             log.debug { "All assets loaded in ${System.currentTimeMillis() - startTime} ms" }
-            game.addScreen(gameplay)
             ui.showStartLabel()
         }
 
@@ -94,7 +75,7 @@ class SplashScreen(game: StartWindow) : GameScreen(game), GameEventsListener {
                 setFillParent(true)
                 center()
                 this += ui.table
-                this += settingsUi.table
+                this += SettingsUI(game).table
                 invalidateHierarchy()
                 pack()
             }
@@ -115,11 +96,10 @@ class SplashScreen(game: StartWindow) : GameScreen(game), GameEventsListener {
         game.audioService.update(delta)
 
         if (assets.progress.isFinished && (startTouched || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY))
-            && game.containsScreen<GameplayScreen>()
+            && game.containsScreen<MenuScreen>()
         ) {
-            game.setScreen<GameplayScreen>()
+            game.setScreen<MenuScreen>()
             game.removeScreen<SplashScreen>()
-            gameplay.startGame()
         }
 
         ui.setProgress(assets.progress.percent)

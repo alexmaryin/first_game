@@ -3,13 +3,13 @@ package ru.alexmaryin.deter_rev.engine.systems
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.Viewport
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
 import ktx.ashley.hasNot
 import ktx.graphics.use
+import ktx.log.debug
 import ktx.log.error
 import ktx.log.logger
 import ru.alexmaryin.deter_rev.engine.components.*
@@ -18,7 +18,6 @@ import ru.alexmaryin.deter_rev.values.RotationDeg
 class RenderSystem(
     private val batch: Batch,
     private val viewport: Viewport,
-    private val stage: Stage,
 ) : SortedIteratingSystem(
     allOf(GraphicComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get(),
     compareBy { entity -> entity[TransformComponent.mapper] }
@@ -58,7 +57,10 @@ class RenderSystem(
                     }
                 }
             }
-            with(transform.interpolatedPosition) { setBounds(x, y, transform.size.x, transform.size.y) }
+            with(transform.interpolatedPosition) {
+                setBounds(x, y, transform.size.x, transform.size.y)
+//                log.debug { "Draw $entity at ${x}x${y} size ${transform.size.x}x${transform.size.y}" }
+            }
             draw(batch)
         }
     }

@@ -14,6 +14,10 @@ class SnapMoveSystem : IteratingSystem(
 
     private var accumulator = 0f
 
+    fun reset() {
+        accumulator = 0f
+    }
+
     override fun update(deltaTime: Float) {
         accumulator += deltaTime
         while (accumulator >= Gameplay.MOVE_RATE) {

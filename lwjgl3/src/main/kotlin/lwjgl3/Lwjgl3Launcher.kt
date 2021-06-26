@@ -11,8 +11,8 @@ import kotlin.math.min
 
 fun main() {
     val monitor = Lwjgl3ApplicationConfiguration.getDisplayMode()
-    WorldDimens.ACTUAL_WIDTH = min(monitor.width.toFloat(), (WorldDimens.WIDTH * WorldDimens.CELL_SIZE))
-    WorldDimens.ACTUAL_HEIGHT = min(monitor.height.toFloat(), (WorldDimens.HEIGHT * WorldDimens.CELL_SIZE))
+    WorldDimens.ACTUAL_WIDTH = min(monitor.width.toFloat(), WorldDimens.WIDTH * WorldDimens.CELL_SIZE)
+    WorldDimens.ACTUAL_HEIGHT = min(monitor.height.toFloat(), WorldDimens.HEIGHT * WorldDimens.CELL_SIZE)
     Lwjgl3Application(StartWindow(), Lwjgl3ApplicationConfiguration().apply {
         setTitle(Gameplay.DEFAULT_TITLE)
         setWindowedMode(WorldDimens.ACTUAL_WIDTH.toInt(), WorldDimens.ACTUAL_HEIGHT.toInt() )
