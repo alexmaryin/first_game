@@ -27,7 +27,7 @@ configure(subprojects - project(':android')) {
 
 subprojects {
 	version = '0.1.0'
-	ext.appName = 'firstGame'
+	ext.appName = 'Deter revolution'
 	repositories {
 		mavenLocal()
 		mavenCentral()

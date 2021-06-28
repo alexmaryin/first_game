@@ -1,4 +1,4 @@
-package lwjgl3
+package desktop
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
@@ -6,8 +6,6 @@ import ru.alexmaryin.deter_rev.StartWindow
 import ru.alexmaryin.deter_rev.values.Gameplay
 import ru.alexmaryin.deter_rev.values.WorldDimens
 import kotlin.math.min
-
-/** Launches the desktop (LWJGL3) application.  */
 
 fun main() {
     val monitor = Lwjgl3ApplicationConfiguration.getDisplayMode()

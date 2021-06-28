@@ -1,8 +1,13 @@
-apply plugin: 'application'
+plugins {
+	id 'org.beryx.runtime' version '1.12.5'
+	id 'application'
+}
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
-mainClassName = 'ru.alexmaryin.ru.alexmaryin.firstgame.lwjgl3.Lwjgl3LauncherKt'
+mainClassName = 'desktop.DesktopLauncherKt'
 sourceCompatibility = 8.0
+
+def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
 
 dependencies {
 	implementation project(':core')
@@ -44,3 +49,22 @@ jar {
 		file(archiveFile).setExecutable(true, false)
 	}
 }
+
+jpackageImage.dependsOn jar
+
+runtime {
+	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--vm', 'server']
+	modules = ['java.naming', 'java.xml', 'jdk.unsupported']
+//	distDir = file(buildDir)
+
+	jpackage {
+		jpackageHome = 'C:\\Program Files\\Java\\jdk-16.0.1'
+		imageName = 'DeterRevolution'
+		imageOptions = ['--win-console']
+		skipInstaller = false
+		installerName = 'DeterRevolution'
+		installerType = 'msi'
+		installerOptions = ['--win-menu', '--win-shortcut']
+	}
+}
+
