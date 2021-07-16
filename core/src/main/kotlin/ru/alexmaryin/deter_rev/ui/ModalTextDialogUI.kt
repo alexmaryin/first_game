@@ -23,13 +23,13 @@ class ModalTextDialogUI(
 
     init {
         buttonTable.defaults().pad(10f).maxSize(prefWidth / 3, prefHeight / 5)
-        button(scene2d.textButton(leftButton, "yellow_button").apply {
+        if (leftButton.isNotBlank()) button(scene2d.textButton(leftButton, "yellow_button").apply {
             label.wrap = true
             label.setFontScale(2f)
             labelCell.padRight(10f).padLeft(10f)
             onClick { EventDispatcher.send(DialogExit(DialogResult.LEFT)); hide() }
         })
-        button(scene2d.textButton(rightButton, "green_button").apply {
+        if (rightButton.isNotBlank()) button(scene2d.textButton(rightButton, "green_button").apply {
             label.wrap = true
             label.setFontScale(2f)
             labelCell.padRight(10f).padLeft(10f)
@@ -42,10 +42,6 @@ class ModalTextDialogUI(
         pack()
         isModal = true
         isTransform = false
-    }
-
-    override fun hide() {
-        super.hide()
     }
 
     override fun getPrefHeight() = WorldDimens.HEIGHT * WorldDimens.CELL_SIZE * heightRatio

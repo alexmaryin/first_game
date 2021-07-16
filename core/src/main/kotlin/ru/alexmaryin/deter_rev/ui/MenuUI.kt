@@ -6,10 +6,11 @@ import com.badlogic.gdx.utils.Align
 import ktx.scene2d.*
 import ru.alexmaryin.deter_rev.values.Gameplay
 
-class MenuUI() {
+class MenuUI {
     val table: KTableWidget
     val newGameButton: TextButton
     val settingsButton: TextButton
+    val creditsButton: TextButton
     val quitButton: TextButton
     private val pane: ScrollPane
 
@@ -33,6 +34,11 @@ class MenuUI() {
                 }
                 row().expandX().fillX().pad(10f)
                 settingsButton = textButton("Настройки", "yellow_button") {
+                    label.setFontScale(2f)
+                    label.wrap = true
+                }
+                row().expandX().fillX().pad(10f)
+                creditsButton = textButton("Информация", "green_button") {
                     label.setFontScale(2f)
                     label.wrap = true
                 }
