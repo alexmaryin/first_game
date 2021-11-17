@@ -11,7 +11,7 @@ object Gameplay {
     const val MAX_MISSED_ENEMIES = 5    // missed enemies count to game over
     const val GAME_OVER_DELAY = 1f
     const val MAX_AVAILABLE_COPS = 10      // initially available cops count for player
-    private const val ENEMY_ARISE_MIN_INTERVAL = 3f  // interval before new enemy might arise in seconds
+//    private const val ENEMY_ARISE_MIN_INTERVAL = 3f  // interval before new enemy might arise in seconds
     private const val ENEMY_ATTACK_MIN_INTERVAL = 5f
     private const val ENEMY_ATTACK_MAX_INTERVAL = 10f
     const val DIFFICULTY_RATIO = 1f // multiplier or divider for difficulty ratio

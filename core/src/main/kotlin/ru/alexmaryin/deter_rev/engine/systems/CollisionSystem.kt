@@ -36,7 +36,12 @@ class CollisionSystem : IteratingSystem(
 
             CopState.WALK_BACK -> players.forEach { playerComp ->
                 with(playerComp.transform) {
-                    val playerBound = Rectangle(interpolatedPosition.x, interpolatedPosition.y, size.x, size.y)
+                    val playerBound = Rectangle(
+                        interpolatedPosition.x + size.x / 3,
+                        interpolatedPosition.y + size.y / 2,
+                        size.x ,
+                        size.y / 3
+                    )
                     if (copRect.overlaps(playerBound) && entity.cop.state == CopState.WALK_BACK) {
                         EventDispatcher.send(PlayerRestoresCop(entity))
                         return
